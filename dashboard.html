@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Ecstasy HRMS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --sidebar:#1c3b67;
+    --bg:#f4f6fb;
+    --white:#ffffff;
+    --text:#111827;
+    --muted:#8b95a7;
+    --border:#e8edf5;
+
+    --orange:#f0a824;
+
+    --blue:#85b6ff;
+    --blue-light:#edf5ff;
+
+    --purple:#b08cff;
+    --purple-light:#f5efff;
+
+    --green:#6fe2c0;
+    --green-light:#ecfff8;
+
+    --pink:#f4afd4;
+    --pink-light:#fff0f8;
+
+    --shadow:
+    0 1px 2px rgba(15,23,42,.03),
+    0 8px 30px rgba(15,23,42,.04);
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+    width:258px;
+    height:100vh;
+    background:var(--sidebar);
+    position:fixed;
+    top:0;
+    left:0;
+    display:flex;
+    flex-direction:column;
+    z-index:100;
+}
+
+.logo-area{
+    height:88px;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.logo-wrap{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.logo-icon{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:22px;
+}
+
+.logo-title{
+    color:#fff;
+    font-size:19px;
+    font-weight:700;
+}
+
+.logo-sub{
+    color:rgba(255,255,255,0.42);
+    font-size:10px;
+    letter-spacing:1.2px;
+    margin-top:3px;
+}
+
+.sidebar-nav{
+    flex:1;
+    overflow-y:auto;
+    padding:18px 12px;
+}
+
+.nav-label{
+    color:rgba(255,255,255,0.35);
+    font-size:11px;
+    letter-spacing:1px;
+    font-weight:700;
+    margin:6px 12px 12px;
+}
+
+.nav-link{
+    height:46px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:0 16px;
+    color:rgba(255,255,255,0.72);
+    text-decoration:none;
+    font-size:15px;
+    font-weight:500;
+    transition:.25s;
+    margin-bottom:4px;
+}
+
+.nav-link:hover{
+    background:rgba(255,255,255,0.06);
+    color:#fff;
+}
+
+.nav-link.active{
+    background:var(--orange);
+    color:#fff;
+}
+
+.nav-link i{
+    width:18px;
+}
+
+/* FOOTER */
+
+.sidebar-footer{
+    padding:16px;
+    border-top:1px solid rgba(255,255,255,0.06);
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.user-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--orange);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.user-name{
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+}
+
+.user-role{
+    color:rgba(255,255,255,0.42);
+    font-size:12px;
+}
+
+.logout-btn{
+    width:100%;
+    height:42px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+    margin-left:258px;
+    min-height:100vh;
+}
+
+/* TOPBAR */
+
+.topbar{
+    height:74px;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:0 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.topbar-title{
+    font-size:18px;
+    font-weight:700;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.date{
+    color:var(--muted);
+    font-size:14px;
+}
+
+.notification{
+    position:relative;
+}
+
+.notification i{
+    font-size:18px;
+}
+
+.badge{
+    position:absolute;
+    top:-8px;
+    right:-9px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#ff3b30;
+    color:#fff;
+    font-size:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.top-avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+}
+
+/* =========================
+PAGE
+========================= */
+
+.page{
+    padding:26px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:365px 1fr;
+    gap:22px;
+}
+
+/* =========================
+GALLERY
+========================= */
+
+.gallery{
+    height:560px;
+    border-radius:30px;
+    overflow:hidden;
+    position:relative;
+    background:url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200') center/cover;
+    box-shadow:var(--shadow);
+}
+
+.gallery::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.48),transparent);
+}
+
+.gallery-content{
+    position:absolute;
+    top:24px;
+    left:24px;
+    z-index:2;
+    color:#fff;
+}
+
+.gallery-small{
+    font-size:11px;
+    letter-spacing:1px;
+    opacity:.8;
+}
+
+.gallery-title{
+    font-size:20px;
+    font-weight:700;
+    margin-top:2px;
+}
+
+.gallery-footer{
+    position:absolute;
+    bottom:24px;
+    left:24px;
+    right:24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:2;
+}
+
+.gallery-dots{
+    display:flex;
+    gap:8px;
+}
+
+.gallery-dots span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,.45);
+}
+
+.gallery-dots span.active{
+    width:28px;
+    border-radius:20px;
+    background:#fff;
+}
+
+.view-btn{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:#fff;
+    font-weight:600;
+    font-size:15px;
+}
+
+.view-circle{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* =========================
+RIGHT
+========================= */
+
+.right{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+/* HERO */
+
+.hero{
+    height:160px;
+    border-radius:30px;
+    background:#0c1019;
+    position:relative;
+    overflow:hidden;
+    padding:26px 30px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:var(--shadow);
+}
+
+.hero::before{
+    content:'';
+    position:absolute;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    background:rgba(255,255,255,.03);
+    left:-120px;
+    top:-120px;
+}
+
+.hero::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+    radial-gradient(rgba(255,255,255,.2) 1px, transparent 1px);
+    background-size:22px 22px;
+    opacity:.15;
+}
+
+.hero-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    position:relative;
+    z-index:2;
+}
+
+.hero-img{
+    width:84px;
+}
+
+.hero-small{
+    color:#8d97aa;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.hero-name{
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    margin:6px 0;
+}
+
+.hero-role{
+    color:#8d97aa;
+    font-size:14px;
+}
+
+.hero-badge{
+    margin-top:14px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:40px;
+    background:#1a2234;
+    color:#fff;
+    font-size:13px;
+}
+
+/* =========================
+CARDS
+========================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.quick-card{
+    background:#fff;
+    border-radius:24px;
+    padding:20px;
+    min-height:170px;
+    box-shadow:var(--shadow);
+}
+
+.quick-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.pill{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.blue-pill{
+    background:var(--blue-light);
+    color:var(--blue);
+}
+
+.purple-pill{
+    background:var(--purple-light);
+    color:var(--purple);
+}
+
+.green-pill{
+    background:var(--green-light);
+    color:#26b28a;
+}
+
+.pink-pill{
+    background:var(--pink-light);
+    color:#cf5ca4;
+}
+
+.arrow{
+    color:#bcc5d6;
+}
+
+.quick-icon{
+    width:68px;
+    height:68px;
+    border-radius:50%;
+    margin:26px auto 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+}
+
+.blue-icon{
+    background:var(--blue-light);
+    color:var(--blue);
+}
+
+.purple-icon{
+    background:var(--purple-light);
+    color:var(--purple);
+}
+
+.green-icon{
+    background:var(--green-light);
+    color:#26b28a;
+}
+
+.pink-icon{
+    background:var(--pink-light);
+    color:#cf5ca4;
+}
+
+.quick-title{
+    font-size:16px;
+    font-weight:700;
+}
+
+.quick-sub{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:5px;
+}
+
+/* =========================
+BIRTHDAY
+========================= */
+
+.birthday{
+    background:#fff;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.birthday-header{
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.birthday-title{
+    font-size:17px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.birthday-date{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.birthday-body{
+    padding:38px;
+    text-align:center;
+    color:var(--muted);
+    font-size:15px;
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:1250px){
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:900px){
+
+    .quick-grid{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        left:-260px;
+    }
+
+    .main{
+        margin-left:0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo-area">
+
+        <div class="logo-wrap">
+
+            <div class="logo-icon">
+                ∞
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    My Ecstasy
+                </div>
+
+                <div class="logo-sub">
+                    HR PORTAL
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <div class="nav-label">
+            MAIN
+        </div>
+
+        <a href="#" class="nav-link active">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-calendar-check"></i>
+            My Attendance
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-calendar-alt"></i>
+            Attendance
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-user"></i>
+            My Leaves
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-user-circle"></i>
+            Leave Management
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-check-square"></i>
+            Review RM Cards
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-file-alt"></i>
+            My Job Cards
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-comment"></i>
+            Help Desk
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-calendar"></i>
+            Holiday Calendar
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="fas fa-birthday-cake"></i>
+            Birthdays
+        </a>
+
+        <a href="#" class="nav-link">
+            <i class="far fa-star"></i>
+            Important Events
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <div class="user-box">
+
+            <div class="user-avatar">
+                MV
+            </div>
+
+            <div>
+
+                <div class="user-name">
+                    Mude Vishnu Priya
+                </div>
+
+                <div class="user-role">
+                    HR Admin · HR
+                </div>
+
+            </div>
+
+        </div>
+
+        <button class="logout-btn">
+            Sign Out
+        </button>
+
+    </div>
+
+</aside>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-title">
+            Dashboard
+        </div>
+
+        <div class="topbar-right">
+
+            <div class="date">
+                Wednesday, 20 May 2026
+            </div>
+
+            <div class="notification">
+
+                <i class="far fa-bell"></i>
+
+                <div class="badge">
+                    5
+                </div>
+
+            </div>
+
+            <div class="top-avatar">
+                MV
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- PAGE -->
+
+    <div class="page">
+
+        <div class="dashboard-grid">
+
+            <!-- LEFT -->
+
+            <div class="gallery">
+
+                <div class="gallery-content">
+
+                    <div class="gallery-small">
+                        ECSTASY SOLUTIONS
+                    </div>
+
+                    <div class="gallery-title">
+                        Company Gallery
+                    </div>
+
+                </div>
+
+                <div class="gallery-footer">
+
+                    <div class="gallery-dots">
+                        <span class="active"></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="view-btn">
+
+                        <div class="view-circle">
+                            →
+                        </div>
+
+                        VIEW MORE
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="right">
+
+                <!-- HERO -->
+
+                <div class="hero">
+
+                    <div class="hero-left">
+
+                        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
+                             class="hero-img">
+
+                        <div>
+
+                            <div class="hero-small">
+                                GOOD MORNING
+                            </div>
+
+                            <div class="hero-name">
+                                Mude Vishnu Priya
+                            </div>
+
+                            <div class="hero-role">
+                                HR Admin · HR
+                            </div>
+
+                            <div class="hero-badge">
+                                🛡 HR Administrator
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- QUICK GRID -->
+
+                <div class="quick-grid">
+
+                    <div class="quick-card">
+
+                        <div class="quick-top">
+
+                            <div class="pill blue-pill">
+                                Not Uploaded
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                        </div>
+
+                        <div class="quick-icon blue-icon">
+                            <i class="far fa-calendar"></i>
+                        </div>
+
+                        <div class="quick-title">
+                            Holiday Calendar
+                        </div>
+
+                        <div class="quick-sub">
+                            Plan
+                        </div>
+
+                    </div>
+
+                    <div class="quick-card">
+
+                        <div class="quick-top">
+
+                            <div class="pill purple-pill">
+                                2 Upcoming
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                        </div>
+
+                        <div class="quick-icon purple-icon">
+                            <i class="far fa-star"></i>
+                        </div>
+
+                        <div class="quick-title">
+                            Events
+                        </div>
+
+                        <div class="quick-sub">
+                            Manage
+                        </div>
+
+                    </div>
+
+                    <div class="quick-card">
+
+                        <div class="quick-top">
+
+                            <div class="pill green-pill">
+                                All Records
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                        </div>
+
+                        <div class="quick-icon green-icon">
+                            <i class="far fa-check-square"></i>
+                        </div>
+
+                        <div class="quick-title">
+                            Attendance
+                        </div>
+
+                        <div class="quick-sub">
+                            Track
+                        </div>
+
+                    </div>
+
+                    <div class="quick-card">
+
+                        <div class="quick-top">
+
+                            <div class="pill pink-pill">
+                                5 Open
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                        </div>
+
+                        <div class="quick-icon pink-icon">
+                            <i class="far fa-comment"></i>
+                        </div>
+
+                        <div class="quick-title">
+                            Help Desk
+                        </div>
+
+                        <div class="quick-sub">
+                            Support
+                        </div>
+
+                    </div>
+
+                    <div class="quick-card">
+
+                        <div class="quick-top">
+
+                            <div class="pill green-pill">
+                                12 Employees
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                        </div>
+
+                        <div class="quick-icon green-icon">
+                            <i class="far fa-user"></i>
+                        </div>
+
+                        <div class="quick-title">
+                            Manage Users
+                        </div>
+
+                        <div class="quick-sub">
+                            Admin
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BIRTHDAY -->
+
+                <div class="birthday">
+
+                    <div class="birthday-header">
+
+                        <div class="birthday-title">
+                            🎂 Today's Birthdays
+                        </div>
+
+                        <div class="birthday-date">
+                            20 May 2026
+                        </div>
+
+                    </div>
+
+                    <div class="birthday-body">
+
+                        No birthdays today. Next celebrations coming soon!
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
