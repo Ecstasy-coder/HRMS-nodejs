@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,8 +24,6 @@ body{
   background:#eef1f7;
   color:#0f172a;
   min-height:100vh;
-  display:flex;
-  flex-direction:column;
 }
 
 .container{
@@ -31,7 +31,6 @@ body{
   max-width:1400px;
   margin:auto;
   padding:30px 0;
-  flex:1;
 }
 
 
@@ -55,12 +54,13 @@ STATS
 
 .stat-flex{
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:center;
+  gap:25px;
 }
 
 .stat-card h3{
-  font-size:14px;
+  font-size:13px;
   color:#64748b;
   letter-spacing:1px;
 }
@@ -72,7 +72,7 @@ STATS
 }
 
 .stat-right h1{
-  font-size:52px;
+  font-size:42px;
   line-height:1;
 }
 
@@ -90,7 +90,7 @@ STATS
 
 .stat-right span{
   color:#94a3b8;
-  font-size:15px;
+  font-size:14px;
 }
 
 
@@ -110,21 +110,16 @@ TOP BAR
 }
 
 .top-bar h2{
-  font-size:22px;
+  font-size:18px;
 }
 
 .add-btn{
-  background:#17365d;
-  color:white;
+  background:white;
+  color:#17365d;
   border:none;
-  padding:14px 24px;
-  border-radius:14px;
-  font-size:18px;
+  font-size:16px;
+  font-weight:600;
   cursor:pointer;
-}
-
-.add-btn:hover{
-  background:#102844;
 }
 
 
@@ -134,35 +129,99 @@ FORM
 
 .form-box{
   background:white;
-  padding:25px;
   border-radius:18px;
-  margin-bottom:25px;
+  margin-bottom:28px;
   box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  overflow:hidden;
+  padding:0;
 }
 
-input,
-textarea,
-select{
+.form-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:28px 30px;
+  border-bottom:1px solid #e2e8f0;
+}
+
+.form-header h2{
+  font-size:18px;
+  font-weight:700;
+}
+
+.form-body{
+  padding:30px;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-bottom:25px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group label{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:10px;
+  color:#0f172a;
+}
+
+.required{
+  color:red;
+}
+
+.form-group input,
+.form-group textarea{
   width:100%;
-  padding:14px;
-  margin-top:10px;
-  margin-bottom:15px;
+  border:1px solid #dbe2ef;
   border-radius:12px;
-  border:1px solid #cbd5e1;
-  font-size:15px;
+  padding:15px 18px;
+  font-size:16px;
+  outline:none;
+  background:white;
 }
 
-textarea{
+.form-group input:focus,
+.form-group textarea:focus{
+  border:1px solid #17365d;
+}
+
+.form-group textarea{
   min-height:120px;
   resize:none;
+}
+
+.button-row{
+  display:flex;
+  gap:14px;
+  margin-top:10px;
 }
 
 .submit-btn{
   background:#17365d;
   color:white;
   border:none;
-  padding:14px 22px;
+  padding:14px 28px;
   border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.cancel-btn{
+  background:white;
+  border:1px solid #dbe2ef;
+  color:#0f172a;
+  padding:14px 28px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
   cursor:pointer;
 }
 
@@ -175,21 +234,43 @@ WARNING BOX
   background:#fff8e8;
   border:1px solid #f4c542;
   color:#9a5b00;
-  padding:14px 18px;
+  padding:0 18px;
   border-radius:12px;
   margin-bottom:20px;
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:13px;
-  line-height:1.6;
   overflow:hidden;
-
+  height:52px;
+  position:relative;
 }
 
 .warning-box i{
   color:#f0a824;
   font-size:18px;
+  min-width:24px;
+  flex-shrink:0;
+  z-index:2;
+}
+
+.scroll-text{
+  position:absolute;
+  white-space:nowrap;
+  font-size:13px;
+  font-weight:600;
+  left:60px;
+  animation:scrollText 22s linear infinite;
+}
+
+@keyframes scrollText{
+
+  0%{
+    transform:translateX(100%);
+  }
+
+  100%{
+    transform:translateX(-100%);
+  }
+
 }
 
 
@@ -199,17 +280,16 @@ FILTER CARD
 
 .filter-card{
   background:white;
-  padding:22px;
-  border-radius:15px;
+  padding:28px;
+  border-radius:18px;
   margin-bottom:25px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
 }
 
 .filter-title{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:20px;
-  color:#0f172a;
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:25px;
 }
 
 .filter-row{
@@ -225,44 +305,43 @@ FILTER CARD
 }
 
 .filter-group label{
-  margin-bottom:8px;
+  margin-bottom:10px;
   color:#64748b;
   font-size:13px;
   font-weight:bold;
 }
 
 .filter-group select{
-  width:150px;
+  width:140px;
   height:50px;
+  border:1px solid #dbe2ef;
+  border-radius:12px;
+  padding:0 14px;
   font-size:16px;
 }
 
 .clear-btn{
   height:50px;
-  padding:0 20px;
+  padding:0 22px;
   border-radius:12px;
-  border:1px solid #cbd5e1;
+  border:1px solid #dbe2ef;
   background:white;
   color:#64748b;
+  font-size:16px;
   cursor:pointer;
 }
 
 
 /* =========================
-DETAILS TITLE
+DETAILS
 ========================= */
 
 #detailsTitle{
   display:none;
   margin-bottom:20px;
-  font-size:26px;
+  font-size:28px;
   font-weight:bold;
 }
-
-
-/* =========================
-DATE BADGE
-========================= */
 
 .date-badge{
   background:#17365d;
@@ -274,11 +353,6 @@ DATE BADGE
   margin-left:auto;
   margin-bottom:15px;
 }
-
-
-/* =========================
-CARD
-========================= */
 
 .card{
   background:white;
@@ -315,7 +389,6 @@ CARD
 
 .info-value{
   font-size:16px;
-  color:#0f172a;
   line-height:1.5;
 }
 
@@ -340,6 +413,14 @@ CARD
 .rejected{
   background:#fee2e2;
   color:#dc2626;
+}
+
+.review-note{
+  margin-top:20px;
+  padding-top:18px;
+  border-top:1px solid #e2e8f0;
+  color:#64748b;
+  font-size:14px;
 }
 
 
@@ -368,20 +449,6 @@ NO DATA
 
 .no-data p{
   color:#64748b;
-  font-size:15px;
-}
-
-
-/* =========================
-REVIEW NOTE
-========================= */
-
-.review-note{
-  margin-top:20px;
-  padding-top:18px;
-  border-top:1px solid #e2e8f0;
-  color:#64748b;
-  font-size:14px;
 }
 
 
@@ -389,81 +456,52 @@ REVIEW NOTE
 FOOTER
 ========================= */
 
+/* =========================
+FOOTER
+========================= */
+
+body{
+  font-family:Arial;
+  background:#eef1f7;
+  color:#0f172a;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.container{
+  width:95%;
+  max-width:1400px;
+  margin:auto;
+  padding:30px 0;
+  flex:1;
+}
+
 .footer{
+  width:100%;
   background:#041c3b;
   color:white;
-  padding:22px 35px;
+  padding:22px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-top:auto;
-  width:100%;
 }
 
 .footer-links{
   display:flex;
-  gap:25px;
+  gap:30px;
 }
 
 .footer-links a{
   color:white;
   text-decoration:none;
+  font-size:15px;
 }
 
-
-/* =========================
-MOBILE
-========================= */
-
-@media(max-width:768px){
-
-  .stats{
-    flex-direction:column;
-  }
-
-  .card-grid{
-    grid-template-columns:1fr;
-  }
-
-  .full-width{
-    grid-column:auto;
-  }
-
-  .filter-row{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .filter-group select{
-    width:100%;
-  }
-
-  .footer{
-    flex-direction:column;
-    gap:15px;
-  }
-
+.footer-links a:hover{
+  opacity:0.8;
 }
-/* SCROLL TEXT */
-
-.scroll-text{
-  white-space:nowrap;
-  display:inline-block;
-  animation:scrollText 18s linear infinite;
-}
-
-@keyframes scrollText{
-
-  0%{
-    transform:translateX(100%);
-  }
-
-  100%{
-    transform:translateX(-100%);
-  }
-
-}
-
 </style>
 
 </head>
@@ -473,90 +511,28 @@ MOBILE
 <div class="container">
 
 
-  <!-- =========================
-  STATS
-  ========================= -->
+<!-- =========================
+STATS
+========================= -->
 
-  <div class="stats">
+<div class="stats">
 
-    <div class="stat-card">
+  <div class="stat-card">
 
-      <div class="stat-flex">
+    <div class="stat-flex">
 
-        <div>
+      <h3>PENDING REVIEW</h3>
 
-          <h3>PENDING REVIEW</h3>
+      <div class="stat-right">
 
-        </div>
+        <h1 class="pending-number"
+        id="pendingCount">
+          0
+        </h1>
 
-        <div class="stat-right">
-
-          <h1 class="pending-number"
-          id="pendingCount">
-            0
-          </h1>
-
-          <span>
-            Awaiting manager
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-      <div class="stat-flex">
-
-        <div>
-
-          <h3>APPROVED</h3>
-
-        </div>
-
-        <div class="stat-right">
-
-          <h1 class="approved-number"
-          id="approvedCount">
-            0
-          </h1>
-
-          <span>
-            This month
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="stat-card">
-
-      <div class="stat-flex">
-
-        <div>
-
-          <h3>REJECTED</h3>
-
-        </div>
-
-        <div class="stat-right">
-
-          <h1 class="rejected-number"
-          id="rejectedCount">
-            0
-          </h1>
-
-          <span>
-            Need attention
-          </span>
-
-        </div>
+        <span>
+          Awaiting manager
+        </span>
 
       </div>
 
@@ -565,78 +541,197 @@ MOBILE
   </div>
 
 
-  <!-- =========================
-  TOP BAR
-  ========================= -->
+  <div class="stat-card">
 
-  <div class="top-bar">
+    <div class="stat-flex">
+
+      <h3>APPROVED</h3>
+
+      <div class="stat-right">
+
+        <h1 class="approved-number"
+        id="approvedCount">
+          0
+        </h1>
+
+        <span>
+          This month
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-card">
+
+    <div class="stat-flex">
+
+      <h3>REJECTED</h3>
+
+      <div class="stat-right">
+
+        <h1 class="rejected-number"
+        id="rejectedCount">
+          0
+        </h1>
+
+        <span>
+          Need attention
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+TOP BAR
+========================= -->
+
+<div class="top-bar">
+
+  <h2>
+    Submit Daily Job Card
+  </h2>
+
+  <button
+  class="add-btn"
+  id="addBtn">
+
+    + New Entry
+
+  </button>
+
+</div>
+
+
+<!-- =========================
+FORM
+========================= -->
+
+<div
+class="form-box"
+id="formBox"
+style="display:none;">
+
+  <div class="form-header">
 
     <h2>
       Submit Daily Job Card
     </h2>
 
-    <button
-    class="add-btn"
-    id="addBtn">
-
-      + New Entry
-
-    </button>
-
   </div>
 
-
-  <!-- =========================
-  FORM
-  ========================= -->
-
-  <div
-  class="form-box"
-  id="formBox"
-  style="display:none;">
+  <div class="form-body">
 
     <form id="jobForm">
 
-      <input
-      type="date"
-      id="date"
-      required>
+      <div class="form-row">
 
-      <input
-      type="text"
-      id="projectName"
-      placeholder="Project Name"
-      required>
+        <div class="form-group">
 
-      <input
-      type="number"
-      id="hoursWorked"
-      placeholder="Hours Worked"
-      required>
+          <label>
+            Date <span class="required">*</span>
+          </label>
 
-      <textarea
-      id="workDescription"
-      placeholder="Work Description"
-      required></textarea>
+          <input
+          type="date"
+          id="date"
+          required>
 
-      <button
-      class="submit-btn"
-      type="submit">
+        </div>
 
-        Submit Job Card
 
-      </button>
+        <div class="form-group">
+
+          <label>
+            Project Name
+            <span class="required">*</span>
+          </label>
+
+          <input
+          type="text"
+          id="projectName"
+          placeholder="e.g. WorkHub Portal, Client ABC"
+          required>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label>
+            Hours Worked
+            <span class="required">*</span>
+          </label>
+
+          <input
+          type="number"
+          id="hoursWorked"
+          placeholder="e.g. 8"
+          required>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Work Description
+          <span class="required">*</span>
+        </label>
+
+        <textarea
+        id="workDescription"
+        placeholder="Describe what you worked on today in detail..."
+        required></textarea>
+
+      </div>
+
+
+      <div class="button-row">
+
+        <button
+        class="submit-btn"
+        type="submit">
+
+          Submit Job Card
+
+        </button>
+
+
+        <button
+        type="button"
+        class="cancel-btn"
+        id="cancelBtn">
+
+          Cancel
+
+        </button>
+
+      </div>
 
     </form>
 
   </div>
 
+</div>
 
-  <!-- =========================
-  WARNING
-  ========================= -->
 
-  <!-- WARNING -->
+<!-- WARNING -->
 
 <div class="warning-box">
 
@@ -655,99 +750,87 @@ MOBILE
 </div>
 
 
-  <!-- =========================
-  FILTER CARD
-  ========================= -->
+<!-- FILTER -->
 
-  <div class="filter-card">
+<div class="filter-card">
 
-    <div class="filter-title">
-      🗓️ My Job Cards
-    </div>
-
-    <div class="filter-row">
-
-      <div class="filter-group">
-
-        <label>DAY</label>
-
-        <select id="dayFilter">
-
-          <option value="">
-            -- Day --
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>MONTH</label>
-
-        <select id="monthFilter">
-
-          <option value="">
-            -- Month --
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="filter-group">
-
-        <label>YEAR</label>
-
-        <select id="yearFilter">
-
-          <option value="">
-            -- Year --
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <button
-      class="clear-btn"
-      id="clearBtn">
-
-        ✕ Clear
-
-      </button>
-
-    </div>
-
+  <div class="filter-title">
+    🗓️ My Job Cards
   </div>
 
+  <div class="filter-row">
 
-  <!-- =========================
-  DETAILS TITLE
-  ========================= -->
+    <div class="filter-group">
 
-  <h2 id="detailsTitle">
-    Job Card Details
-  </h2>
+      <label>DAY</label>
+
+      <select id="dayFilter">
+
+        <option value="">
+          -- Day --
+        </option>
+
+      </select>
+
+    </div>
 
 
-  <!-- =========================
-  JOBS
-  ========================= -->
+    <div class="filter-group">
 
-  <div id="jobCards">
+      <label>MONTH</label>
+
+      <select id="monthFilter">
+
+        <option value="">
+          -- Month --
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>YEAR</label>
+
+      <select id="yearFilter">
+
+        <option value="">
+          -- Year --
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <button
+    class="clear-btn"
+    id="clearBtn">
+
+      ✕ Clear
+
+    </button>
 
   </div>
 
 </div>
 
 
-<!-- =========================
-FOOTER
-========================= -->
+<h2 id="detailsTitle">
+  Job Card Details
+</h2>
+
+
+<div id="jobCards">
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
 
 <div class="footer">
 
@@ -798,9 +881,7 @@ const yearFilter =
 document.getElementById("yearFilter");
 
 
-// =========================
 // SHOW FORM
-// =========================
 
 addBtn.addEventListener(
 "click",
@@ -812,9 +893,23 @@ addBtn.addEventListener(
 });
 
 
-// =========================
+// CANCEL BUTTON
+
+document.getElementById(
+"cancelBtn"
+).addEventListener(
+"click",
+()=>{
+
+  form.reset();
+
+  formBox.style.display =
+  "none";
+
+});
+
+
 // DAYS
-// =========================
 
 for(let i=1;i<=31;i++){
 
@@ -826,9 +921,7 @@ for(let i=1;i<=31;i++){
 }
 
 
-// =========================
 // MONTHS
-// =========================
 
 const months = [
 
@@ -858,9 +951,7 @@ months.forEach((m,index)=>{
 });
 
 
-// =========================
 // YEARS
-// =========================
 
 for(let y=2024;y<=2030;y++){
 
@@ -872,9 +963,7 @@ for(let y=2024;y<=2030;y++){
 }
 
 
-// =========================
 // SUBMIT
-// =========================
 
 form.addEventListener(
 "submit",
@@ -935,9 +1024,7 @@ async (e)=>{
 });
 
 
-// =========================
 // FILTER EVENTS
-// =========================
 
 dayFilter.addEventListener(
 "change",
@@ -955,9 +1042,7 @@ loadJobs
 );
 
 
-// =========================
 // CLEAR BUTTON
-// =========================
 
 document.getElementById(
 "clearBtn"
@@ -978,9 +1063,7 @@ document.getElementById(
 });
 
 
-// =========================
 // LOAD JOBS
-// =========================
 
 async function loadJobs(){
 
@@ -1239,9 +1322,7 @@ async function loadJobs(){
 }
 
 
-// =========================
 // WINDOW LOAD
-// =========================
 
 window.onload = ()=>{
 
