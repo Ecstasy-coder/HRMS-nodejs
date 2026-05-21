@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Payroll Processing</title>
+
+<link rel="stylesheet"
+href="./css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>HRMS</h2>
+
+<a href="salary-structure.html">
+Salary Structures
+</a>
+
+<a href="payroll.html"
+class="active">
+Payroll Processing
+</a>
+<a href="payslip.html">
+ My Payslips
+</a>
+
+</div>
+
+<div class="main-content">
+
+<div class="page-header">
+
+<h1>
+Payroll Processing
+</h1>
+
+<p>
+Finance department — monthly payroll management
+</p>
+
+</div>
+
+<div class="top-actions">
+
+<input
+type="text"
+id="monthInput"
+value="May 2026">
+
+<button class="view-btn">
+View
+</button>
+
+<button class="run-btn">
+▶ Run Payroll — May 2026
+</button>
+
+<button class="csv-btn">
+↓ CSV
+</button>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h3>Employees</h3>
+
+<h1 id="employeeCount">
+0
+</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Draft</h3>
+
+<h1>0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Finalized</h3>
+
+<h1>0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Paid</h3>
+
+<h1 id="paidCount">
+0
+</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Total Gross</h3>
+
+<h1 id="grossTotal">
+₹ 0
+</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Total Net</h3>
+
+<h1 id="netTotal">
+₹ 0
+</h1>
+
+</div>
+
+</div>
+
+<div class="records-section">
+
+<h2>
+Records — May 2026
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Employee</th>
+<th>Attendance</th>
+<th>OT / Leave</th>
+<th>Gross</th>
+<th>+Variable</th>
+<th>Deductions</th>
+<th>Net Salary</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="payrollTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="history-section">
+
+<h2>
+Run History
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Month</th>
+<th>Count</th>
+<th>Gross</th>
+<th>Net</th>
+<th>Run By</th>
+<th>At</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="./js/payroll.js"></script>
+
+</body>
+
+</html>

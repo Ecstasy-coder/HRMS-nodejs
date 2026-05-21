@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Payslips</title>
+    <link rel="stylesheet" href="css/payslip.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>My Ecstasy</h2>
+            <p>FINANCE PORTAL</p>
+        </div>
+
+        <ul class="menu">
+            <li><i class="fa fa-th-large"></i> Dashboard</li>
+            <li><i class="fa fa-dollar-sign"></i> Salary Structures</li>
+            <li><i class="fa fa-credit-card"></i> <a href="payroll.html">
+Payroll Processing
+</a></li>
+            <li class="active"><i class="fa fa-desktop"></i> My Payslips</li>
+            <li><i class="fa fa-calendar"></i> Holiday Calendar</li>
+            <li><i class="fa fa-star"></i> Important Events</li>
+            <li><i class="fa fa-calendar-check"></i> My Attendance</li>
+            <li><i class="fa fa-user"></i> My Leaves</li>
+        </ul>
+
+        <div class="user-box">
+            <div class="avatar">FM</div>
+            <div>
+                <h4>Finance Manager</h4>
+                <p>Finance · Finance</p>
+            </div>
+        </div>
+
+        <button class="signout">Sign Out</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+            <h1>My Payslips</h1>
+
+            <div class="top-right">
+                <span id="date"></span>
+                <i class="fa fa-bell bell"></i>
+                <span class="badge">5</span>
+                <div class="profile">FM</div>
+            </div>
+        </header>
+
+        <!-- Payslip Section -->
+        <section class="content">
+
+            <div class="top-row">
+                <p>View and download your monthly salary slips</p>
+
+                <select id="yearSelect">
+                    <option>2026</option>
+                    <option>2025</option>
+                    <option>2024</option>
+                </select>
+            </div>
+
+            <!-- Summary Cards -->
+<div class="summary-cards">
+
+    <div class="summary-box">
+        <h4>MONTHS PAID</h4>
+        <p><span id="monthsPaid">2</span> of 12</p>
+    </div>
+
+    <div class="summary-box">
+        <h4>TOTAL GROSS</h4>
+        <p>₹<span id="totalGross">0.00</span></p>
+    </div>
+
+    <div class="summary-box">
+        <h4>TOTAL TAKE HOME</h4>
+        <p class="green">₹<span id="totalTakeHome">0.00</span></p>
+    </div>
+
+    <div class="summary-box">
+        <h4>BONUS + INCENTIVE</h4>
+        <p class="purple">₹<span id="totalBonus">0.00</span></p>
+    </div>
+
+    <div class="summary-box">
+        <h4>TOTAL PF SAVED</h4>
+        <p>₹<span id="totalPF">0.00</span></p>
+    </div>
+
+</div>
+
+            <!-- No payslip message -->
+            <div id="emptyMessage" class="empty-box">
+                No payslips released for 2026. Payslips appear here after HR finalizes monthly payroll.
+            </div>
+
+            <!-- Payslip cards -->
+            <div id="payslipContainer" class="cards"></div>
+
+        </section>
+    </main>
+</div>
+
+<script src="js/payslip.js"></script>
+</body>
+</html>
