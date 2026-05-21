@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sidebar</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="./css/sidebar.css">
+
+</head>
+<body>
+
+<!-- =========================
+SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <!-- LOGO -->
+
+    <div class="sidebar-logo">
+
+        <div class="sidebar-logo-inner">
+
+            <img
+            src="assets/images/logo.png.jpeg"
+            class="sidebar-logo-img">
+
+            <div>
+
+                <span class="logo-text">
+                    My Ecstasy
+                </span>
+
+                <span class="logo-role">
+                    MANAGER PORTAL
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+        <div class="nav-label">
+            MAIN
+        </div>
+
+        <a href="dashboard.html" class="nav-link active"  target="contentFrame">
+            <i class="fas fa-th-large"></i>
+            Dashboard
+        </a>
+        <a href="salary-structure.html" class="nav-link" target="contentFrame">
+            <i class="fa-solid fa-dollar-sign"></i>
+             Salary Structure
+        </a>
+       
+        <a href="payroll.html" class="nav-link" target="contentFrame">
+           <i class="fa-solid fa-money-bill"></i>
+            Payroll Processing
+        </a>
+        
+        <a href="payslip.html" class="nav-link" target="contentFrame">
+            <i class="fa-solid fa-sack-dollar"></i>
+            My Payslips
+        </a>
+
+        <a href="importantEvent.html" class="nav-link" target="contentFrame">
+            <i class="far fa-star"></i>
+            Important Events
+        </a>
+
+        
+
+         
+      
+
+    </nav>
+
+    <!-- FOOTER -->
+
+    <div class="sidebar-footer">
+
+        <div class="user-info">
+
+            <div class="user-avatar">
+                MV
+            </div>
+
+            <div>
+
+                <div class="user-name">
+                    Mude Vishnu Priya
+                </div>
+
+                <div class="user-role">
+                    HR Admin · HR
+                </div>
+
+            </div>
+
+        </div>
+
+        <button class="btn-logout">
+            Sign Out
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<div class="main-content">
+
+    <!-- DEFAULT PAGE -->
+
+    <iframe
+        name="contentFrame"
+        src="dashboard.html" class="content-frame"></iframe>
+   
+
+   
+       <!-- <iframe name="contentFrame"
+        src="importantEvent.html class="content-frame""></iframe> -->
+   
+       <!-- <iframe name="contentFrame"
+        src="payslip.html" class="content-frame"></iframe> -->
+
+
+</div>
+
+</body>
+</html>
