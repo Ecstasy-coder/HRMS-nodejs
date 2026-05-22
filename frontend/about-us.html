@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - HR Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f4f7fb;
+      color:#1e293b;
+      padding:30px;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+    }
+
+    /* TOP BAR */
+
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:30px;
+      animation:fadeDown .6s ease;
+    }
+
+    .top-bar span{
+      font-size:14px;
+      color:#64748b;
+      font-weight:500;
+    }
+
+    .btn{
+      border:none;
+      outline:none;
+      padding:12px 22px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      transition:.3s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      color:white;
+      box-shadow:0 8px 20px rgba(37,99,235,.2);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 25px rgba(37,99,235,.3);
+    }
+
+    .btn-outline{
+      background:white;
+      border:1px solid #dbe3f0;
+      color:#334155;
+    }
+
+    .btn-outline:hover{
+      background:#f8fafc;
+      transform:translateY(-2px);
+    }
+
+    /* HERO */
+
+    .hero{
+      background:
+      linear-gradient(rgba(15,23,42,.75),rgba(15,23,42,.75)),
+      url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400') center/cover;
+      border-radius:28px;
+      padding:90px 60px;
+      color:white;
+      text-align:center;
+      margin-bottom:30px;
+      position:relative;
+      overflow:hidden;
+      animation:fadeUp .8s ease;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      width:300px;
+      height:300px;
+      background:rgba(255,255,255,.08);
+      border-radius:50%;
+      top:-120px;
+      right:-100px;
+    }
+
+    .hero h1{
+      font-size:52px;
+      font-weight:800;
+      margin-bottom:18px;
+      letter-spacing:-1px;
+    }
+
+    .hero p{
+      font-size:18px;
+      line-height:1.8;
+      max-width:850px;
+      margin:auto;
+      color:#e2e8f0;
+    }
+
+    /* GRID */
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+      margin-bottom:30px;
+    }
+
+    .card{
+      background:white;
+      border-radius:24px;
+      padding:35px;
+      box-shadow:0 10px 30px rgba(15,23,42,.06);
+      transition:.4s ease;
+      position:relative;
+      overflow:hidden;
+      animation:fadeUp .8s ease;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,#2563eb,#7c3aed);
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 20px 40px rgba(15,23,42,.12);
+    }
+
+    .card h3{
+      font-size:24px;
+      margin-bottom:18px;
+      color:#0f172a;
+    }
+
+    .card p{
+      color:#64748b;
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    /* QUOTES */
+
+    .quote{
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      border-radius:24px;
+      padding:40px;
+      color:white;
+      margin-bottom:25px;
+      position:relative;
+      overflow:hidden;
+      animation:fadeUp 1s ease;
+    }
+
+    .quote::after{
+      content:'❝';
+      position:absolute;
+      right:30px;
+      top:15px;
+      font-size:90px;
+      opacity:.15;
+    }
+
+    .quote p{
+      font-size:22px;
+      line-height:1.8;
+      font-weight:500;
+      margin-bottom:20px;
+    }
+
+    .quote span{
+      font-size:14px;
+      opacity:.9;
+      letter-spacing:1px;
+    }
+
+    /* EDIT FORM */
+
+    .form-card{
+      background:white;
+      border-radius:24px;
+      padding:35px;
+      box-shadow:0 10px 30px rgba(15,23,42,.06);
+      animation:fadeUp .8s ease;
+    }
+
+    .form-title{
+      font-size:28px;
+      margin-bottom:25px;
+      font-weight:700;
+    }
+
+    .form-group{
+      margin-bottom:22px;
+    }
+
+    .form-label{
+      display:block;
+      margin-bottom:10px;
+      font-weight:600;
+      color:#334155;
+    }
+
+    .form-input{
+      width:100%;
+      border:1.5px solid #dbe3f0;
+      background:#f8fafc;
+      border-radius:14px;
+      padding:15px 18px;
+      font-size:15px;
+      transition:.3s ease;
+      resize:none;
+      font-family:inherit;
+    }
+
+    .form-input:focus{
+      outline:none;
+      border-color:#2563eb;
+      background:white;
+      box-shadow:0 0 0 4px rgba(37,99,235,.08);
+    }
+
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .action-buttons{
+      display:flex;
+      gap:15px;
+      margin-top:15px;
+    }
+
+    /* EMPTY STATE */
+
+    .empty{
+      background:white;
+      border-radius:24px;
+      padding:80px 30px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(15,23,42,.05);
+      animation:fadeUp .8s ease;
+    }
+
+    .empty h2{
+      margin-bottom:12px;
+      color:#0f172a;
+    }
+
+    .empty p{
+      color:#64748b;
+      margin-bottom:25px;
+    }
+
+    /* ANIMATIONS */
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(40px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @keyframes fadeDown{
+      from{
+        opacity:0;
+        transform:translateY(-30px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:768px){
+
+      body{
+        padding:18px;
+      }
+
+      .hero{
+        padding:60px 25px;
+      }
+
+      .hero h1{
+        font-size:38px;
+      }
+
+      .hero p{
+        font-size:16px;
+      }
+
+      .form-row{
+        grid-template-columns:1fr;
+      }
+
+      .top-bar{
+        flex-direction:column;
+        gap:15px;
+        align-items:flex-start;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- TOP BAR -->
+
+  <div class="top-bar">
+
+    <span>Viewing Published Page</span>
+
+    <a href="about-edit.html" class="btn btn-primary">
+        Edit Page
+      </a>
+
+  </div>
+
+  <!-- HERO -->
+
+  <div class="hero">
+
+    <h1>Ecstasy Software Solutions</h1>
+
+    <p>
+      We build innovative digital experiences that empower businesses,
+      enhance productivity, and drive future-ready transformation through
+      technology and creativity.
+    </p>
+
+  </div>
+
+  <!-- MISSION & VALUES -->
+
+  <div class="grid">
+
+    <div class="card">
+
+      <h3>Our Mission</h3>
+
+      <p>
+        Our mission is to provide world-class software services and digital
+        solutions that help companies scale efficiently and achieve
+        sustainable growth through innovation and collaboration.
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h3>Our Values</h3>
+
+      <p>
+        Integrity, innovation, teamwork, transparency, and customer success
+        are the core values that guide every project and every relationship
+        we build.
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- QUOTES -->
+
+  <div class="quote">
+
+    <p>
+      "Technology is best when it brings people together and creates impact."
+    </p>
+
+    <span>— Leadership Team</span>
+
+  </div>
+
+  <div class="quote">
+
+    <p>
+      "Culture and innovation are the foundations of sustainable success."
+    </p>
+
+    <span>— People & Culture</span>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Dashboard</title>
+<script src="/api-config.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#edf1f7;
+  display:flex;
+  overflow-x:hidden;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:230px;
+  height:100vh;
+  background:#183b6b;
+  position:fixed;
+  left:0;
+  top:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.logo{
+  padding:22px 22px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo h2{
+  color:#fff;
+  font-size:28px;
+  margin-bottom:3px;
+}
+
+.logo p{
+  color:#9eb0cb;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.menu{
+  padding-top:15px;
+}
+
+.menu-title{
+  color:#8094b4;
+  font-size:11px;
+  padding:0 22px;
+  margin-bottom:10px;
+}
+
+.menu a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#dbe6f5;
+  padding:12px 16px;
+  margin:5px 10px;
+  border-radius:10px;
+  font-size:15px;
+  transition:.3s;
+}
+
+.menu a:hover{
+  background:#264d84;
+}
+
+.menu a.active{
+  background:#eda71f;
+  color:#fff;
+}
+
+.bottom{
+  padding:18px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#eda71f;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:600;
+}
+
+.user h4{
+  color:#fff;
+  font-size:14px;
+}
+
+.user p{
+  color:#9eb0cb;
+  font-size:11px;
+}
+
+.logout{
+  width:100%;
+  border:none;
+  background:#2a4d7d;
+  color:#fff;
+  padding:10px;
+  border-radius:8px;
+  font-size:13px;
+  cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+  margin-left:230px;
+  width:calc(100% - 230px);
+}
+
+/* HEADER */
+
+.header{
+  background:#fff;
+  padding:18px 25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #e3e7ef;
+}
+
+.header h1{
+  font-size:20px;
+  color:#1e2746;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.date{
+  font-size:14px;
+  color:#6f7894;
+}
+
+.notify{
+  position:relative;
+  font-size:18px;
+  color:#1e2746;
+}
+
+.badge{
+  position:absolute;
+  top:-7px;
+  right:-8px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:red;
+  color:#fff;
+  font-size:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.profile{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#eda71f;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* CONTENT */
+
+.content{
+  padding:60px;
+}
+
+.top-box{
+  background:#fff;
+  padding:18px 22px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.top-box h2{
+  font-size:22px;
+  color:#1e2746;
+}
+
+.selects{
+  display:flex;
+  gap:10px;
+}
+
+select{
+  padding:8px 14px;
+  border:1px solid #d7deea;
+  border-radius:8px;
+  outline:none;
+  font-size:13px;
+}
+
+/* =========================
+   ATTENDANCE GRID
+========================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:16px;
+  margin-bottom:18px;
+  align-items:stretch;
+}
+
+/* =========================
+   LEFT CARDS
+========================= */
+
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.card{
+  background:#fff;
+  border-radius:14px;
+  text-align:center;
+  padding:18px 10px;
+  min-height:110px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.card h1{
+  font-size:34px;
+  margin-bottom:4px;
+  font-weight:600;
+}
+
+.card p{
+  font-size:11px;
+  color:#6f7894;
+  font-weight:600;
+}
+
+.big{
+  grid-column:span 2;
+  min-height:95px;
+}
+
+.big h1{
+  font-size:42px;
+  color:#162b59;
+}
+
+/* COLORS */
+
+.green{color:#0a864a;}
+.red{color:#d91f1f;}
+.orange{color:#c97400;}
+.blue{color:#2d5ee8;}
+
+/* =========================
+   CHART SECTION
+========================= */
+
+.chart-box{
+  background:#fff;
+  border-radius:16px;
+  padding:18px 20px;
+  overflow:hidden;
+}
+
+/* LEGEND */
+
+.graph-top{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+.legend{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  color:#6d7695;
+  font-weight:500;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.dot.blue{
+  background:#4d82f3;
+}
+
+.dot.ash{
+  background:#dce3fb;
+}
+
+/* CHART */
+
+.chart{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  height:220px;
+  width:100%;
+}
+
+/* BAR */
+
+.bar-wrap{
+  flex:1;
+  min-width:38px;
+  text-align:center;
+}
+
+.bar-bg{
+  width:18px;
+  height:170px;
+  background:#dce3fb;
+  border-radius:30px;
+  margin:auto;
+  position:relative;
+  overflow:hidden;
+}
+
+.bar-fill{
+  width:100%;
+  position:absolute;
+  bottom:0;
+  background:#4d82f3;
+  border-radius:30px;
+}
+
+/* MONTH */
+
+.month{
+  margin-top:8px;
+  font-size:11px;
+  color:#67728f;
+  font-weight:600;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .chart{
+    overflow-x:auto;
+    gap:14px;
+    justify-content:flex-start;
+    padding-bottom:10px;
+  }
+
+  .bar-wrap{
+    min-width:45px;
+  }
+
+  .bar-bg{
+    height:150px;
+    width:16px;
+  }
+
+  .card h1{
+    font-size:28px;
+  }
+
+  .big h1{
+    font-size:36px;
+  }
+
+}
+/* CALENDAR */
+/* =========================
+   BAR WRAP
+========================= */
+
+.bar-wrap{
+  position:relative;
+  flex:1;
+  min-width:45px;
+  text-align:center;
+}
+
+/* =========================
+   TOOLTIP
+========================= */
+
+/* =========================
+   TOOLTIP SMALL LIGHT
+========================= */
+
+.tooltip{
+  position:absolute;
+  bottom:175px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ffffff;
+  border:1px solid #e4e9f5;
+  width:145px;
+  padding:10px 12px;
+  border-radius:12px;
+  opacity:0;
+  visibility:hidden;
+  transition:.22s ease;
+  z-index:100;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* SHOW */
+
+.bar-wrap:hover .tooltip{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ARROW */
+
+.tooltip::after{
+  content:"";
+  position:absolute;
+  bottom:-7px;
+  left:50%;
+  transform:translateX(-50%);
+  border-width:7px 7px 0 7px;
+  border-style:solid;
+  border-color:#ffffff transparent transparent transparent;
+}
+
+/* MONTH */
+
+.tip-month{
+  font-size:11px;
+  font-weight:600;
+  color:#1d2b4f;
+  margin-bottom:8px;
+  text-align:center;
+}
+
+/* ROW */
+
+.tip-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:7px;
+}
+
+/* LEFT */
+
+.tip-left{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* DOT */
+
+.tip-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+}
+
+.blue-dot{
+  background:#4d82f3;
+}
+
+.ash-dot{
+  background:#dce3fb;
+}
+
+/* LABEL */
+
+.tip-label{
+  font-size:10px;
+  color:#6f7894;
+  white-space:nowrap;
+}
+
+/* VALUE */
+
+.tip-value{
+  font-size:11px;
+  font-weight:600;
+  color:#1d2b4f;
+}
+/* LEFT SIDE */
+
+.tip-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* DOT */
+
+.tip-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+
+.blue-dot{
+  background:#4d82f3;
+}
+
+.ash-dot{
+  background:#dce3fb;
+}
+
+/* LABEL */
+
+.tip-label{
+  font-size:12px;
+  color:#e5ecff;
+  white-space:nowrap;
+}
+
+/* VALUE */
+
+.tip-value{
+  font-size:13px;
+  font-weight:600;
+  color:#fff;
+}
+
+/* TOOLTIP ARROW */
+
+.tooltip::after{
+  content:"";
+  position:absolute;
+  bottom:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  border-width:8px 8px 0 8px;
+  border-style:solid;
+  border-color:#1d2b4f transparent transparent transparent;
+}
+
+/* FULL CALENDAR CSS */
+
+.calendar{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+
+.days-head{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border-bottom:1px solid #edf1f7;
+}
+
+.days-head div{
+  padding:14px;
+  text-align:center;
+  font-size:12px;
+  font-weight:600;
+  color:#6f7894;
+}
+
+.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+}
+
+.day{
+  min-height:105px;
+  border-right:1px solid #edf1f7;
+  border-bottom:1px solid #edf1f7;
+  padding:10px;
+  background:#fff;
+}
+
+.day-number{
+  font-size:16px;
+  font-weight:600;
+  color:#1f2a4a;
+  margin-bottom:8px;
+}
+
+.status{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:600;
+}
+
+/* STATUS COLORS */
+
+.present{
+  background:#e5f7ec;
+  color:#0d7d4c;
+}
+
+.late{
+  background:#fff0de;
+  color:#c27600;
+}
+
+.weekend{
+  background:#f1f1f1;
+  color:#8a8a8a;
+}
+
+.holiday{
+  background:#fff4df;
+  color:#d68b00;
+}
+
+.nodata{
+  background:#ffe7e7;
+  color:#d62222;
+}
+
+.active-day{
+  background:#eef3fb;
+}
+
+.empty{
+  background:#fff;
+}
+
+/* TABLE */
+
+.table-box h3{
+  margin-bottom:14px;
+  color:#1e2746;
+  font-size:22px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+th{
+  padding:16px;
+  font-size:13px;
+  color:#6f7894;
+  border-bottom:1px solid #edf1f7;
+}
+
+td{
+  padding:16px;
+  text-align:center;
+  font-size:13px;
+  border-bottom:1px solid #edf1f7;
+}
+
+tr:hover{
+  background:#f8fbff;
+}
+
+@media(max-width:1000px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar-container"></div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+    <h1>My Attendance</h1>
+
+    <div class="header-right">
+
+      <div class="date" id="date"></div>
+
+      <div class="notify">
+        <i class="fa-regular fa-bell"></i>
+        <div class="badge">5</div>
+      </div>
+
+      <div class="profile">DS</div>
+
+    </div>
+
+  </div>
+
+  <!-- CONTENT -->
+
+  <div class="content">
+
+    <div class="top-box">
+
+      <h2>Attendance — May 2026</h2>
+
+      <div class="selects">
+
+        <select>
+          <option>May</option>
+        </select>
+
+        <select>
+          <option>2026</option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <!-- GRID -->
+
+    <div class="grid">
+
+      <!-- LEFT -->
+
+      <div class="cards">
+
+        <div class="card">
+          <h1 class="green">4</h1>
+          <p>DAYS PRESENT</p>
+        </div>
+
+        <div class="card">
+          <h1 class="red">0</h1>
+          <p>DAYS ABSENT</p>
+        </div>
+
+        <div class="card">
+          <h1 class="orange">1</h1>
+          <p>LATE ARRIVALS</p>
+        </div>
+
+        <div class="card">
+          <h1 class="blue">0</h1>
+          <p>HALF DAYS</p>
+        </div>
+
+        <div class="card big">
+          <h1>23.5</h1>
+          <p>MAY 2026</p>
+        </div>
+
+      </div>
+
+      <!-- CHART -->
+
+      <!-- CHART -->
+
+<div class="chart-box">
+
+  <!-- LEGEND -->
+
+  <div class="graph-top">
+
+    <div class="legend">
+      <div class="dot blue"></div>
+      Present Days
+    </div>
+
+    <div class="legend">
+      <div class="dot ash"></div>
+      No Of Working Days
+    </div>
+
+  </div>
+
+  <!-- GRAPH -->
+
+  <div class="chart" id="chart"></div>
+
+</div>
+
+    </div>
+
+    <!-- CALENDAR -->
+
+    <!-- FULL CALENDAR SECTION -->
+
+<div class="calendar">
+
+  <!-- DAYS HEADER -->
+
+  <div class="days-head">
+
+    <div>MON</div>
+    <div>TUE</div>
+    <div>WED</div>
+    <div>THU</div>
+    <div>FRI</div>
+    <div>SAT</div>
+    <div>SUN</div>
+
+  </div>
+
+  <!-- CALENDAR BODY -->
+
+  <div class="days">
+
+    <!-- ROW 1 -->
+
+    <div class="day empty"></div>
+    <div class="day empty"></div>
+    <div class="day empty"></div>
+
+    <div class="day">
+      <div class="day-number">1</div>
+      <span class="status holiday">Holiday</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">2</div>
+      <span class="status weekend">No data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">3</div>
+      <span class="status weekend">Weekend</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">4</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <!-- ROW 2 -->
+
+    <div class="day">
+      <div class="day-number">5</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">6</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">7</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">8</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">9</div>
+      <span class="status weekend">No data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">10</div>
+      <span class="status weekend">Weekend</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">11</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <!-- ROW 3 -->
+
+    <div class="day">
+      <div class="day-number">12</div>
+      <span class="status present">Present</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">13</div>
+      <span class="status late">Late</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">14</div>
+      <span class="status present">Present</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">15</div>
+      <span class="status present">Present</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">16</div>
+      <span class="status weekend">No data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">17</div>
+      <span class="status weekend">Weekend</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">18</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <!-- ROW 4 -->
+
+    <div class="day">
+      <div class="day-number">19</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day active-day">
+      <div class="day-number">20</div>
+      <span class="status nodata">No Data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">21</div>
+    </div>
+
+    <div class="day">
+      <div class="day-number">22</div>
+    </div>
+
+    <div class="day">
+      <div class="day-number">23</div>
+      <span class="status weekend">No data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">24</div>
+      <span class="status weekend">Weekend</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">25</div>
+    </div>
+
+    <!-- ROW 5 -->
+
+    <div class="day">
+      <div class="day-number">26</div>
+    </div>
+
+    <div class="day">
+      <div class="day-number">27</div>
+      <span class="status holiday">Holiday</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">28</div>
+    </div>
+
+    <div class="day">
+      <div class="day-number">29</div>
+    </div>
+
+    <div class="day">
+      <div class="day-number">30</div>
+      <span class="status weekend">No data</span>
+    </div>
+
+    <div class="day">
+      <div class="day-number">31</div>
+      <span class="status weekend">Weekend</span>
+    </div>
+
+    <div class="day empty"></div>
+
+  </div>
+
+
+</div>
+<div class="records">
+
+        <h3>Detailed Records</h3>
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>DATE</th>
+              <th>DAY</th>
+              <th>PUNCH IN</th>
+              <th>PUNCH OUT</th>
+              <th>WORKING HOURS</th>
+              <th>STATUS</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td>15 May 2026</td>
+              <td>Fri</td>
+              <td>09:00 AM</td>
+              <td>06:30 PM</td>
+              <td>9.5 hrs</td>
+              <td><span class="status present">Present</span></td>
+            </tr>
+
+            <tr>
+              <td>14 May 2026</td>
+              <td>Thu</td>
+              <td>09:00 AM</td>
+              <td>06:30 PM</td>
+              <td>9.5 hrs</td>
+              <td><span class="status present">Present</span></td>
+            </tr>
+
+            <tr>
+              <td>13 May 2026</td>
+              <td>Wed</td>
+              <td>01:00 PM</td>
+              <td>05:30 PM</td>
+              <td>4.5 hrs</td>
+              <td><span class="status late">Late</span></td>
+            </tr>
+
+            <tr>
+              <td>12 May 2026</td>
+              <td>Tue</td>
+              <td>09:30 AM</td>
+              <td>--</td>
+              <td>--</td>
+              <td><span class="status present">Present</span></td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+
+/* DATE */
+
+/* DATE */
+
+/* DATE */
+
+const today = new Date();
+
+document.getElementById("date").innerHTML =
+today.toLocaleDateString('en-US',{
+  weekday:'long',
+  day:'numeric',
+  month:'long',
+  year:'numeric'
+});
+
+/* GRAPH DATA */
+
+const workingDays = [24,25,24,26,28,27,28,25,25,25,26,27];
+
+const presentDays = [9,14,12,16,21,0,0,0,0,0,0,0];
+
+const months = [
+  "JAN","FEB","MAR","APR","MAY","JUN",
+  "JUL","AUG","SEP","OCT","NOV","DEC"
+];
+
+const chart = document.getElementById("chart");
+
+/* CREATE GRAPH */
+
+months.forEach((month,index)=>{
+
+  const working = workingDays[index];
+
+  const present = presentDays[index];
+
+  const presentHeight = present * 6;
+
+  chart.innerHTML += `
+
+    <div class="bar-wrap">
+
+      <!-- TOOLTIP -->
+
+      <div class="tooltip">
+
+        <div class="tip-month">${month}</div>
+
+        <div class="tip-row">
+
+          <span class="tip-dot blue-dot"></span>
+
+          <span>Present Days</span>
+
+          <strong>${present}</strong>
+
+        </div>
+
+        <div class="tip-row">
+
+          <span class="tip-dot ash-dot"></span>
+
+          <span>Working Days</span>
+
+          <strong>${working}</strong>
+
+        </div>
+
+      </div>
+
+      <!-- BAR -->
+
+      <div class="bar-bg">
+
+        <div class="bar-fill"
+        style="height:${presentHeight}px">
+        </div>
+
+      </div>
+
+      <div class="month">${month}</div>
+
+    </div>
+
+  `
+  ;
+
+
+
+});
+
+/* ═══════════════════════════════════════════
+   SIDEBAR LOADER
+═══════════════════════════════════════════ */
+
+function loadSidebar() {
+
+  fetch('sidebar.html')
+
+  .then(response => response.text())
+
+  .then(data => {
+
+    document.getElementById(
+      'sidebar-container'
+    ).innerHTML = data;
+
+    // active menu
+
+    const currentPage =
+      location.pathname
+      .split("/")
+      .pop()
+      .toLowerCase();
+
+    document
+    .querySelectorAll(
+      "#sidebar-container .nav-item"
+    )
+    .forEach(item => {
+
+      const href =
+      item.getAttribute("href")
+      ?.toLowerCase();
+
+      if(
+        href &&
+        currentPage === href
+      ){
+        item.classList.add(
+          "active"
+        );
+      }
+
+    });
+
+  })
+
+  .catch(err=>{
+
+    console.log(
+      "Sidebar failed:",
+      err
+    );
+
+  });
+
+}
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+
+    loadSidebar();
+
+  }
+);
+
+
+
+</script>
+
+</body>
+</html>

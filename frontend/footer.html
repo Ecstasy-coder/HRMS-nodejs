@@ -1,0 +1,86 @@
+<!-- ═══════════════════════════════════════════════════════════
+     footer.html  —  My Ecstasy HR Portal
+     Shared footer. Include this on every page with:
+
+       <div id="footer-container"></div>
+       <script>
+         fetch('footer.html').then(r=>r.text()).then(h=>{
+           document.getElementById('footer-container').innerHTML = h;
+         });
+       </script>
+════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── Portal Footer ───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap');
+
+.portal-footer {
+  background: #0f1c2e;
+  color: rgba(122, 149, 180, 0.85);
+  font-family: 'Sora', sans-serif;
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  /* Offset footer to the right of the fixed sidebar (240px) */
+  margin-left: var(--sidebar-w, 240px);
+}
+
+.portal-footer-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.portal-footer-logo {
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.portal-footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.portal-footer-links a {
+  color: rgba(122, 149, 180, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 12px;
+}
+.portal-footer-links a:hover { color: #e2eaf5; }
+
+/* ── Responsive: no sidebar on mobile ───────────────────────── */
+@media (max-width: 768px) {
+  .portal-footer {
+    margin-left: 0;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 20px 16px;
+  }
+  .portal-footer-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+}
+</style>
+
+<footer class="portal-footer">
+  <div class="portal-footer-copy">
+    <span class="portal-footer-logo">&#8734;</span>
+    <span>© 2026 My Ecstasy. All rights reserved.</span>
+  </div>
+  <div class="portal-footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms &amp; Conditions</a>
+    <a href="#">Cookies</a>
+  </div>
+</footer>

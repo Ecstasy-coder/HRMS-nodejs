@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       /* ----------------------------------------------
+   EDIT ABOUT US CONTENT - MODERN FORM STYLES
+   Premium UI with smooth interactions
+------------------------------------------------- */
+
+/* Import Google Font (optional, but matches modern dashboards) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #f5f7fc 0%, #eef2f8 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  padding: 24px;
+}
+
+/* ========== MAIN FORM CARD ========== */
+.form-card {
+  max-width: 1100px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  overflow: hidden;
+  animation: cardFloatIn 0.5s ease-out;
+}
+
+@keyframes cardFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.form-card:hover {
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== FORM TITLE ========== */
+.form-title {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1e293b 0%, #2d3a4f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding: 32px 32px 0 32px;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #eef2f6;
+  padding-bottom: 24px;
+  margin-bottom: 8px;
+}
+
+.form-title::before {
+  content: "✎";
+  font-size: 28px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 500;
+}
+
+/* form container spacing */
+.form-card form {
+  padding: 8px 32px 32px 32px;
+}
+
+/* ========== FORM GROUPS & LAYOUT ========== */
+.form-group {
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+  transition: color 0.2s ease;
+}
+
+.form-label::before {
+  content: "●";
+  color: #4f46e5;
+  font-size: 8px;
+  margin-right: 6px;
+  vertical-align: middle;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+/* input & textarea base style */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: 'Inter', monospace;
+  font-weight: 500;
+  background-color: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+  color: #0f172a;
+  resize: vertical;
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.form-input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12), 0 0 0 3px rgba(79, 70, 229, 0.08);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* textarea specific */
+textarea.form-input {
+  line-height: 1.5;
+  min-height: 50px;
+}
+
+/* ========== TWO-COLUMN ROW (mission & values) ========== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 12px;
+}
+
+/* override margin-bottom for groups inside row so they align */
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+/* ========== ACTION BUTTONS AREA ========== */
+.action-buttons {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #eef2f6;
+}
+
+/* primary button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border: none;
+  background: transparent;
+  letter-spacing: -0.2px;
+}
+
+.btn-primary {
+  background: linear-gradient(105deg, #e0ae4a 0%, #c8f23d 100%);
+  color: white;
+  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(105deg, #4338ca 0%, #4f46e5 100%);
+  box-shadow: 0 12px 20px -8px rgba(79, 70, 229, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  transition: 0.05s;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid #cbd5e1;
+  color: #475569;
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.btn-outline:active {
+  transform: translateY(1px);
+}
+
+/* optional icon inside buttons (just for modern look, can be extended) */
+.btn-primary::before {
+  content: "";
+  font-size: 16px;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+.btn-outline::before {
+  content: "";
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+/* ========== ADDITIONAL POLISH ========== */
+/* subtle row separator or group focus effect */
+.form-group:focus-within .form-label {
+  color: #4f46e5;
+}
+
+.form-group:focus-within .form-label::before {
+  opacity: 1;
+  color: #4f46e5;
+  transform: scale(1.1);
+  transition: all 0.2s;
+}
+
+/* improve textarea scroll */
+textarea.form-input::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea.form-input::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+textarea.form-input::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+textarea.form-input::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* responsive design for mobile/tablet */
+@media (max-width: 780px) {
+  .form-card {
+    max-width: 96%;
+    margin: 0 auto;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    padding: 24px 24px 0 24px;
+  }
+  
+  .form-card form {
+    padding: 8px 24px 28px 24px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .action-buttons {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .btn {
+    justify-content: center;
+    padding: 12px 20px;
+  }
+}
+
+/* extra small devices */
+@media (max-width: 480px) {
+  body {
+    padding: 16px;
+  }
+  
+  .form-title {
+    font-size: 20px;
+    padding: 18px 20px 0 20px;
+  }
+  
+  .form-card form {
+    padding: 6px 20px 22px 20px;
+  }
+  
+  .form-input {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+}
+
+/* nice loading / interaction feedback (optional hover glow for inputs) */
+.form-input:hover {
+  border-color: #cbd5e1;
+  background-color: #fefefe;
+}
+
+/* disabled style if needed later */
+.btn:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+/* custom placeholder style for rich text areas */
+textarea.form-input:placeholder-shown {
+  font-style: normal;
+}
+
+/* animate label on focus */
+.form-input:focus + .form-label {
+  color: #4f46e5;
+}
+
+/* additional card inner shadow for depth */
+.form-card {
+  position: relative;
+}
+
+.form-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* make sure the layout inside form-row is consistent */
+@media (min-width: 781px) {
+  .form-row {
+    align-items: stretch;
+  }
+  
+  .form-row .form-group textarea {
+    height: calc(100% - 58px);
+    min-height: 90px;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="form-card">
+
+        <div class="form-title">
+          Edit About Us Content
+        </div>
+    
+        <form>
+    
+          <div class="form-group">
+    
+            <label class="form-label">
+              Company Name
+            </label>
+    
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Company Name"
+            >
+    
+          </div>
+    
+          <div class="form-group">
+    
+            <label class="form-label">
+              Hero Tagline
+            </label>
+    
+            <textarea
+              class="form-input"
+              rows="3"
+              placeholder="Enter tagline..."
+            ></textarea>
+    
+          </div>
+    
+          <div class="form-row">
+    
+            <div class="form-group">
+    
+              <label class="form-label">
+                Our Mission
+              </label>
+    
+              <textarea
+                class="form-input"
+                rows="5"
+              ></textarea>
+    
+            </div>
+    
+            <div class="form-group">
+    
+              <label class="form-label">
+                Our Values
+              </label>
+    
+              <textarea
+                class="form-input"
+                rows="5"
+              ></textarea>
+    
+            </div>
+    
+          </div>
+    
+          <div class="form-group">
+    
+            <label class="form-label">
+              Quote 1
+            </label>
+    
+            <textarea
+              class="form-input"
+              rows="3"
+            ></textarea>
+    
+          </div>
+    
+          <div class="form-group">
+    
+            <label class="form-label">
+              Quote 2
+            </label>
+    
+            <textarea
+              class="form-input"
+              rows="3"
+            ></textarea>
+    
+          </div>
+    
+          <div class="action-buttons">
+    
+            <button class="btn btn-primary">
+              Save Changes
+            </button>
+    
+            <button class="btn btn-outline">
+              Cancel
+            </button>
+    
+          </div>
+    
+        </form>
+    
+      </div>
+</body>
+</html>

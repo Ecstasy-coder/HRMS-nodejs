@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users — HR Portal</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Page stylesheet -->
+  <link rel="stylesheet" href="users.css">
+</head>
+<body>
+
+  <!-- ── SIDEBAR (injected dynamically) ─────────────────────── -->
+  <div id="sidebar-container"></div>
+ 
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────────── -->
+  <main class="main">
+    <header class="topbar">
+    <h1 class="topbar-title">Manage Users</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge">3</span>
+      </div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+   
+<div class="container">
+    <!-- Notice -->
+    <div class="notice">
+      <i class="ti ti-info-circle"></i>
+      As HR, you can manage <strong>Employees</strong> and <strong>Reporting Managers</strong> only.
+      To create HR, Admin or Finance accounts, contact your System Administrator.
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#4f8ef7,#5b4de8)">
+          <i class="ti ti-users"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="totalUsers">0</h2>
+          <p>Total Users</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)">
+          <i class="ti ti-user-check"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="activeUsers">0</h2>
+          <p>Active</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#f0b429,#d97706)">
+          <i class="ti ti-briefcase"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="employeeUsers">0</h2>
+          <p>Employees</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
+          <i class="ti ti-crown"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="managerUsers">0</h2>
+          <p>Managers</p>
+        </div>
+      </div>
+
+    </div><!-- /stats-grid -->
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="search" placeholder="Search by name or email…">
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active-filter" onclick="filterUsers('all',this)">All</button>
+        <button class="filter-btn" onclick="filterUsers('Employee',this)">Employees</button>
+        <button class="filter-btn" onclick="filterUsers('Reporting Manager',this)">Managers</button>
+      </div>
+
+      <button class="btn-add" onclick="openAddForm()">
+        <i class="ti ti-user-plus"></i> Add User
+      </button>
+
+    </div><!-- /toolbar -->
+
+    <!-- ── ADD USER FORM ───────────────────────────────────── -->
+    <div class="add-user-box" id="addUserBox">
+
+      <div class="form-header">
+        <h2><i class="ti ti-user-plus"></i> Add New User</h2>
+        <button class="icon-btn" onclick="closeAddForm()" title="Close">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+
+      <form id="addUserForm" onsubmit="return false">
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="addName" placeholder="e.g. Rahul Sharma" required>
+          </div>
+
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="addEmail" placeholder="email@company.com" required>
+          </div>
+
+          <div class="field">
+            <label>Password <span class="req">*</span></label>
+            <input type="password" id="addPassword" placeholder="Min 8 characters" required>
+          </div>
+
+          <div class="field">
+            <label>Role <span class="req">*</span></label>
+            <select id="addRole" required>
+              <option value="">Select Role</option>
+              <option value="Employee">Employee</option>
+              <option value="Reporting Manager">Reporting Manager</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Department <span class="req">*</span></label>
+            <select id="addDepartment" required>
+              <option value="">Select Department</option>
+              <option>Engineering</option>
+              <option>HR</option>
+              <option>Finance</option>
+              <option>Marketing</option>
+              <option>Management</option>
+              <option>Operations</option>
+              <option>Sales</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Designation <span class="req">*</span></label>
+            <input type="text" id="addDesignation" placeholder="e.g. Software Engineer" required>
+          </div>
+
+          <div class="field">
+            <label>Employee Code <span class="req">*</span></label>
+            <input type="text" id="addEmployeeCode" placeholder="e.g. EMP001" required>
+          </div>
+
+          <div class="field">
+            <label>Phone <span class="req">*</span></label>
+            <input type="tel" id="addPhone" placeholder="10-digit number" required>
+          </div>
+
+          <div class="field">
+            <label>Date of Birth</label>
+            <input type="date" id="addDob">
+          </div>
+
+          <div class="field">
+            <label>Date of Joining <span class="req">*</span></label>
+            <input type="date" id="addJoinedDate" required>
+          </div>
+
+          <div class="field">
+            <label>Gender <span class="req">*</span></label>
+            <select id="addGender" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Reporting Manager</label>
+            <select id="addReportingManager">
+              <option value="">— None —</option>
+            </select>
+          </div>
+
+        </div><!-- /form-grid -->
+
+        <div class="form-footer">
+          <button type="button" class="btn-primary" id="addSubmitBtn" onclick="submitAddUser()">
+            <i class="ti ti-check"></i> Add User
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeAddForm()">Cancel</button>
+        </div>
+
+      </form>
+    </div><!-- /add-user-box -->
+
+    <!-- ── USER CARDS GRID ────────────────────────────────── -->
+    <div class="users-grid" id="usersGrid">
+      <div class="empty-state">
+        <i class="ti ti-loader-2 spin"></i>
+        <p>Loading users…</p>
+      </div>
+    </div>
+</div>
+  </main><!-- /main -->
+
+
+  <!-- ════════════════════════════════════════════════════════
+       EDIT MODAL
+  ════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="editModal" onclick="overlayClose(event,'editModal')">
+    <div class="modal-box">
+
+      <div class="modal-header">
+        <h2><i class="ti ti-edit"></i> Edit User</h2>
+        <button class="icon-btn" onclick="closeEditModal()"><i class="ti ti-x"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="editName" required>
+          </div>
+
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="editEmail" required>
+          </div>
+
+          <div class="field">
+            <label>Role</label>
+            <select id="editRole">
+              <option value="">Select Role</option>
+              <option value="Employee">Employee</option>
+              <option value="Reporting Manager">Reporting Manager</option>
+              <option value="HR Admin">HR Admin</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Department</label>
+            <select id="editDepartment">
+              <option value="">Select Department</option>
+              <option>Engineering</option>
+              <option>HR</option>
+              <option>Finance</option>
+              <option>Marketing</option>
+              <option>Management</option>
+              <option>Operations</option>
+              <option>Sales</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Designation</label>
+            <input type="text" id="editDesignation">
+          </div>
+
+          <div class="field">
+            <label>Employee Code</label>
+            <input type="text" id="editEmployeeCode">
+          </div>
+
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" id="editPhone">
+          </div>
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="editGender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Date of Birth</label>
+            <input type="date" id="editDob">
+          </div>
+
+          <div class="field">
+            <label>Date of Joining</label>
+            <input type="date" id="editJoinedDate">
+          </div>
+
+          <div class="field">
+            <label>Reporting Manager</label>
+            <select id="editReportingManager">
+              <option value="">— None —</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>New Password <span class="hint">(leave blank to keep)</span></label>
+            <input type="password" id="editPassword" placeholder="Leave blank to keep current">
+          </div>
+
+        </div><!-- /form-grid -->
+      </div><!-- /modal-body -->
+
+      <div class="modal-footer">
+        <button class="btn-primary" id="editSaveBtn" onclick="saveEdit()">
+          <i class="ti ti-check"></i> Save Changes
+        </button>
+        <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+      </div>
+
+    </div><!-- /modal-box -->
+  </div><!-- /editModal -->
+
+
+  <!-- ════════════════════════════════════════════════════════
+       DOCS MODAL
+  ════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="docsModal" onclick="overlayClose(event,'docsModal')">
+    <div class="modal-box modal-docs">
+
+      <div class="modal-header">
+        <h2><i class="ti ti-file-description"></i> Documents —
+          <span id="docsUserName" class="docs-username"></span>
+        </h2>
+        <button class="icon-btn" onclick="closeDocsModal()"><i class="ti ti-x"></i></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Upload Zone -->
+        <div class="upload-zone" id="uploadZone">
+          <i class="ti ti-cloud-upload upload-icon"></i>
+          <p class="upload-hint">Drag &amp; drop a file here, or click to browse</p>
+          <p class="upload-hint-sub">PDF, Word, Excel, Images · Max 10 MB</p>
+          <label class="btn-secondary btn-choose">
+            <i class="ti ti-folder-open"></i> Choose File
+            <input type="file" id="docFileInput" style="display:none" onchange="onFileChosen(this)">
+          </label>
+          <div id="chosenFileName" class="chosen-file" style="display:none"></div>
+        </div>
+
+        <button class="btn-primary btn-upload" id="docUploadBtn" onclick="uploadDoc()" style="display:none">
+          <i class="ti ti-upload"></i> Upload Document
+        </button>
+
+        <!-- Documents list -->
+        <div class="docs-list-header">
+          <span>Uploaded Documents</span>
+          <span id="docsCount" class="docs-count"></span>
+        </div>
+        <div id="docsList" class="docs-list">
+          <div class="empty-state small"><p>No documents yet</p></div>
+        </div>
+
+      </div><!-- /modal-body -->
+    </div><!-- /modal-box -->
+  </div><!-- /docsModal -->
+
+
+  <!-- ── TOAST CONTAINER ────────────────────────────────────── -->
+  <div id="toastContainer" class="toast-container"></div>
+
+
+  <!-- Page script -->
+  <script src="users.js">
+    
+  </script>
+
+</body>
+</html>
