@@ -116,13 +116,13 @@ today.toLocaleDateString("en-US", {
 
 async function loadPayslips() {
     try {
-       // const empCode = "ECS000685";
+        const empCode = "ECS000685";
 
        // or
 
-         const user = JSON.parse(localStorage.getItem("user"));
+        // const user = JSON.parse(localStorage.getItem("user"));
 
-     const empCode = user.empCode;
+     //const empCode = user.empCode;
 
 
 
