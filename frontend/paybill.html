@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Payslip</title>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#eef2f7;
+padding:30px;
+}
+
+.payslip-wrapper{
+max-width:1100px;
+margin:auto;
+}
+
+.top-buttons{
+display:flex;
+justify-content:flex-end;
+gap:12px;
+margin-bottom:20px;
+}
+
+.top-buttons button{
+padding:12px 22px;
+background:#1d3557;
+color:white;
+border:none;
+border-radius:8px;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+}
+
+.payslip-card{
+background:white;
+border:1px solid #bfc8d4;
+}
+
+.company-header{
+display:flex;
+justify-content:space-between;
+padding:20px 25px;
+border-bottom:2px solid #1d3557;
+}
+
+.company-left h1{
+font-size:34px;
+color:#1d3557;
+margin-bottom:10px;
+}
+
+.company-left p{
+font-size:13px;
+line-height:22px;
+color:#666;
+}
+
+.company-right{
+text-align:right;
+}
+
+.company-right h2{
+font-size:34px;
+color:#1d3557;
+margin-bottom:10px;
+}
+
+.paid-badge{
+display:inline-block;
+background:#0f9d58;
+padding:7px 16px;
+border-radius:5px;
+font-size:14px;
+font-weight:bold;
+color:white;
+}
+
+.employee-strip{
+display:flex;
+justify-content:space-between;
+padding:14px 20px;
+background:#f4f7fb;
+border-bottom:1px solid #d7dde8;
+font-size:14px;
+}
+
+.employee-strip b{
+color:#000;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+.details-table td,
+.work-table td,
+.work-table th,
+.salary-table td,
+.salary-table th{
+border:1px solid #cfd6df;
+padding:8px 10px;
+font-size:13px;
+}
+
+.label{
+background:#edf2f8;
+font-weight:bold;
+color:#1d3557;
+}
+
+.work-table th{
+background:#edf2f8;
+font-size:12px;
+}
+
+.salary-table th{
+background:#edf2f8;
+color:#1d3557;
+}
+
+.salary-head{
+font-size:15px;
+font-weight:bold;
+}
+
+.note{
+text-align:right;
+padding:8px 15px;
+font-size:12px;
+color:#666;
+}
+
+.bold-row{
+font-weight:bold;
+background:#f7f9fc;
+}
+
+.bottom-bar{
+padding:15px 20px;
+font-size:14px;
+line-height:28px;
+border-top:1px solid #d8dee8;
+}
+
+.net-pay-box{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+border-top:1px solid #d8dee8;
+}
+
+.net-left h3{
+font-size:28px;
+margin-bottom:5px;
+}
+
+.net-left p{
+font-size:14px;
+color:#666;
+}
+
+.net-right{
+font-size:52px;
+font-weight:bold;
+color:#1d3557;
+}
+
+.signature-section{
+display:flex;
+justify-content:space-between;
+padding:50px 40px 20px;
+}
+
+.signature-box{
+width:240px;
+text-align:center;
+border-top:1px solid #888;
+padding-top:10px;
+font-size:14px;
+}
+
+.generated{
+padding:20px;
+text-align:center;
+font-size:13px;
+color:#666;
+}
+
+@media print{
+
+.top-buttons{
+display:none;
+}
+
+body{
+padding:0;
+background:white;
+}
+
+.payslip-card{
+border:none;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="payslip-wrapper">
+
+<div class="top-buttons">
+
+<button onclick="history.back()">
+← Back
+</button>
+
+<button onclick="window.print()">
+🖨 Print / Save PDF
+</button>
+
+</div>
+
+<div class="payslip-card">
+
+<div class="company-header">
+
+<div class="company-left">
+
+<h1>
+Ecstasy Solutions
+</h1>
+
+<p>
+MSR Block, Near durgam cheruvu metro
+<br>
+info@ecstasysolutions.org | ecstasysolutions.org
+</p>
+
+</div>
+
+<div class="company-right">
+
+<h2>
+Salary Slip —
+<span id="month">
+May 2026
+</span>
+</h2>
+
+<div class="paid-badge" id="statusBadge">
+✓ PAID
+</div>
+
+</div>
+
+</div>
+
+<div class="employee-strip">
+
+<div>
+Name :
+<b id="employeeName">
+Akkanaboina Swaroop
+</b>
+</div>
+
+<div>
+Designation :
+<b id="designation">
+Associate software engineer
+</b>
+</div>
+
+<div>
+Department :
+<b id="department">
+Engineering
+</b>
+</div>
+
+</div>
+
+<table class="details-table">
+
+<tr>
+
+<td class="label">
+Employee No
+</td>
+
+<td id="employeeCode">
+ECS000681
+</td>
+
+<td class="label">
+PF Number
+</td>
+
+<td id="pfNumber">
+234567890
+</td>
+
+<td class="label">
+Pay Period
+</td>
+
+<td id="payPeriod">
+01 May 2026 – 31 May 2026
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+Date of Joining
+</td>
+
+<td id="joiningDate">
+04 Mar 2026
+</td>
+
+<td class="label">
+UAN
+</td>
+
+<td id="uan">
+102233445
+</td>
+
+<td class="label">
+Payment Mode
+</td>
+
+<td>
+Bank Transfer
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+Bank
+</td>
+
+<td id="bankName">
+bank of india
+</td>
+
+<td class="label">
+A/C No
+</td>
+
+<td id="accountNumber">
+****4547 / bhid0005670
+</td>
+
+<td class="label">
+Payment Date
+</td>
+
+<td id="paymentDate">
+19 May 2026
+</td>
+
+</tr>
+
+</table>
+
+<table class="work-table">
+
+<tr>
+
+<th>WORKING DAYS</th>
+<th>PRESENT</th>
+<th>ABSENT</th>
+<th>LATE</th>
+<th>HALF DAYS</th>
+<th>PAID LEAVES</th>
+<th>LOP DAYS</th>
+<th>OT HOURS</th>
+<th>PAID DAYS</th>
+
+</tr>
+
+<tr>
+
+<td id="workingDays">26</td>
+<td id="presentDays">0.0</td>
+<td id="absentDays">26.0</td>
+<td id="lateDays">0</td>
+<td id="halfDays">0.0</td>
+<td id="paidLeaves">0.0</td>
+<td id="lopDays">0.0</td>
+<td id="otHours">0.00</td>
+<td id="paidDays">0.0</td>
+
+</tr>
+
+</table>
+
+<div class="note">
+(All amounts in ₹)
+</div>
+
+<table class="salary-table">
+
+<tr>
+
+<th colspan="2"
+class="salary-head">
+Earnings
+</th>
+
+<th colspan="2"
+class="salary-head">
+Deductions
+</th>
+
+</tr>
+
+<tr>
+
+<th>
+Particulars
+</th>
+
+<th>
+Amount (₹)
+</th>
+
+<th>
+Particulars
+</th>
+
+<th>
+Amount (₹)
+</th>
+
+</tr>
+
+<tr>
+
+<td>
+PF Contribution
+</td>
+
+<td id="pfEmployee">
+10.00
+</td>
+
+<td>
+ESI
+</td>
+
+<td id="esiEmployee">
+9.00
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Professional Tax
+</td>
+
+<td id="professionalTax">
+10.00
+</td>
+
+<td>
+TDS (Income Tax)
+</td>
+
+<td id="tds">
+1,211.00
+</td>
+
+</tr>
+
+<tr class="bold-row">
+
+<td>
+Gross Earnings
+</td>
+
+<td id="grossSalary">
+₹ 0.00
+</td>
+
+<td>
+Gross Deductions
+</td>
+
+<td id="grossDeductions">
+₹ 1,240.00
+</td>
+
+</tr>
+
+<tr class="bold-row">
+
+<td colspan="3">
+Net Pay
+</td>
+
+<td id="netSalary">
+₹ 0.00
+</td>
+
+</tr>
+
+</table>
+
+<div class="bottom-bar">
+
+PAN :
+<b id="pan">
+MLFPS6706K
+</b>
+
+&nbsp;&nbsp;&nbsp;
+
+UAN :
+<b id="uan2">
+102233445
+</b>
+
+&nbsp;&nbsp;&nbsp;
+
+PF No :
+<b id="pfNumber2">
+234567890
+</b>
+
+</div>
+
+<div class="net-pay-box">
+
+<div class="net-left">
+
+<h3>
+Net Salary (Take Home)
+</h3>
+
+<p id="salaryWords"></p>
+
+</div>
+
+<div class="net-right">
+
+₹ <span id="netSalary2">
+0.00
+</span>
+
+</div>
+
+</div>
+
+<div class="bottom-bar">
+
+Employer PF Contribution :
+₹ <span id="pfEmployer">
+12.12
+</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+Employer ESI Contribution :
+₹ <span id="esiEmployer">
+0.00
+</span>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+Total Annual CTC (Est.) :
+₹ <span id="ctc">
+145.44
+</span>
+
+<br><br>
+
+Bank :
+<b id="bankName2">
+bank of india
+</b>
+
+&nbsp;&nbsp;&nbsp;
+
+A/C :
+<b id="accountNumber2">
+****4547
+</b>
+
+&nbsp;&nbsp;&nbsp;
+
+IFSC :
+<b id="ifscCode">
+bhid0005670
+</b>
+
+</div>
+
+<div class="signature-section">
+
+<div class="signature-box">
+Employee Signature
+</div>
+
+<div class="signature-box">
+Authorised Signatory
+</div>
+
+</div>
+
+<div class="generated">
+
+Generated on
+<span id="generatedDate">
+22 May 2026, 07:46 AM
+</span>
+
+|
+Ecstasy Solutions
+
+<br><br>
+
+This is a computer-generated payslip and does not require a physical signature.
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+// async function loadPayslip(){
+
+// const params =
+// new URLSearchParams(
+// window.location.search
+// );
+
+// const id =
+// params.get("id");
+
+// if (!id) {
+//   alert("Payslip ID missing");
+//   return;
+// }
+
+
+// const response =
+// await fetch(
+// `/api/payroll/${id}`
+// );
+
+// if (!response.ok) {
+//    alert("Payslip not found");
+//    return;
+// }
+// const data =
+// await response.json();
+
+
+
+// document.getElementById(
+// "employeeName"
+// ).innerHTML =
+// data.employeeName || "";
+
+// document.getElementById(
+// "designation"
+// ).innerHTML =
+// data.designation || "";
+
+// document.getElementById(
+// "employeeCode"
+// ).innerHTML =
+// data.empCode || "";
+
+// document.getElementById(
+// "month"
+// ).innerHTML =
+// data.month || "";
+
+// document.getElementById(
+// "payPeriod"
+// ).innerHTML =
+// `01 ${data.month} – 31 ${data.month}`;
+
+// document.getElementById(
+// "joiningDate"
+// ).innerHTML =
+// data.joiningDate || "";
+
+// document.getElementById(
+// "uan"
+// ).innerHTML =
+// data.uan || "";
+
+// document.getElementById(
+// "uan2"
+// ).innerHTML =
+// data.uan || "";
+
+// document.getElementById(
+// "pfNumber"
+// ).innerHTML =
+// data.pfNumber || "";
+
+// document.getElementById(
+// "pfNumber2"
+// ).innerHTML =
+// data.pfNumber || "";
+
+// document.getElementById(
+// "bankName"
+// ).innerHTML =
+// data.bankName || "";
+
+// document.getElementById(
+// "bankName2"
+// ).innerHTML =
+// data.bankName || "";
+
+// document.getElementById(
+// "accountNumber"
+// ).innerHTML =
+// data.accountNumber || "";
+
+// document.getElementById(
+// "accountNumber2"
+// ).innerHTML =
+// data.accountNumber || "";
+
+// document.getElementById(
+// "ifscCode"
+// ).innerHTML =
+// data.ifscCode || "";
+
+// document.getElementById(
+// "pan"
+// ).innerHTML =
+// data.pan || "";
+
+// document.getElementById(
+// "paymentDate"
+// ).innerHTML =
+// data.paymentDate || "";
+
+// document.getElementById(
+// "grossSalary"
+// ).innerHTML =
+// `₹ ${data.grossSalary || 0}`;
+
+// document.getElementById(
+// "grossDeductions"
+// ).innerHTML =
+// `₹ ${data.deductions || 0}`;
+
+// document.getElementById(
+// "netSalary"
+// ).innerHTML =
+// `₹ ${data.netSalary || 0}`;
+
+// document.getElementById(
+// "netSalary2"
+// ).innerHTML =
+// `${data.netSalary || 0}`;
+
+// document.getElementById(
+// "pfEmployee"
+// ).innerHTML =
+// data.pfEmployee || 10;
+
+// document.getElementById(
+// "esiEmployee"
+// ).innerHTML =
+// data.esiEmployee || 9;
+
+// document.getElementById(
+// "professionalTax"
+// ).innerHTML =
+// data.professionalTax || 10;
+
+// document.getElementById(
+// "tds"
+// ).innerHTML =
+// data.tds || 1211;
+
+// document.getElementById(
+// "pfEmployer"
+// ).innerHTML =
+// data.pfEmployer || 12.12;
+
+// document.getElementById(
+// "esiEmployer"
+// ).innerHTML =
+// data.esiEmployer || 0;
+
+// document.getElementById(
+// "ctc"
+// ).innerHTML =
+// (data.netSalary || 0) * 12;
+
+// }
+
+
+
+// loadPayslip();
+
+
+async function loadPayslip() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (!id) {
+      alert("Payslip ID missing");
+      return;
+    }
+
+    const response = await fetch(`/api/payroll/${id}`);
+
+    if (!response.ok) {
+      alert("Payslip not found");
+      return;
+    }
+
+    const data = await response.json();
+
+    console.log("Payslip Data:", data);
+
+    if (!data) {
+      alert("No data received");
+      return;
+    }
+
+    // safe helper
+    function setText(id, value) {
+  const el = document.getElementById(id);
+
+  if (!el) {
+    console.error("Element not found:", id);
+    return;
+  }
+
+  el.innerHTML = value ?? "";
+}
+
+setText("statusBadge", `✓ ${data.status || "Pending"}`);
+
+  setText("employeeName", data.employeeName);
+setText("designation", data.designation);
+setText("department", data.department);
+setText("employeeCode", data.empCode);
+setText("month", data.month.trim());
+
+
+const date = new Date(data.month.trim());
+const year = date.getFullYear();
+const monthName = date.toLocaleString("default", { month: "long" });
+
+const lastDay = new Date(year, date.getMonth() + 1, 0).getDate();
+
+setText(
+  "payPeriod",
+  `01 ${monthName} ${year} – ${lastDay} ${monthName} ${year}`
+);
+
+setText("joiningDate", data.joiningDate);
+setText("uan", data.uan);
+setText("uan2", data.uan);
+setText("pfNumber", data.pfNumber);
+setText("pfNumber2", data.pfNumber);
+setText("bankName", data.bankName);
+setText("bankName2", data.bankName);
+setText("accountNumber", data.accountNumber);
+setText("accountNumber2", data.accountNumber);
+setText("ifscCode", data.ifscCode);
+setText("pan", data.pan);
+setText("paymentDate", data.paymentDate);
+
+setText("grossSalary", `₹ ${data.grossSalary || 0}`);
+setText("grossDeductions", `₹ ${data.deductions || 0}`);
+setText("netSalary", `₹ ${data.netSalary || 0}`);
+setText("netSalary2", data.netSalary || 0);
+
+setText("pfEmployee", data.pfEmployee || 10);
+setText("esiEmployee", data.esiEmployee || 9);
+setText("professionalTax", data.professionalTax || 10);
+setText("tds", data.tds || 1211);
+setText("pfEmployer", data.pfEmployer || 12.12);
+setText("esiEmployer", data.esiEmployer || 0);
+
+// ADD THIS PART
+setText("workingDays", data.workingDays || 0);
+setText("presentDays", data.presentDays || 0);
+setText("absentDays", data.absentDays || 0);
+setText("lateDays", data.lateDays || 0);
+setText("halfDays", data.halfDays || 0);
+setText("paidLeaves", data.paidLeaves || 0);
+setText("lopDays", data.lopDays || 0);
+setText("otHours", data.otHours || 0);
+setText("paidDays", data.paidDays || 0);
+
+setText("ctc", (data.grossSalary || 0) * 12);
+
+const now = new Date();
+
+setText(
+  "generatedDate",
+  now.toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  })
+);
+
+
+const maskedAcc =
+data.accountNumber
+? "****" + data.accountNumber.slice(-4)
+: "";
+
+function numberToWords(num){
+  if(num == 0) return "Zero Rupees Only";
+  return num.toLocaleString("en-IN") + " Rupees Only";
+}
+
+setText("salaryWords", numberToWords(data.netSalary));
+
+setText("accountNumber", maskedAcc);
+setText("accountNumber2", maskedAcc);
+  } catch (error) {
+    console.error("Error loading payslip:", error);
+    alert("Something went wrong");
+  }
+}
+
+loadPayslip();
+
+
+
+</script>
+
+</body>
+
+</html>

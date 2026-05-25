@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Salary Structures
+</title>
+
+<link
+rel="stylesheet"
+href="./css/style.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- MAIN -->
+      <div id="sidebar"></div>
+
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <h2>
+                Salary Structures
+            </h2>
+
+            <div class="topbar-right">
+
+                <span id="todayDate">
+                </span>
+
+                <div class="notification">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>5</span>
+                </div>
+
+                <div class="top-avatar">
+                    FM
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+
+        <div class="content-layout">
+
+            <!-- EMPLOYEE PANEL -->
+
+            <div class="employee-panel">
+
+                <div class="employee-header">
+
+                    <h3>
+                        Employees
+                    </h3>
+
+                    <input
+                    type="text"
+                    id="employeeSearch"
+                    placeholder="Search Employee">
+
+                </div>
+
+                <div
+                class="employee-scroll"
+                id="employeeScroll">
+
+                </div>
+
+            </div>
+
+            <!-- EMPTY STATE -->
+
+            <div
+            class="empty-state"
+            id="emptyState">
+
+                <div class="empty-icon">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+
+                <h2>
+                    Select an employee
+                </h2>
+
+                <p>
+                    Choose an employee from the left panel to configure their salary structure.
+                </p>
+
+            </div>
+
+            <!-- SALARY FORM -->
+
+            <div
+            class="salary-container hidden"
+            id="salaryContainer">
+
+                <div class="salary-card">
+
+                    <h2 id="employeeTitle">
+                        Employee Salary Structure
+                    </h2> 
+
+                    <!-- EMPLOYEE DETAILS -->
+
+                     <div class="section-title">
+                        Employee Details
+                    </div>
+
+                    <div class="grid-3">
+
+                        <div>
+
+                            <label>
+                                Emp Code
+                            </label>
+
+                            <input
+                            type="text"
+                            id="empCode">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Designation
+                            </label>
+
+                            <input
+                            type="text"
+                            id="designation">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Joining Date
+                            </label>
+
+                            <input
+                            type="date"
+                            id="joiningDate">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Effective From
+                            </label>
+
+                            <input
+                            type="date"
+                            id="effectiveFrom">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                PAN Number
+                            </label>
+
+                            <input
+                            type="text"
+                            id="panNumber">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                UAN Number
+                            </label>
+
+                            <input
+                            type="text"
+                            id="uanNumber">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                PF Number
+                            </label>
+
+                            <input
+                            type="text"
+                            id="pfNumber">
+
+                        </div>
+
+                    </div>
+
+                    <!-- BANK DETAILS -->
+
+                    <div class="section-title">
+                        Bank Details
+                    </div>
+
+                    <div class="grid-3">
+
+                        <div>
+
+                            <label>
+                                Bank Name
+                            </label>
+
+                            <input
+                            type="text"
+                            id="bankName">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Account Number
+                            </label>
+
+                            <input
+                            type="text"
+                            id="accountNumber">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                IFSC Code
+                            </label>
+
+                            <input
+                            type="text"
+                            id="ifscCode">
+
+                        </div>
+
+                    </div>
+
+                    <!-- EARNINGS -->
+
+                    <div class="section-title">
+                        Monthly Earnings (₹)
+                    </div>
+
+                    <div class="grid-4">
+
+                        <div>
+
+                            <label>
+                                Basic Salary
+                            </label>
+
+                            <input
+                            type="number"
+                            id="basicSalary"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                HRA
+                            </label>
+
+                            <input
+                            type="number"
+                            id="hra"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Conveyance Allowance
+                            </label>
+
+                            <input
+                            type="number"
+                            id="conveyance"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Medical Allowance
+                            </label>
+
+                            <input
+                            type="number"
+                            id="medical"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Special Allowance
+                            </label>
+
+                            <input
+                            type="number"
+                            id="specialAllowance"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Other Allowance
+                            </label>
+
+                            <input
+                            type="number"
+                            id="otherAllowance"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Overtime Rate
+                            </label>
+
+                            <input
+                            type="number"
+                            id="overtimeRate"
+                            value="0">
+
+                        </div>
+
+                        <div class="salary-box">
+
+                            <p>
+                                Gross Salary
+                            </p>
+
+                            <h2 id="grossSalary">
+                                ₹ 0.00
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                    <!-- DEDUCTIONS -->
+
+                    <div class="section-title">
+                        Deductions (₹ / month)
+                    </div>
+
+                    <div class="grid-4">
+
+                        <div>
+
+                            <label>
+                                PF – Employee (12%)
+                            </label>
+
+                            <input
+                            type="number"
+                            id="pfEmployee"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                PF – Employer (12%)
+                            </label>
+
+                            <input
+                            type="number"
+                            id="pfEmployer"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                ESI – Employee
+                            </label>
+
+                            <input
+                            type="number"
+                            id="esiEmployee"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                ESI – Employer
+                            </label>
+
+                            <input
+                            type="number"
+                            id="esiEmployer"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Professional Tax
+                            </label>
+
+                            <input
+                            type="number"
+                            id="professionalTax"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Other Statutory
+                            </label>
+
+                            <input
+                            type="number"
+                            id="otherStatutory"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                TDS (Income Tax)
+                            </label>
+
+                            <input
+                            type="number"
+                            id="tds"
+                            value="0">
+
+                        </div>
+
+                        <div>
+
+                            <label>
+                                Other Deduction
+                            </label>
+
+                            <input
+                            type="number"
+                            id="otherDeduction"
+                            value="0">
+
+                        </div>
+
+                        <div class="salary-box">
+
+                            <p>
+                                Total Deductions
+                            </p>
+
+                            <h2 id="totalDeduction">
+                                ₹ 0.00
+                            </h2>
+
+                        </div>
+
+                        <div class="salary-box">
+
+                            <p>
+                                Est. Net Salary
+                            </p>
+
+                            <h2 id="netSalary">
+                                ₹ 0.00
+                            </h2>
+
+                        </div>
+
+                        <div class="salary-box">
+
+                            <p>
+                                Annual CTC
+                            </p>
+
+                            <h2 id="annualSalary">
+                                ₹ 0.00
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                    <!-- NOTES -->
+
+                    <div class="notes-section">
+
+                        <label>
+                            Notes / Remarks
+                        </label>
+
+                        <textarea
+                        id="notes"
+                        placeholder="Optional notes about salary structure..."></textarea>
+
+                    </div>
+
+                    <!-- BUTTONS -->
+
+                    <div class="button-group">
+
+                        <button
+                        class="save-btn"
+                        id="saveBtn">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Save Structure
+
+                        </button>
+
+                        <button
+                        class="cancel-btn"
+                        id="cancelBtn">
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- HISTORY -->
+                 <div class="history-card">
+
+<div class="history-header">
+
+<h2>
+Structure History
+</h2>
+
+<span id="historyCount">
+0 record(s)
+</span>
+
+</div>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Effective From</th>
+
+<th>Basic</th>
+
+<th>HRA</th>
+
+<th>Conveyance</th>
+
+<th>Medical</th>
+
+<th>Special Allowance</th>
+
+<th>Other Allowance</th>
+
+<th>Overtime</th>
+
+<th>Gross</th>
+
+<th>PF (EMP)</th>
+
+<th>PF (Employer)</th>
+
+<th>ESI (EMP)</th>
+
+<th>ESI (Employer)</th>
+
+<th>Professional Tax</th>
+
+<th>Other Stat.</th>
+
+<th>TDS</th>
+
+<th>Other Deduction</th>
+
+<th>Total Deduction</th>
+
+<th>Net Salary</th>
+
+<th>Annual CTC</th>
+
+<th>Bank</th>
+
+<th>Account Number</th>
+
+<th>IFSC</th>
+
+<th>Notes</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyBody">
+
+<tr>
+
+<td colspan="24"
+style="
+text-align:center;
+padding:20px;
+color:gray;
+">
+
+No History Found
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+                <!-- <div class="history-card">
+
+                    <div class="history-header">
+
+                        <h2>
+                            Structure History
+                        </h2>
+
+                        <span id="historyCount">
+                            0 record(s)
+                        </span>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Effective From
+                                    </th>
+
+                                    <th>
+                                        Basic
+                                    </th>
+
+                                    <th>
+                                        HRA
+                                    </th>
+
+                                    <th>
+                                        Conveyance
+                                    </th>
+
+                                    <th>
+                                        Gross
+                                    </th>
+
+                                    <th>
+                                        Deduction
+                                    </th>
+
+                                    <th>
+                                        Net
+                                    </th>
+
+                                    <th>
+                                        Special
+                                    </th>
+
+                                    <th>
+                                        Other
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="historyBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div> -->
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="./js/salary.js"></script>
+
+</body>
+</html>

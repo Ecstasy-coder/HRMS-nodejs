@@ -1,0 +1,254 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    background:#f4f6fb;
+    color:#1f2f56;
+}
+
+.main-content{
+    padding:20px;
+    min-height:100vh;
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.page-header h1{
+    font-size:30px;
+    color:#17356f;
+    margin-bottom:5px;
+}
+
+.page-header p{
+    font-size:14px;
+    color:#666;
+}
+
+.top-actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.top-actions input{
+    height:42px;
+    padding:10px 14px;
+    border:1px solid #d9dff0;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.view-btn,
+.run-btn,
+.csv-btn{
+    padding:11px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.view-btn{
+    background:#eef1fb;
+    color:#17356f;
+}
+
+.view-btn:hover{
+    background:#dde5fb;
+}
+
+.run-btn{
+    background:#17356f;
+    color:white;
+}
+
+.run-btn:hover{
+    background:#102752;
+}
+
+.csv-btn{
+    background:#16b34a;
+    color:white;
+}
+
+.csv-btn:hover{
+    background:#11903a;
+}
+
+/* =========================================
+   STATS GRID
+========================================= */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.stat-card h3{
+    font-size:14px;
+    color:#777;
+    margin-bottom:10px;
+}
+
+.stat-card h1{
+    font-size:28px;
+    color:#17356f;
+}
+
+/* =========================================
+   RECORDS + HISTORY SECTION
+========================================= */
+
+.records-section,
+.history-section{
+    background:white;
+    padding:22px;
+    border-radius:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.05);
+    margin-bottom:25px;
+}
+
+.records-section h2,
+.history-section h2{
+    font-size:22px;
+    color:#17356f;
+    margin-bottom:18px;
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-container{
+    overflow-x:auto;
+    border-radius:14px;
+    border:1px solid #edf0f7;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+    background:white;
+}
+
+thead{
+    background:#f7f9ff;
+}
+
+th{
+    padding:14px 16px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#5b67a5;
+    text-align:left;
+    border-bottom:1px solid #edf0f7;
+}
+
+td{
+    padding:14px 16px;
+    font-size:14px;
+    border-bottom:1px solid #edf0f7;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+
+.paid-status{
+    background:#d4f8d4;
+    color:green;
+    padding:6px 12px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.draft-status{
+    background:#ffe0e0;
+    color:red;
+    padding:6px 12px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+/* =========================================
+   ACTION BUTTON
+========================================= */
+
+.view-slip-btn{
+    background:#17356f;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+}
+
+.view-slip-btn:hover{
+    background:#102752;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:768px){
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .top-actions{
+        width:100%;
+    }
+
+    .top-actions input,
+    .view-btn,
+    .run-btn,
+    .csv-btn{
+        width:100%;
+    }
+}
