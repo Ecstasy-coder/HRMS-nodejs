@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raise Ticket</title>
+    <link rel="stylesheet" href="./css/ticket.css" />
+</head>
+
+<body>
+    <div class="layout">
+        <div id="sidebar"></div>
+        <div class="main-column">
+            <!-- ✅ wrap topbar + page together -->
+            <div id="topbar-container"></div>
+            <main class="page-wrapper">
+
+                <div class="page-intro">
+                    <p>Submit and track your HR-related tickets</p>
+                </div>
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <p>TOTAL TICKETS</p>
+                        <h2 id="totalCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>OPEN</p>
+                        <h2 class="orange" id="openCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>IN PROGRESS</p>
+                        <h2 id="progressCount">0</h2>
+                    </div>
+
+                    <div class="stat-card">
+                        <p>RESOLVED</p>
+                        <h2 id="resolvedCount">0</h2>
+                    </div>
+                </section>
+
+                <section class="form-card">
+                    <div class="form-title">
+                        <h2>Submit New Ticket</h2>
+                        <p>HR will respond within 24 business hours</p>
+                    </div>
+
+                    <form id="ticketForm" class="ticket-form">
+                        <div class="form-group">
+                            <label>Subject <span>*</span></label>
+                            <input type="text" id="subject" placeholder="Brief summary of your issue" required />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Category <span>*</span></label>
+                                <select id="category" required>
+              <option value="">-- Select Category --</option>
+              <option value="Payroll Issue">💰 Payroll Issue</option>
+              <option value="HR Query">👥 HR Query</option>
+              <option value="IT Support">💻 IT Support</option>
+              <option value="Leave & Attendance">🗓️ Leave & Attendance</option>
+              <option value="General Complaint">📋 General Complaint</option>
+            </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Priority <span>*</span></label>
+                                <select id="priority" required>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description <span>*</span></label>
+                            <textarea id="description" placeholder="Describe your issue in detail. Include any relevant dates, amounts, or reference numbers..." required></textarea>
+                            <small>Minimum 20 characters. More detail helps HR resolve faster.</small>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Submit Ticket →</button>
+
+                        <p id="message"></p>
+                    </form>
+                </section>
+
+                <section class="tickets-card">
+                    <div class="tickets-title">
+                        <h2>My Tickets</h2>
+
+                        <div class="ticket-filters">
+                            <button class="filter-btn active" onclick="filterTickets(event, 'All')">All</button>
+                            <button class="filter-btn" onclick="filterTickets(event, 'Open')">Open</button>
+                            <button class="filter-btn" onclick="filterTickets(event, 'In Progress')">In Progress</button>
+                            <button class="filter-btn" onclick="filterTickets(event, 'Resolved')">Resolved</button>
+                            <button class="filter-btn" onclick="filterTickets(event, 'Closed')">Closed</button>
+                        </div>
+                    </div>
+
+                    <div class="ticket-table-wrapper">
+                        <table class="ticket-table">
+                            <thead>
+                                <tr>
+                                    <th>TICKET #</th>
+                                    <th>SUBJECT</th>
+                                    <th>PRIORITY</th>
+                                    <th>STATUS</th>
+                                    <th>DATE</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="ticketList"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <script src="./js/ticket.js"></script>
+        <script>
+            fetch('sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar').innerHTML = data;
+                });
+
+            document.addEventListener('click', function(e) {
+                const navLinks = e.target.closest("#sidebar .nav-link");
+                if (!navLinks) return;
+
+                document.querySelectorAll("#sidebar .nav-link").forEach(link => {
+                    link.classList.remove("active");
+                });
+
+            });
+        </script>
+
+        <!-- TOPBAR IMPORT -->
+        <script>
+            fetch("topbar.html")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("topbar-container").innerHTML = html;
+
+                    // ✅ Run AFTER topbar is injected
+                    const MODULE_MAP = {
+                        "manager": {
+                            name: "Dashboard",
+                            icon: "fas fa-th-large"
+                        },
+                        "dashboard": {
+                            name: "Dashboard",
+                            icon: "fas fa-th-large"
+                        },
+                        "myattendence": {
+                            name: "My Attendance",
+                            icon: "far fa-calendar-check"
+                        },
+                        "myleaves": {
+                            name: "My Leaves",
+                            icon: "far fa-calendar-alt"
+                        },
+                        "leaveapprovals": {
+                            name: "Leave Approvals",
+                            icon: "far fa-user"
+                        },
+                        "reviewem": {
+                            name: "Review Employee Job Cards",
+                            icon: "far fa-user-circle"
+                        },
+                        "myjobcards": {
+                            name: "My Job Cards",
+                            icon: "far fa-file-alt"
+                        },
+                        "ticket": {
+                            name: "Help Desk",
+                            icon: "far fa-comment"
+                        },
+                        "calender": {
+                            name: "Holiday Calendar",
+                            icon: "far fa-calendar"
+                        },
+                        "birthdays": {
+                            name: "Birthdays",
+                            icon: "fas fa-birthday-cake"
+                        },
+                        "impevents": {
+                            name: "Important Events",
+                            icon: "far fa-star"
+                        },
+                        "payslips": {
+                            name: "My Payslips",
+                            icon: "fas fa-sack-dollar"
+                        },
+                        "analysis": {
+                            name: "Analysis",
+                            icon: "fas fa-chart-line"
+                        },
+                        "aboutus": {
+                            name: "About Us",
+                            icon: "fas fa-circle-info"
+                        },
+                        "profile": {
+                            name: "My Profile",
+                            icon: "fas fa-user"
+                        },
+                    };
+
+                    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                    // Set module name + icon
+                    const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                    const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                    document.getElementById("topbar-module-name").textContent = mod.name;
+                    document.getElementById("topbar-icon").className = mod.icon;
+
+                    // Set live date
+                    function setDate() {
+                        const d = new Date();
+                        document.getElementById("topbar-date").textContent =
+                            `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                    }
+                    setDate();
+                    setInterval(setDate, 60000);
+
+                    // Set avatar from localStorage
+                    const user = JSON.parse(localStorage.getItem("user") || "{}");
+                    const username = user.name || user.username || user.fullName || "";
+                    if (username) {
+                        const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                        document.getElementById("topbar-avatar").textContent = initials;
+                    }
+                });
+        </script>
+</body>
+
+</html>

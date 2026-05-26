@@ -1,0 +1,341 @@
+/* =========================================
+   PAGE
+========================================= */
+
+.page-content {
+    padding: 32px;
+    background: #f4f7fb;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.calendar-card,
+.uploaded-card {
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    border: 1px solid #edf2f7;
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.card-header {
+    padding: 24px 30px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 1px solid #eef2f7;
+}
+
+
+/* =========================================
+   CARD BODY
+========================================= */
+
+.card-body {
+    padding: 30px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-group select {
+    width: 240px;
+    height: 58px;
+    border-radius: 16px;
+    border: 1px solid #dbe3ee;
+    padding: 0 18px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+
+/* =========================================
+   UPLOAD BOX
+========================================= */
+
+.upload-box {
+    border: 2px dashed #4f7cff;
+    border-radius: 24px;
+    background: #f8fbff;
+    min-height: 280px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.upload-box:hover {
+    background: #f2f7ff;
+}
+
+.upload-box input[type="file"] {
+    margin-bottom: 28px;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   UPLOAD TEXT
+========================================= */
+
+.upload-text {
+    font-size: 30px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.upload-subtext {
+    color: #64748b;
+    font-size: 16px;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+#uploadBtn {
+    margin-top: 24px;
+    background: linear-gradient( 135deg, #173768, #2957a4);
+    color: white;
+    border: none;
+    padding: 16px 34px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(23, 55, 104, 0.18);
+}
+
+#uploadBtn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f8fafc;
+}
+
+th {
+    padding: 22px 18px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334155;
+    border-bottom: 1px solid #edf2f7;
+}
+
+td {
+    padding: 20px 18px;
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+
+/* =========================================
+   FILE COLUMN
+========================================= */
+
+.file-column {
+    min-width: 320px;
+}
+
+
+/* =========================================
+   FILE NAME
+========================================= */
+
+.file-name {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pdf-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #fee2e2;
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.file-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.file-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    word-break: break-word;
+    text-align: left;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FILE TYPE
+========================================= */
+
+.file-type {
+    background: #eef4ff;
+    color: #2957a4;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-btn,
+.download-btn,
+.delete-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 95px;
+}
+
+
+/* VIEW */
+
+.view-btn {
+    background: #e8f1ff;
+    color: #2563eb;
+}
+
+.view-btn:hover {
+    background: #dbeafe;
+}
+
+
+/* DOWNLOAD */
+
+.download-btn {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.download-btn:hover {
+    background: #bbf7d0;
+}
+
+
+/* DELETE */
+
+.delete-btn {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #fecaca;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:768px) {
+    .page-content {
+        padding: 18px;
+    }
+    .page-header h1 {
+        font-size: 36px;
+    }
+    .upload-text {
+        font-size: 24px;
+    }
+    .card-header {
+        font-size: 22px;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

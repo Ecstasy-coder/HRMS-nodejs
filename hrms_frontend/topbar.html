@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Topbar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f6fb;
+        }
+        /* ── TOPBAR ── */
+        
+        .topbar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8edf5;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-left: 232px;
+            /* matches sidebar width exactly */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, .06);
+        }
+        /* LEFT — icon + module name */
+        
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .topbar-left i {
+            font-size: 19px;
+            color: #8b95a7;
+        }
+        
+        .topbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+        /* RIGHT — date, bell, avatar */
+        
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        
+        .topbar-date {
+            font-size: 13px;
+            color: #8b95a7;
+            font-weight: 500;
+        }
+        /* BELL */
+        
+        .topbar-bell {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .topbar-bell i {
+            font-size: 18px;
+            color: #4b5563;
+            transition: color .2s;
+        }
+        
+        .topbar-bell:hover i {
+            color: #f0a824;
+        }
+        
+        .notif-dot {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        /* AVATAR */
+        
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f0a824;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        
+        .topbar-avatar:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 14px rgba(240, 168, 36, .4);
+        }
+        /* ── RESPONSIVE ── */
+        
+        @media (max-width: 992px) {
+            .topbar {
+                margin-left: 0;
+                padding: 0 16px;
+            }
+            .topbar-date {
+                display: none;
+            }
+            .topbar-title {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar" id="topbar">
+
+        <!-- LEFT -->
+        <div class="topbar-left">
+            <i id="topbar-icon"></i>
+            <span class="topbar-title" id="topbar-module-name">Dashboard</span>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="topbar-right">
+
+            <div class="topbar-date" id="topbar-date"></div>
+
+            <div class="topbar-bell">
+                <i class="far fa-bell"></i>
+                <div class="notif-dot" id="notif-count">5</div>
+            </div>
+
+            <div class="topbar-avatar" id="topbar-avatar">MV</div>
+
+        </div>
+
+    </header>
+
+    <script>
+        /* ══════════════════════════════════════════
+                                                                                                                               MODULE MAP — every page in your sidebar
+                                                                                                                            ══════════════════════════════════════════ */
+        const MODULE_MAP = {
+
+            /* matches filename without .html */
+            "manager": {
+                name: "Dashboard",
+                icon: "fas fa-th-large"
+            },
+            "dashboard": {
+                name: "Dashboard",
+                icon: "fas fa-th-large"
+            },
+            "myattendence": {
+                name: "My Attendance",
+                icon: "far fa-calendar-check"
+            },
+            "myleaves": {
+                name: "My Leaves",
+                icon: "far fa-calendar-alt"
+            },
+            "leaveapprovals": {
+                name: "Leave Approvals",
+                icon: "far fa-user"
+            },
+            "reviewem": {
+                name: "Review Employee Job Cards",
+                icon: "far fa-user-circle"
+            },
+            "myjobcards": {
+                name: "My Job Cards",
+                icon: "far fa-file-alt"
+            },
+            "ticket": {
+                name: "Help Desk",
+                icon: "far fa-comment"
+            },
+            "calender": {
+                name: "Holiday Calendar",
+                icon: "far fa-calendar"
+            },
+            "birthdays": {
+                name: "Birthdays",
+                icon: "fas fa-birthday-cake"
+            },
+            "impevents": {
+                name: "Important Events",
+                icon: "far fa-star"
+            },
+            "payslips": {
+                name: "My Payslips",
+                icon: "fas fa-sack-dollar"
+            },
+            "analysis": {
+                name: "Analysis",
+                icon: "fas fa-chart-line"
+            },
+            "aboutus": {
+                name: "About Us",
+                icon: "fas fa-circle-info"
+            },
+            "profile": {
+                name: "My Profile",
+                icon: "fas fa-user"
+            },
+
+        };
+
+        const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const MONTHS = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        /* ── Live date ── */
+        function setDate() {
+            const d = new Date();
+            document.getElementById("topbar-date").textContent =
+                `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        /* ── Module from page filename ── */
+        function setModule() {
+            const raw = location.pathname.split("/").pop(); // "about us.html"
+            const slug = decodeURIComponent(raw).replace(".html", "") // "about us"
+                .toLowerCase();
+            const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+            document.getElementById("topbar-module-name").textContent = mod.name;
+            document.getElementById("topbar-icon").className = mod.icon;
+        }
+
+        /* ── Avatar initials from localStorage ── */
+        function setAvatar() {
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
+            const username = user.name || user.username || user.fullName || "";
+            if (!username) return;
+            const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+            document.getElementById("topbar-avatar").textContent = initials;
+        }
+
+        /* ── Run everything ── */
+        setModule();
+        setDate();
+        setAvatar();
+        setInterval(setDate, 60000);
+    </script>
+
+</body>
+
+</html>

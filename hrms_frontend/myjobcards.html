@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>My Job Cards</title>
+    <link rel="stylesheet" href="./css/myjobcards.css" />
+</head>
+
+<body>
+    <div class="main-layout">
+        <div class="sidebar" id="sidebar"></div>
+        <div id="topbar-container"></div>
+        <div class="container">
+
+            <div class="content">
+                <div class="form-card">
+                    <h2>Create Job Card</h2>
+
+                    <form id="myJobCardForm">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="date" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <input type="text" id="projectName" placeholder="Enter project name" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hours Worked</label>
+                            <input type="number" id="hoursWorked" placeholder="Enter hours" required />
+                        </div>
+
+                        <div class="form-group full">
+                            <label>Work Description</label>
+                            <textarea id="workDescription" placeholder="Enter work description" required></textarea>
+                        </div>
+
+                        <button type="submit">Send to HR</button>
+                    </form>
+                </div>
+
+                <div class="table-card">
+                    <h2>Submitted Job Cards</h2>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Project Name</th>
+                                <th>Hours</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="myJobCardsBody">
+                            <tr>
+                                <td colspan="6" class="empty">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="./js/myjobcards.js"></script>
+        <!-- TOPBAR IMPORT -->
+        <script>
+            fetch("topbar.html")
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("topbar-container").innerHTML = html;
+
+                    // ✅ Run AFTER topbar is injected
+                    const MODULE_MAP = {
+                        "manager": {
+                            name: "Dashboard",
+                            icon: "fas fa-th-large"
+                        },
+                        "dashboard": {
+                            name: "Dashboard",
+                            icon: "fas fa-th-large"
+                        },
+                        "myattendence": {
+                            name: "My Attendance",
+                            icon: "far fa-calendar-check"
+                        },
+                        "myleaves": {
+                            name: "My Leaves",
+                            icon: "far fa-calendar-alt"
+                        },
+                        "leaveapprovals": {
+                            name: "Leave Approvals",
+                            icon: "far fa-user"
+                        },
+                        "reviewem": {
+                            name: "Review Employee Job Cards",
+                            icon: "far fa-user-circle"
+                        },
+                        "myjobcards": {
+                            name: "My Job Cards",
+                            icon: "far fa-file-alt"
+                        },
+                        "ticket": {
+                            name: "Help Desk",
+                            icon: "far fa-comment"
+                        },
+                        "calender": {
+                            name: "Holiday Calendar",
+                            icon: "far fa-calendar"
+                        },
+                        "birthdays": {
+                            name: "Birthdays",
+                            icon: "fas fa-birthday-cake"
+                        },
+                        "impevents": {
+                            name: "Important Events",
+                            icon: "far fa-star"
+                        },
+                        "payslips": {
+                            name: "My Payslips",
+                            icon: "fas fa-sack-dollar"
+                        },
+                        "analysis": {
+                            name: "Analysis",
+                            icon: "fas fa-chart-line"
+                        },
+                        "aboutus": {
+                            name: "About Us",
+                            icon: "fas fa-circle-info"
+                        },
+                        "profile": {
+                            name: "My Profile",
+                            icon: "fas fa-user"
+                        },
+                    };
+
+                    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                    // Set module name + icon
+                    const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                    const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                    document.getElementById("topbar-module-name").textContent = mod.name;
+                    document.getElementById("topbar-icon").className = mod.icon;
+
+                    // Set live date
+                    function setDate() {
+                        const d = new Date();
+                        document.getElementById("topbar-date").textContent =
+                            `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                    }
+                    setDate();
+                    setInterval(setDate, 60000);
+
+                    // Set avatar from localStorage
+                    const user = JSON.parse(localStorage.getItem("user") || "{}");
+                    const username = user.name || user.username || user.fullName || "";
+                    if (username) {
+                        const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                        document.getElementById("topbar-avatar").textContent = initials;
+                    }
+                });
+        </script>
+</body>
+
+</html>

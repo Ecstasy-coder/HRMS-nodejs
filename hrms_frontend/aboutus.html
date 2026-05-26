@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us — HRMS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- ✅ Font Awesome — required for topbar icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+        /* LAYOUT */
+        
+        .main {
+            margin-left: 256px;
+            /* sidebar width */
+            flex: 1;
+            min-height: 100vh;
+        }
+        /* PAGE CONTENT */
+        
+        .page {
+            padding: 30px;
+        }
+        /* HERO */
+        
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, .75), rgba(15, 23, 42, .75)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400') center/cover;
+            border-radius: 28px;
+            padding: 90px 60px;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp .8s ease;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, .08);
+            border-radius: 50%;
+            top: -120px;
+            right: -100px;
+        }
+        
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 850px;
+            margin: auto;
+            color: #e2e8f0;
+        }
+        /* GRID */
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+            transition: .4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp .8s ease;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, .12);
+        }
+        
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 18px;
+            color: #0f172a;
+        }
+        
+        .card p {
+            color: #64748b;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+        /* QUOTE */
+        
+        .quote {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 24px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 1s ease;
+        }
+        
+        .quote::after {
+            content: '❝';
+            position: absolute;
+            right: 30px;
+            top: 15px;
+            font-size: 90px;
+            opacity: .15;
+        }
+        
+        .quote p {
+            font-size: 22px;
+            line-height: 1.8;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .quote span {
+            font-size: 14px;
+            opacity: .9;
+            letter-spacing: 1px;
+        }
+        /* ANIMATIONS */
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* RESPONSIVE */
+        
+        @media (max-width: 992px) {
+            .main {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 25px;
+            }
+            .hero h1 {
+                font-size: 38px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .page {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <div id="sidebar"></div>
+        <div id="topbar-container"></div>
+        <div class="main">
+
+            <!-- ✅ TOPBAR — id is correct, outside .page -->
+
+
+            <!-- PAGE CONTENT -->
+            <div class="page">
+
+                <!-- HERO -->
+                <div class="hero">
+                    <h1>Ecstasy Software Solutions</h1>
+                    <p>
+                        We build innovative digital experiences that empower businesses, enhance productivity, and drive future-ready transformation through technology and creativity.
+                    </p>
+                </div>
+
+                <!-- MISSION & VALUES -->
+                <div class="grid">
+                    <div class="card">
+                        <h3>Our Mission</h3>
+                        <p>
+                            Our mission is to provide world-class software services and digital solutions that help companies scale efficiently and achieve sustainable growth through innovation and collaboration.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Our Values</h3>
+                        <p>
+                            Integrity, innovation, teamwork, transparency, and customer success are the core values that guide every project and every relationship we build.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- QUOTES -->
+                <div class="quote">
+                    <p>"Technology is best when it brings people together and creates impact."</p>
+                    <span>— Leadership Team</span>
+                </div>
+
+                <div class="quote">
+                    <p>"Culture and innovation are the foundations of sustainable success."</p>
+                    <span>— People & Culture</span>
+                </div>
+
+            </div>
+            <!-- /page -->
+        </div>
+        <!-- /main -->
+    </div>
+    <!-- /layout -->
+
+
+    <!-- ✅ TOPBAR IMPORT -->
+    <!-- TOPBAR IMPORT -->
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                // ✅ Run AFTER topbar is injected
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                // Set module name + icon
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                // Set live date
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                // Set avatar from localStorage
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+
+    <!-- ✅ SIDEBAR IMPORT -->
+    <script>
+        fetch("sidebar.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("sidebar").innerHTML = data;
+
+                const currentPage = decodeURIComponent(
+                    location.pathname.split("/").pop()
+                ).toLowerCase();
+
+                document.querySelectorAll(".nav-link").forEach(link => {
+                    const linkPage = decodeURIComponent(
+                        link.getAttribute("href").split("/").pop()
+                    ).toLowerCase();
+                    link.classList.toggle("active", linkPage === currentPage);
+                });
+            });
+    </script>
+
+</body>
+
+</html>

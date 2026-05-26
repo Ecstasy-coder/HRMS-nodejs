@@ -1,0 +1,483 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Syne:wght@600;700&display=swap');
+
+/* ─── Reset ──────────────────────────────────────────── */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', Arial, sans-serif;
+    background: #f0f2f8;
+    color: #07133d;
+}
+
+
+/* ─── Layout ──────────────────────────────────────────── */
+
+.page {
+    padding: 24px;
+    margin-left: 280px;
+}
+
+
+/* ─── Filter Bar ──────────────────────────────────────── */
+
+.filter-box {
+    background: #ffffff;
+    padding: 16px 24px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    border: 0.5px solid #e2e6f0;
+    flex-wrap: wrap;
+}
+
+.filter-box label {
+    font-family: 'Syne', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    color: #9aa3b8;
+    text-transform: uppercase;
+}
+
+.filter-box button {
+    padding: 8px 20px;
+    border: 0.5px solid #dce2f0;
+    border-radius: 20px;
+    background: #ffffff;
+    cursor: pointer;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #07133d;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.filter-box button:hover:not(.active) {
+    background: #f0f4ff;
+    border-color: #c5d0ef;
+}
+
+.filter-box button.active {
+    background: #07133d;
+    color: #ffffff;
+    border-color: #07133d;
+}
+
+.filter-box select {
+    padding: 8px 14px;
+    border: 0.5px solid #dce2f0;
+    border-radius: 8px;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 14px;
+    color: #07133d;
+    background: #ffffff;
+    outline: none;
+    cursor: pointer;
+}
+
+
+/* Search button — distinct from period toggles */
+
+.filter-box button[onclick="loadAnalytics()"] {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+.filter-box button[onclick="loadAnalytics()"]:hover {
+    background: #1d4fd8;
+    border-color: #1d4fd8;
+}
+
+
+/* ─── Stat Cards ──────────────────────────────────────── */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px 22px 20px;
+    border: 1px solid #eaeef8;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(7, 19, 61, 0.09);
+}
+
+
+/* Coloured top bar */
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 18px 18px 0 0;
+}
+
+.stat-card:nth-child(1)::before {
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.stat-card:nth-child(2)::before {
+    background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+}
+
+.stat-card:nth-child(3)::before {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.stat-card:nth-child(4)::before {
+    background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+
+/* Icon circle */
+
+.stat-card .icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.stat-card:nth-child(1) .icon {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.stat-card:nth-child(2) .icon {
+    background: #f5f3ff;
+    color: #8b5cf6;
+}
+
+.stat-card:nth-child(3) .icon {
+    background: #fffbeb;
+    color: #f59e0b;
+}
+
+.stat-card:nth-child(4) .icon {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+
+/* Label — sits ABOVE the number */
+
+.stat-card p {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+
+/* Big number */
+
+.stat-card h2 {
+    font-family: 'Syne', Arial, sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: #07133d;
+    line-height: 1;
+    margin-bottom: 0;
+}
+
+
+/* Sub-text footer row */
+
+.stat-card small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+
+/* Coloured dot inside <small> — add <span class="dot"></span> before the text in JS */
+
+.stat-card small .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.stat-card:nth-child(1) small .dot {
+    background: #3b82f6;
+}
+
+.stat-card:nth-child(2) small .dot {
+    background: #8b5cf6;
+}
+
+.stat-card:nth-child(3) small .dot {
+    background: #f59e0b;
+}
+
+.stat-card:nth-child(4) small .dot {
+    background: #10b981;
+}
+
+
+/* ─── Charts ──────────────────────────────────────────── */
+
+.charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.chart-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    min-height: 420px;
+    border: 0.5px solid #e2e6f0;
+}
+
+.chart-card h3 {
+    font-family: 'Syne', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #07133d;
+    margin-bottom: 4px;
+}
+
+.chart-card p {
+    font-size: 12px;
+    color: #9aa3b8;
+    margin-bottom: 18px;
+    letter-spacing: 0.2px;
+}
+
+canvas {
+    max-height: 320px;
+}
+
+
+/* ─── Performance Table ───────────────────────────────── */
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 0.5px solid #e2e6f0;
+    margin-top: 0;
+}
+
+.performance-table thead {
+    background: #fafbfd;
+}
+
+.performance-table th {
+    text-align: center;
+    padding: 14px 18px;
+    font-family: 'Syne', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #9aa3b8;
+    border-bottom: 0.5px solid #e8ecf5;
+}
+
+.performance-table td {
+    padding: 18px;
+    font-size: 14px;
+    color: #07133d;
+    border-bottom: 0.5px solid #f0f2f8;
+    vertical-align: middle;
+    text-align: center;
+    transition: background 0.15s;
+}
+
+.performance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.performance-table tbody tr:hover td {
+    background: #fafbfd;
+}
+
+.emp-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #07133d;
+}
+
+
+/* ─── Stars ───────────────────────────────────────────── */
+
+.stars {
+    display: inline-flex;
+    gap: 2px;
+    margin-right: 6px;
+    font-size: 14px;
+}
+
+.star-filled {
+    color: #f59e0b;
+}
+
+.star-empty {
+    color: #e2e6f0;
+}
+
+
+/* ─── View Button ─────────────────────────────────────── */
+
+.view-btn {
+    border: 0.5px solid #dce2f0;
+    border-radius: 6px;
+    background: transparent;
+    color: #07133d;
+    font-family: 'DM Sans', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.view-btn:hover {
+    background: #07133d;
+    color: #ffffff;
+    border-color: #07133d;
+}
+
+
+/* ─── Medal Badges ────────────────────────────────────── */
+
+.medal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.medal-gold {
+    background: #fff8e1;
+    color: #f59e0b;
+}
+
+.medal-silver {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.medal-bronze {
+    background: #fdf3ec;
+    color: #d08a4f;
+}
+
+
+/* Plain number rank (4th+) */
+
+.rank-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f0f2f8;
+    color: #9aa3b8;
+}
+
+
+/* ─── Vs Previous indicators ──────────────────────────── */
+
+.vs-up {
+    color: #10b981;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.vs-down {
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.vs-flat {
+    color: #9aa3b8;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* ─── Empty state row ─────────────────────────────────── */
+
+.empty-row {
+    text-align: center;
+    padding: 32px;
+    color: #9aa3b8;
+    font-size: 14px;
+}
+
+
+/* ─── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .page {
+        margin-left: 0;
+        padding: 16px;
+    }
+    .cards,
+    .charts {
+        grid-template-columns: 1fr;
+    }
+    .filter-box {
+        gap: 14px;
+    }
+}

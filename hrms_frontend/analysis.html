@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rating Analytics</title>
+    <link rel="stylesheet" href="./css/analysis.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="layout">
+        <div class="sidebar" id="sidebar"></div>
+        <div id="topbar-container"></div>
+        <div class="page">
+
+
+            <div class="filter-box">
+                <label>PERIOD</label>
+
+                <button class="active" onclick="setPeriod('monthly')" id="monthlyBtn">
+            Monthly
+        </button>
+
+                <button onclick="setPeriod('yearly')" id="yearlyBtn">
+            Yearly
+        </button>
+
+                <label>MONTH</label>
+                <select id="monthSelect">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5" selected>May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+
+                <label>YEAR</label>
+                <select id="yearSelect">
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+        </select>
+
+                <button onclick="loadAnalytics()">Search</button>
+            </div>
+
+            <div class="cards">
+                <div class="stat-card">
+                    <h2 id="avgRating">0</h2>
+                    <p>AVG RATING</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="teamMembers">0</h2>
+                    <p>TEAM MEMBERS</p>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="topRating">0</h2>
+                    <p>TOP PERFORMER RATING</p>
+                    <small id="topPerformer">-</small>
+                </div>
+
+                <div class="stat-card">
+                    <h2 id="cardsRated">0</h2>
+                    <p>CARDS RATED</p>
+                </div>
+            </div>
+
+            <div class="charts">
+                <div class="chart-card">
+                    <h3>Rating Distribution</h3>
+                    <p id="chartSubTitle">Donut chart by star level</p>
+                    <canvas id="ratingChart"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <h3>Employee Ratings</h3>
+                    <p>Rating from job cards</p>
+                    <canvas id="employeeChart"></canvas>
+                </div>
+            </div>
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Avg Rating</th>
+                        <th>Cards</th>
+                        <th>Vs Previous</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+                <tbody id="rankingBody"></tbody>
+            </table>
+
+        </div>
+    </div>
+    <script>
+        fetch("sidebar.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("sidebar").innerHTML = data;
+
+                const currentPage = decodeURIComponent(
+                    window.location.pathname.split("/").pop()
+                ).toLowerCase();
+
+                document.querySelectorAll(".nav-link").forEach(link => {
+                    const linkPage = decodeURIComponent(
+                        link.getAttribute("href").split("/").pop()
+                    ).toLowerCase();
+
+                    link.classList.remove("active");
+
+                    if (linkPage === currentPage) {
+                        link.classList.add("active");
+                    }
+                });
+            });
+    </script>
+
+    <!-- TOPBAR IMPORT -->
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                // ✅ Run AFTER topbar is injected
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                // Set module name + icon
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                // Set live date
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                // Set avatar from localStorage
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+
+
+    <script src="./js/analysis.js"></script>
+</body>
+
+</html>

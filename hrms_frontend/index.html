@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional HRMS Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Manrope', sans-serif;
+        }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #edf2f9, #dfe7f3);
+            padding: 20px;
+        }
+        /* ── CARD ── */
+        
+        .login-wrapper {
+            width: 1020px;
+            height: 620px;
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            position: relative;
+            animation: fadeUp 1s ease;
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* ── FLOATING TAGS ── */
+        
+        .floating-tags {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .tag {
+            position: absolute;
+            padding: 10px 18px;
+            border-radius: 18px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .left-right {
+            animation: moveLeftRight 20s linear infinite;
+        }
+        
+        .right-left {
+            animation: moveRightLeft 20s linear infinite;
+        }
+        
+        @keyframes moveLeftRight {
+            0% {
+                transform: translateX(-300px);
+                background: rgba(255, 255, 255, 0.92);
+                color: #0d2f66;
+                opacity: 0.18;
+            }
+            35% {
+                background: rgba(255, 255, 255, 0.95);
+                color: #0d2f66;
+                opacity: 0.14;
+            }
+            60% {
+                background: rgba(37, 99, 235, 0.92);
+                color: white;
+                opacity: 0.22;
+            }
+            100% {
+                transform: translateX(1400px);
+                background: rgba(37, 99, 235, 0.92);
+                color: white;
+                opacity: 0.20;
+            }
+        }
+        
+        @keyframes moveRightLeft {
+            0% {
+                transform: translateX(1400px);
+                background: rgba(37, 99, 235, 0.92);
+                color: white;
+                opacity: 0.20;
+            }
+            35% {
+                background: rgba(37, 99, 235, 0.92);
+                color: white;
+                opacity: 0.22;
+            }
+            60% {
+                background: rgba(255, 255, 255, 0.95);
+                color: #0d2f66;
+                opacity: 0.14;
+            }
+            100% {
+                transform: translateX(-300px);
+                background: rgba(255, 255, 255, 0.92);
+                color: #0d2f66;
+                opacity: 0.18;
+            }
+        }
+        
+        .secure {
+            top: 90px;
+            animation-delay: 0s;
+        }
+        
+        .hr {
+            top: 240px;
+            animation-delay: 4s;
+        }
+        
+        .manager {
+            top: 390px;
+            animation-delay: 8s;
+        }
+        
+        .support {
+            top: 150px;
+            animation-delay: 2s;
+        }
+        
+        .employee {
+            top: 310px;
+            animation-delay: 6s;
+        }
+        
+        .admin {
+            top: 470px;
+            animation-delay: 10s;
+        }
+        /* ── LEFT PANEL ── */
+        
+        .left-panel {
+            width: 44%;
+            background: linear-gradient(160deg, #082044, #103c7b);
+            padding: 42px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            z-index: 5;
+        }
+        
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            top: -90px;
+            right: -60px;
+        }
+        
+        .left-panel::after {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            bottom: -70px;
+            left: -50px;
+        }
+        
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .logo i {
+            font-size: 22px;
+            color: #7fd0ff;
+        }
+        
+        .heading {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .desc {
+            font-size: 12px;
+            line-height: 1.9;
+            color: #dbe7ff;
+            max-width: 360px;
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            transition: 0.4s;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(6px);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 14px;
+            color: #ffd166;
+            font-size: 14px;
+        }
+        
+        .feature-text h4 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        
+        .feature-text p {
+            font-size: 11px;
+            color: #dbe7ff;
+        }
+        /* ── RIGHT PANEL ── */
+        
+        .right-panel {
+            width: 56%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .auth-box {
+            width: 100%;
+            max-width: 360px;
+        }
+        
+        .auth-box h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+        
+        .auth-box .sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+        /* Fields */
+        
+        .field {
+            margin-bottom: 20px;
+        }
+        
+        .field label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+        
+        .input-wrap {
+            position: relative;
+        }
+        
+        .input-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+        
+        .input-wrap input {
+            width: 100%;
+            height: 52px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 0 16px 0 46px;
+            font-size: 13.5px;
+            font-family: 'Manrope', sans-serif;
+            background: rgba(255, 255, 255, 0.85);
+            color: #0f172a;
+            outline: none;
+            transition: border 0.25s, box-shadow 0.25s;
+        }
+        
+        .input-wrap input::placeholder {
+            color: #b0bac9;
+        }
+        
+        .input-wrap input:focus {
+            border-color: #1d4f91;
+            box-shadow: 0 0 0 4px rgba(29, 79, 145, 0.1);
+        }
+        /* Login Button */
+        
+        .login-btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0d2f66, #1f57a7);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(31, 87, 167, 0.28);
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.18);
+            top: 0;
+            left: -100px;
+            transform: skewX(-20deg);
+            transition: 0.65s;
+        }
+        
+        .login-btn:hover::before {
+            left: 130%;
+        }
+        /* Message */
+        
+        #authMessage {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 14px;
+            text-align: center;
+            min-height: 18px;
+        }
+        
+        .bottom-note {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+        /* ── RESPONSIVE ── */
+        
+        @media (max-width: 1000px) {
+            body {
+                height: auto;
+            }
+            .login-wrapper {
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+            }
+            .left-panel,
+            .right-panel {
+                width: 100%;
+            }
+            .right-panel {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrapper">
+
+        <!-- FLOATING TAGS -->
+        <div class="floating-tags">
+            <div class="tag secure left-right">🔐 Secure</div>
+            <div class="tag hr left-right">👨‍💼 HR Login</div>
+            <div class="tag manager left-right">📊 Manager</div>
+            <div class="tag support right-left">⏰ 24/7</div>
+            <div class="tag employee right-left">👨‍💻 Employee</div>
+            <div class="tag admin right-left">⚙️ Admin</div>
+        </div>
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <div class="logo">
+                <i class="fa-solid fa-infinity"></i>
+            </div>
+            <div class="heading">Employee <br> Portal</div>
+            <div class="desc">
+                Professional HRMS platform with attendance, payroll, leave tracking and analytics dashboard.
+            </div>
+            <div class="feature-list">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="feature-text">
+                        <h4>Dashboard Analytics</h4>
+                        <p>Real-time employee insights</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="feature-text">
+                        <h4>Attendance System</h4>
+                        <p>Track daily employee logs</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="feature-text">
+                        <h4>HR Management</h4>
+                        <p>Manage employees & teams</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <div class="auth-box" id="authBox">
+
+                <h2>Welcome back</h2>
+                <p class="sub">Sign in to your HRMS account</p>
+
+                <div class="field">
+                    <label>Email Address</label>
+                    <div class="input-wrap">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" />
+                    </div>
+                </div>
+
+                <button class="login-btn" onclick="loginUser()">Login</button>
+
+                <p id="authMessage"></p>
+
+                <p class="bottom-note">© 2026 HRMS · All rights reserved</p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./js/app.js"></script>
+</body>
+
+</html>

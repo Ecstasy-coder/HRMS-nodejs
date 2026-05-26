@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #eef2f7;
+}
+
+
+/* PAGE */
+
+.holiday-page {
+    margin-left: 262px;
+    padding: 24px 28px;
+}
+
+
+/* TITLE */
+
+.page-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #102a5d;
+    margin-bottom: 18px;
+}
+
+
+/* CARD */
+
+.holiday-card {
+    background: #fff;
+    border-radius: 22px;
+    border: 1px solid #edf1f5;
+    overflow: hidden;
+    /* FIX WIDTH */
+    width: 100%;
+    max-width: 1215px;
+}
+
+
+/* HEADER */
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 24px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.card-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #102a5d;
+}
+
+
+/* CURRENT */
+
+.status-badge {
+    background: #ebf8ef;
+    color: #0f9f6e;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+}
+
+
+/* ITEM */
+
+.holiday-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+}
+
+
+/* LEFT SIDE */
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+
+/* PDF BOX */
+
+.pdf-icon-box {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    border: 1px solid #ffd7d7;
+    background: #fff5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pdf-icon-box i {
+    color: #ef4444;
+    font-size: 38px;
+}
+
+
+/* FILE INFO */
+
+.holiday-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.file-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #102a5d;
+    margin-bottom: 8px;
+}
+
+.file-meta {
+    font-size: 14px;
+    color: #667085;
+    font-weight: 500;
+}
+
+
+/* BUTTONS */
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* VIEW */
+
+.btn-view {
+    background: #17376d;
+    color: white;
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* DOWNLOAD */
+
+.btn-download {
+    background: white;
+    border: 1px solid #d7dde7;
+    color: #17376d;
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.file-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #102a5d;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendar-icon {
+    color: #98a2b3;
+    font-size: 16px;
+}

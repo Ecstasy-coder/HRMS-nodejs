@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Important Events</title>
+
+    <link rel="stylesheet" href="./css/events.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- LEFT EMPTY SPACE FOR SIDEBAR -->
+        <div class="sidebar" id="sidebar"></div>
+        <div id="topbar-container"></div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- PAGE TITLE -->
+
+            <!-- FILTER BUTTONS -->
+            <div class="filter-buttons">
+
+                <button class="filter-btn active" data-category="all">
+        All Events
+      </button>
+
+                <button class="filter-btn" data-category="Performance Review">
+        Performance Review
+      </button>
+
+                <button class="filter-btn" data-category="Company Event">
+        Company Event
+      </button>
+
+                <button class="filter-btn" data-category="Deadline">
+        Deadline
+      </button>
+
+                <button class="filter-btn" data-category="Town Hall">
+        Town Hall
+      </button>
+
+                <button class="filter-btn" data-category="Other">
+        Other
+      </button>
+
+            </div>
+
+            <!-- EVENTS BOX -->
+            <div class="events-container">
+
+                <div class="top-heading">
+                    <div class="heading-left">
+                        📌 IMPORTANT EVENTS
+                    </div>
+
+                    <div class="event-count" id="eventCount">
+                        0 events
+                    </div>
+                </div>
+
+                <!-- EVENTS RENDER HERE -->
+                <div id="eventsWrapper"></div>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            })
+            .catch(error => {
+                console.log("Sidebar Error:", error);
+            });
+    </script>
+    <script src="./js/events.js"></script>
+
+    <!-- TOPBAR IMPORT -->
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                // ✅ Run AFTER topbar is injected
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                // Set module name + icon
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                // Set live date
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                // Set avatar from localStorage
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+
+</body>
+
+</html>

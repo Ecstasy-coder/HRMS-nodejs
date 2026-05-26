@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #f0f2f7;
+            display: flex;
+        }
+        /* ── MAIN ── */
+        
+        .main {
+            margin-left: 256px;
+            padding-top: 70px;
+            width: calc(100% - 256px);
+            min-height: 100vh;
+        }
+        
+        .content {
+            padding: 22px 26px;
+        }
+        /* ── FILTER ROW ── */
+        
+        .filter-row {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+        
+        .filter-row h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e2746;
+        }
+        
+        .filter-selects {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .filter-selects select {
+            padding: 7px 14px;
+            border: 1px solid #d7deea;
+            border-radius: 8px;
+            outline: none;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            cursor: pointer;
+        }
+        /* ── MIDDLE ROW: cards + chart ── */
+        
+        .middle-row {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: start;
+        }
+        /* ── CARDS ── */
+        
+        .cards-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 22px 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+        
+        .card-num {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        .card-lbl {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            color: #8b95a7;
+        }
+        
+        .c-green .card-num {
+            color: #0a864a;
+        }
+        
+        .c-red .card-num {
+            color: #d91f1f;
+        }
+        
+        .c-orange .card-num {
+            color: #c97400;
+        }
+        
+        .c-blue .card-num {
+            color: #2d5ee8;
+        }
+        
+        .card-total {
+            background: #fff;
+            border-radius: 12px;
+            padding: 22px 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+            text-align: center;
+        }
+        
+        .card-total .card-num {
+            font-size: 38px;
+            color: #1e2746;
+        }
+        
+        .card-total .card-lbl {
+            color: #8b95a7;
+        }
+        /* ── CHART ── */
+        
+        .chart-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+        
+        .chart-head {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 14px;
+        }
+        
+        .chart-legends {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #6d7695;
+        }
+        
+        .leg-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .leg-blue {
+            background: #4d82f3;
+        }
+        
+        .leg-ash {
+            background: #dce3fb;
+        }
+        
+        .chart-svg-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .chart-svg-wrap::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .chart-svg-wrap::-webkit-scrollbar-thumb {
+            background: #dce3fb;
+            border-radius: 10px;
+        }
+        /* ── CALENDAR ── */
+        
+        .calendar {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+        
+        .cal-head-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f7f9fc;
+            border-bottom: 1px solid #edf1f7;
+        }
+        
+        .cal-head-row div {
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6f7894;
+            letter-spacing: .5px;
+        }
+        
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        
+        .cal-cell {
+            min-height: 88px;
+            border-right: 1px solid #edf1f7;
+            border-bottom: 1px solid #edf1f7;
+            padding: 8px 10px;
+            background: #fff;
+        }
+        
+        .cal-cell:hover:not(.empty) {
+            background: #f8fbff;
+        }
+        
+        .cal-cell.empty {
+            background: #fafbfd;
+        }
+        
+        .cal-cell.active {
+            background: #f0f5ff;
+        }
+        
+        .cal-day-num {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2a4a;
+            margin-bottom: 5px;
+        }
+        
+        .cal-cell.active .cal-day-num {
+            color: #2d5ee8;
+        }
+        
+        .cal-status {
+            font-size: 10.5px;
+            font-weight: 600;
+        }
+        
+        .cal-status.present {
+            color: #0a864a;
+        }
+        
+        .cal-status.absent {
+            color: #d62222;
+        }
+        
+        .cal-status.late {
+            color: #c27600;
+        }
+        
+        .cal-status.half-day {
+            color: #2d5ee8;
+        }
+        
+        .cal-status.holiday {
+            color: #d68b00;
+        }
+        
+        .cal-status.weekend {
+            color: #8a97b0;
+        }
+        
+        .cal-status.nodata {
+            color: #bbb;
+        }
+        
+        .cal-punch {
+            font-size: 9px;
+            color: #8a97b0;
+            margin-top: 4px;
+            line-height: 1.8;
+        }
+        
+        .cal-punch i {
+            font-size: 8px;
+            margin-right: 2px;
+        }
+        
+        .cal-sub {
+            font-size: 9px;
+            color: #8a97b0;
+            margin-top: 2px;
+        }
+        /* ── TABLE ── */
+        
+        .records {
+            margin-bottom: 24px;
+        }
+        
+        .records h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e2746;
+            margin-bottom: 12px;
+        }
+        
+        .tbl-wrap {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead tr {
+            background: #f7f9fc;
+        }
+        
+        th {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6f7894;
+            border-bottom: 1px solid #edf1f7;
+            text-align: center;
+            letter-spacing: .4px;
+        }
+        
+        td {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 13px;
+            color: #1e2746;
+            border-bottom: 1px solid #edf1f7;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover td {
+            background: #f8fbff;
+        }
+        
+        .td-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 600;
+        }
+        
+        .td-badge.present {
+            background: #e5f7ec;
+            color: #0d7d4c;
+        }
+        
+        .td-badge.absent {
+            background: #ffe7e7;
+            color: #d62222;
+        }
+        
+        .td-badge.late {
+            background: #fff0de;
+            color: #c27600;
+        }
+        
+        .td-badge.half-day {
+            background: #e8f0ff;
+            color: #2d5ee8;
+        }
+        
+        .td-badge.holiday {
+            background: #fff4df;
+            color: #d68b00;
+        }
+        
+        .td-badge.weekend {
+            background: #f1f3f8;
+            color: #8a97b0;
+        }
+        
+        .td-badge.nodata {
+            background: #f5f5f5;
+            color: #bbb;
+        }
+        /* ── LOADING ── */
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6f7894;
+            font-size: 14px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #dce3fb;
+            border-top-color: #4d82f3;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin-bottom: 6px;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @media(max-width:1100px) {
+            .middle-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media(max-width:768px) {
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout" style="width: 100%;">
+
+        <!-- ── SIDEBAR (injected from sidebar.html) ── -->
+        <div id="sidebar"></div>
+        <div id="topbar-container"></div>
+        <!-- ── MAIN ── -->
+        <div class="main">
+            <div class="content">
+
+                <!-- FILTER ROW -->
+                <div class="filter-row">
+                    <h2 id="pageTitle">Attendance — May 2026</h2>
+                    <div class="filter-selects">
+                        <select id="monthSelect">
+                    <option value="1">January</option><option value="2">February</option>
+                    <option value="3">March</option><option value="4">April</option>
+                    <option value="5" selected>May</option><option value="6">June</option>
+                    <option value="7">July</option><option value="8">August</option>
+                    <option value="9">September</option><option value="10">October</option>
+                    <option value="11">November</option><option value="12">December</option>
+                </select>
+                        <select id="yearSelect">
+                    <option value="2025">2025</option>
+                    <option value="2026" selected>2026</option>
+                </select>
+                    </div>
+                </div>
+
+                <!-- MIDDLE: CARDS + CHART -->
+                <div class="middle-row">
+
+                    <!-- CARDS -->
+                    <div class="cards-col">
+                        <div class="cards-grid">
+                            <div class="card c-green">
+                                <div class="card-num" id="presentCount">—</div>
+                                <div class="card-lbl">DAYS PRESENT</div>
+                            </div>
+                            <div class="card c-red">
+                                <div class="card-num" id="absentCount">—</div>
+                                <div class="card-lbl">DAYS ABSENT</div>
+                            </div>
+                            <div class="card c-orange">
+                                <div class="card-num" id="lateCount">—</div>
+                                <div class="card-lbl">LATE ARRIVALS</div>
+                            </div>
+                            <div class="card c-blue">
+                                <div class="card-num" id="halfDayCount">—</div>
+                                <div class="card-lbl">HALF DAYS</div>
+                            </div>
+                        </div>
+                        <div class="card-total">
+                            <div class="card-num" id="totalHoursDisplay">—</div>
+                            <div class="card-lbl" id="monthYearLabel">MAY 2026</div>
+                        </div>
+                    </div>
+
+                    <!-- CHART -->
+                    <div class="chart-box">
+                        <div class="chart-head">
+                            <div class="chart-legends">
+                                <div class="legend">
+                                    <div class="leg-dot leg-blue"></div> Present Days</div>
+                                <div class="legend">
+                                    <div class="leg-dot leg-ash"></div> Working Days</div>
+                            </div>
+                        </div>
+                        <div class="chart-svg-wrap" id="chartWrap">
+                            <div class="loading">
+                                <div class="spinner"></div><br>Loading…</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CALENDAR -->
+                <div class="calendar">
+                    <div class="cal-head-row">
+                        <div>MON</div>
+                        <div>TUE</div>
+                        <div>WED</div>
+                        <div>THU</div>
+                        <div>FRI</div>
+                        <div>SAT</div>
+                        <div>SUN</div>
+                    </div>
+                    <div class="cal-grid" id="calendarBody">
+                        <div class="loading" style="grid-column:span 7">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLE -->
+                <div class="records">
+                    <h3>Detailed Records</h3>
+                    <div class="tbl-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DATE</th>
+                                    <th>DAY</th>
+                                    <th>PUNCH IN</th>
+                                    <th>PUNCH OUT</th>
+                                    <th>WORKING HOURS</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceBody">
+                                <tr>
+                                    <td colspan="6" class="loading">
+                                        <div class="spinner"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ─── CONFIG ─── */
+        const BASE_API = "http://localhost:5000/api/attendance";
+        const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const DAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const DAYS_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        /* ─── SIDEBAR INJECT ─── */
+        fetch('sidebar.html').then(r => r.text()).then(html => {
+            document.getElementById('sidebar').innerHTML = html;
+        });
+
+        /* ─── TOPBAR INJECT ─── */
+        fetch('topbar.html').then(r => r.text()).then(html => {
+            document.getElementById('topbar-container').innerHTML = html;
+            try {
+                document.getElementById('topbar-module-name').textContent = 'My Attendance';
+            } catch (e) {}
+            try {
+                document.getElementById('topbar-icon').className = 'far fa-calendar-check';
+            } catch (e) {}
+            try {
+                const u = JSON.parse(localStorage.getItem('user') || '{}');
+                const name = u.name || u.username || u.fullName || '';
+                if (name) {
+                    const ini = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                    document.getElementById('topbar-avatar').textContent = ini;
+                }
+            } catch (e) {}
+
+            function setDate() {
+                const d = new Date();
+                try {
+                    document.getElementById('topbar-date').textContent =
+                        `${DAYS_LONG[d.getDay()]}, ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+                } catch (e) {}
+            }
+            setDate();
+            setInterval(setDate, 60000);
+        });
+
+        /* ─── HELPERS ─── */
+        function isWeekend(d) {
+            return d.getDay() === 0 || d.getDay() === 6;
+        }
+
+        /* LOCAL date parse — avoids IST UTC-shift bug */
+        function parseLocalDate(s) {
+            const d = new Date(s);
+            return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        }
+
+        function dedup(recs) {
+            const seen = new Set();
+            return recs.filter(r => {
+                const d = parseLocalDate(r.date);
+                const k = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+                if (seen.has(k)) return false;
+                seen.add(k);
+                return true;
+            });
+        }
+
+        function sCls(s) {
+            if (!s) return 'nodata';
+            const v = s.toLowerCase().trim();
+            if (v === 'present') return 'present';
+            if (v === 'absent') return 'absent';
+            if (v === 'late') return 'late';
+            if (v.includes('half')) return 'half-day';
+            if (v === 'holiday') return 'holiday';
+            if (v === 'weekend') return 'weekend';
+            return 'nodata';
+        }
+
+        function sLbl(s) {
+            return s ? s.charAt(0).toUpperCase() + s.slice(1) : 'No Data';
+        }
+
+        /* ─── SVG BAR CHART ─── */
+        function renderChart(data) {
+            const wrap = document.getElementById('chartWrap');
+            const W = Math.max(wrap.clientWidth || 700, 700);
+            const H = 220,
+                PL = 44,
+                PR = 16,
+                PT = 10,
+                PB = 44;
+            const innerW = W - PL - PR,
+                innerH = H - PT - PB;
+            const n = data.length;
+            const barW = Math.max(10, Math.floor(innerW / n * 0.42));
+            const gap = (innerW - barW * n) / (n + 1);
+            const maxY = Math.ceil(Math.max(...data.map(d => d.workingDays), 1) / 5) * 5 || 30;
+            const ticks = 5;
+
+            let gridLines = '',
+                yLabels = '',
+                bars = '',
+                xLabels = '';
+
+            for (let i = 0; i <= ticks; i++) {
+                const val = Math.round(maxY * i / ticks);
+                const y = PT + innerH - (innerH * i / ticks);
+                gridLines += `<line x1="${PL}" y1="${y}" x2="${PL+innerW}" y2="${y}" stroke="#edf1f7" stroke-width="1"/>`;
+                yLabels += `<text x="${PL-8}" y="${y+4}" text-anchor="end" font-size="10" fill="#9ba3b5" font-family="Poppins,sans-serif">${val}</text>`;
+            }
+
+            data.forEach((item, i) => {
+                const x = PL + gap + (gap + barW) * i;
+                const cx = x + barW / 2;
+
+                /* Working days bar (ash background) */
+                const whH = innerH * (item.workingDays / maxY);
+                const whY = PT + innerH - whH;
+                bars += `<rect x="${x}" y="${whY}" width="${barW}" height="${whH}" rx="4" fill="#dce3fb"/>`;
+
+                /* Present bar (blue overlay) */
+                if (item.presentDays > 0) {
+                    const phH = Math.max(innerH * (item.presentDays / maxY), 4);
+                    const phY = PT + innerH - phH;
+                    bars += `<rect x="${x}" y="${phY}" width="${barW}" height="${phH}" rx="4" fill="#4d82f3"/>`;
+                }
+
+                /* X-axis label — bold + dot for current month */
+                const fw = item.isCurrent ? '700' : '500';
+                const fill = item.isCurrent ? '#1e2746' : '#9ba3b5';
+                xLabels += `<text x="${cx}" y="${PT+innerH+16}" text-anchor="middle" font-size="11" font-weight="${fw}" fill="${fill}" font-family="Poppins,sans-serif">${item.month.toUpperCase()}</text>`;
+                if (item.isCurrent) {
+                    xLabels += `<circle cx="${cx}" cy="${PT+innerH+28}" r="3" fill="#4d82f3"/>`;
+                }
+            });
+
+            wrap.innerHTML = `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:visible;">
+            ${gridLines}${yLabels}${bars}${xLabels}
+        </svg>`;
+        }
+
+        /* ─── CALENDAR ─── */
+        function renderCalendar(year, month, recs) {
+            const body = document.getElementById('calendarBody');
+            body.innerHTML = '';
+            const map = {};
+            dedup(recs).forEach(r => {
+                map[parseLocalDate(r.date).getDate()] = r;
+            });
+
+            const today = new Date();
+            const first = new Date(year, month - 1, 1);
+            const dim = new Date(year, month, 0).getDate();
+            const off = (first.getDay() + 6) % 7;
+
+            for (let i = 0; i < off; i++) {
+                const c = document.createElement('div');
+                c.className = 'cal-cell empty';
+                body.appendChild(c);
+            }
+
+            for (let d = 1; d <= dim; d++) {
+                const dateObj = new Date(year, month - 1, d);
+                const isToday = (d === today.getDate() && month === today.getMonth() + 1 && year === today.getFullYear());
+                const rec = map[d];
+                let cls, lbl, punch = '',
+                    sub = '';
+
+                if (rec) {
+                    cls = sCls(rec.status);
+                    lbl = sLbl(rec.status);
+                    if (rec.punchIn || rec.punchOut) {
+                        punch = `<div class="cal-punch">
+                        ${rec.punchIn ?`<i class="fas fa-sign-in-alt"></i>${rec.punchIn}` :''}
+                        ${rec.punchOut?`<br><i class="fas fa-sign-out-alt"></i>${rec.punchOut}`:''}
+                    </div>`;
+                }
+                if(rec.holidayName||rec.note){
+                    sub=`<div class="cal-sub">${rec.holidayName||rec.note}</div>`;
+                }
+            } else if(isWeekend(dateObj)){ cls='weekend'; lbl='Weekend';
+            } else if(dateObj>today){      cls='';        lbl='';
+            } else {                       cls='nodata';  lbl='No Data'; }
+
+            const cell=document.createElement('div');
+            cell.className=`cal-cell${isToday?' active':''}`;
+            cell.innerHTML=`<div class="cal-day-num">${d}</div>
+                ${cls?`<div class="cal-status ${cls}">${lbl}</div>`:''}
+                ${sub}${punch}`;
+            body.appendChild(cell);
+        }
+
+        const rem=(off+dim)%7;
+        if(rem) for(let i=0;i<7-rem;i++){
+            const c=document.createElement('div'); c.className='cal-cell empty'; body.appendChild(c);
+        }
+    }
+
+    /* ─── TABLE ─── */
+    function renderTable(year,month,recs){
+        const tbody=document.getElementById('attendanceBody');
+        tbody.innerHTML='';
+        const unique=dedup(recs);
+        if(!unique.length){
+            tbody.innerHTML=`<tr><td colspan="6" style="color:#bbb;padding:30px;text-align:center">No records for this period.</td></tr>`;
+            return;
+        }
+        unique.forEach(r=>{
+            const d=parseLocalDate(r.date);
+            const ds=`${String(d.getDate()).padStart(2,'0')} ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`;
+            const c=sCls(r.status);
+            tbody.innerHTML+=`<tr>
+                <td>${ds}</td>
+                <td>${DAYS_SHORT[d.getDay()]}</td>
+                <td>${r.punchIn||'—'}</td>
+                <td>${r.punchOut||'—'}</td>
+                <td>${r.workingHours||'—'}</td>
+                <td><span class="td-badge ${c}">${sLbl(r.status)}</span></td>
+            </tr>`;
+        });
+    }
+
+    /* ─── SUMMARY ─── */
+    function updateSummary(year,month,recs){
+        const unique=dedup(recs);
+        let present=0,absent=0,late=0,halfDay=0,mins=0;
+        unique.forEach(r=>{
+            const s=(r.status||'').toLowerCase().trim();
+            if(s==='present') present++;
+            else if(s==='absent') absent++;
+            else if(s==='late'){ late++; present++; }
+            else if(s.includes('half')) halfDay++;
+            const wh=r.workingHours||'';
+            const hm=wh.match(/(\d+(?:\.\d+)?)\s*h/i);
+            const mm=wh.match(/(\d+)\s*m/i);
+            if(hm) mins+=parseFloat(hm[1])*60;
+            if(mm) mins+=parseInt(mm[1]);
+            if(!hm&&!mm){ const p=parseFloat(wh); if(!isNaN(p)) mins+=p*60; }
+        });
+        document.getElementById('presentCount').textContent      = present;
+        document.getElementById('absentCount').textContent       = absent;
+        document.getElementById('lateCount').textContent         = late;
+        document.getElementById('halfDayCount').textContent      = halfDay;
+        document.getElementById('totalHoursDisplay').textContent = (mins/60).toFixed(1);
+        document.getElementById('monthYearLabel').textContent    = `${MONTHS_SHORT[month-1].toUpperCase()} ${year}`;
+        document.getElementById('pageTitle').textContent         = `Attendance — ${MONTHS_LONG[month-1]} ${year}`;
+    }
+
+    /* ─── CHART DATA — all 12 months ─── */
+    function buildChartData(year,currentMonth,allRecs){
+        return Array.from({length:12},(_,i)=>{
+            const m=i+1;
+            const recs=dedup(allRecs.filter(r=>{
+                const d=parseLocalDate(r.date);
+                return d.getMonth()+1===m && d.getFullYear()===year;
+            }));
+            let present=0, workingDays=0;
+            const dim=new Date(year,m,0).getDate();
+            for(let d=1;d<=dim;d++) if(!isWeekend(new Date(year,m-1,d))) workingDays++;
+            recs.forEach(r=>{
+                const s=(r.status||'').toLowerCase().trim();
+                if(s==='present'||s==='late') present++;
+            });
+            return {month:MONTHS_SHORT[i], presentDays:present, workingDays, isCurrent:(m===currentMonth)};
+        });
+    }
+
+    /* ─── MAIN LOAD ─── */
+    async function loadAttendance(month,year){
+        ['presentCount','absentCount','lateCount','halfDayCount','totalHoursDisplay']
+            .forEach(id=>document.getElementById(id).textContent='—');
+        document.getElementById('calendarBody').innerHTML   = `<div class="loading" style="grid-column:span 7"><div class="spinner"></div></div>`;
+        document.getElementById('attendanceBody').innerHTML = `<tr><td colspan="6" class="loading"><div class="spinner"></div></td></tr>`;
+        document.getElementById('chartWrap').innerHTML      = `<div class="loading"><div class="spinner"></div></div>`;
+
+        try{
+            const res    = await fetch(`${BASE_API}/employee`);
+            const result = await res.json();
+            if(!result.success) throw new Error(result.message||'API error');
+            const allRecs = result.data||[];
+
+            const monthRecs = allRecs.filter(r=>{
+                const d=parseLocalDate(r.date);
+                return d.getMonth()+1===month && d.getFullYear()===year;
+            });
+
+            updateSummary(year, month, monthRecs);
+            renderCalendar(year, month, monthRecs);
+            renderTable(year, month, monthRecs);
+            renderChart(buildChartData(year, month, allRecs));
+
+        }catch(err){
+            console.error(err);
+            document.getElementById('calendarBody').innerHTML =
+                `<div style="grid-column:span 7;text-align:center;padding:40px;color:#d62222;">Failed to load. Check console.</div>`;
+            document.getElementById('attendanceBody').innerHTML =
+                `<tr><td colspan="6" style="color:#d62222;padding:20px;text-align:center">Error loading data.</td></tr>`;
+        }
+    }
+
+    /* ─── INIT ─── */
+    document.addEventListener('DOMContentLoaded',()=>{
+        const now  = new Date();
+        const mSel = document.getElementById('monthSelect');
+        const ySel = document.getElementById('yearSelect');
+        mSel.value = now.getMonth()+1;
+        ySel.value = now.getFullYear();
+        if(!ySel.querySelector(`option[value="${now.getFullYear()}"]`)){
+            const o=document.createElement('option');
+            o.value=o.textContent=now.getFullYear();
+            ySel.appendChild(o); ySel.value=now.getFullYear();
+        }
+        loadAttendance(+mSel.value, +ySel.value);
+        mSel.addEventListener('change',()=>loadAttendance(+mSel.value,+ySel.value));
+        ySel.addEventListener('change',()=>loadAttendance(+mSel.value,+ySel.value));
+    });
+    </script>
+</body>
+
+</html>

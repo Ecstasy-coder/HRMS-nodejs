@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/profilestyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-container">
+
+        <div id="sidebar"></div>
+        <div class="content-wrapper">
+            <div id="topbar-container"></div>
+
+            <div class="profile-layout">
+
+                <!-- LEFT CARD -->
+                <div class="profile-card">
+                    <div class="profile-top">
+
+                        <div class="circle-avatar" id="profileInitial">R</div>
+
+                        <h2 id="userNameDisplay">Rakesh</h2>
+                        <p id="designationDisplay">Manager Portal</p>
+                    </div>
+
+                    <div class="profile-bottom">
+                        <div class="detail-row">
+                            <span>Email</span>
+                            <strong id="profileEmail">
+              rakeshh@ecstasysolutions.org.in
+            </strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span>Department</span>
+                            <strong id="profileDept">Management</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span> Phone</span>
+                            <strong id="profilePhone">9381698422</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span> Birthday</span>
+                            <strong id="profileBirth">16 Jun</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span> Joined</span>
+                            <strong id="profileJoin">16 Apr 2026</strong>
+                        </div>
+
+                        <div class="detail-row">
+                            <span> Status</span>
+                            <strong class="active-status" id="profileStatus">
+               Active
+            </strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SECTION -->
+                <div class="right-section">
+
+                    <!-- EDIT PROFILE CARD -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                <i></i> Edit Profile
+                            </h2>
+
+                            <p>
+                                Update your personal information — name, job title, phone & department
+                            </p>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="fullNameInput" placeholder="e.g. Rakesh " />
+                            </div>
+
+                            <div class="input-group">
+                                <label>Job Position / Designation</label>
+                                <input type="text" id="designationInput" placeholder="Senior Manager, Team Lead" />
+                            </div>
+
+                            <div class="input-group full">
+                                <label> Phone Number</label>
+                                <input type="text" id="phoneInput" placeholder="+91 9381698422" />
+                            </div>
+
+                            <div class="input-group">
+                                <label>
+                Email <small>(read-only)</small>
+              </label>
+
+                                <input type="email" id="emailInput" readonly placeholder="official email" />
+                            </div>
+
+                            <div class="input-group">
+                                <label>Department</label>
+                                <input type="text" id="deptInput" placeholder="Management / HR / IT" />
+                            </div>
+                        </div>
+
+                        <button id="saveBtn">
+            <i></i>
+            Save Changes
+          </button>
+                    </div>
+
+                    <!-- CHANGE PASSWORD CARD -->
+                    <div class="card">
+                        <div class="password-header">
+                            <h2>
+                                <i></i> Change Password
+                            </h2>
+
+                            <p>
+                                Secure your account — min 8 characters, uppercase & number required
+                            </p>
+                        </div>
+
+                        <div class="password-form">
+                            <div class="input-group">
+                                <label> Current Password</label>
+                                <input type="password" id="currentPass" placeholder="··············" />
+                            </div>
+
+                            <div class="input-group">
+                                <label> New Password</label>
+                                <input type="password" id="newPass" placeholder="Min 8 chars, 1 uppercase, 1 digit" />
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="input-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPass" placeholder="Repeat new password" />
+                            </div>
+                        </div>
+
+                        <button id="changePasswordBtn">
+            <i></i>
+            Update Password
+          </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/script.js"></script>
+    <script>
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+
+        document.addEventListener('click', function(e) {
+            const navLinks = e.target.closest("#sidebar .nav-link");
+            if (!navLinks) return;
+
+            document.querySelectorAll("#sidebar .nav-link").forEach(link => {
+                link.classList.remove("active");
+            });
+
+        });
+    </script>
+    <!-- TOPBAR IMPORT -->
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                // ✅ Run AFTER topbar is injected
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                // Set module name + icon
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                // Set live date
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                // Set avatar from localStorage
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+
+</body>
+
+</html>

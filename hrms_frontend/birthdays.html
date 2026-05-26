@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthdays · My Ecstasy HR Portal</title>
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+    <!-- Shared design system -->
+
+
+    <style>
+        /* ── Birthday-specific styles ────────────────────────────── */
+        /* Two-column card row */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+         :root {
+            --primary: #4f46e5;
+            --primary2: #2563eb;
+            --bg: #f3f6fb;
+            --surface: rgba(255, 255, 255, .75);
+            --border: rgba(255, 255, 255, .4);
+            --shadow: 0 10px 35px rgba(0, 0, 0, .08);
+            --text: #0f172a;
+            --muted: #64748b;
+        }
+        
+        body {
+            font-family: 'Sora', sans-serif;
+            background: radial-gradient(circle at top left, #dbeafe 0%, transparent 30%), radial-gradient(circle at bottom right, #ede9fe 0%, transparent 30%), var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        /* ===================================================
+   LAYOUT
+        .wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+        /* ===================================================
+   SIDEBAR
+=================================================== */
+        /* ===================================================
+   MAIN
+=================================================== */
+        
+        .main {
+            flex: 1;
+            padding: 24px;
+            margin-left: 280px;
+        }
+        /* ===================================================
+   TOPBAR
+=================================================== */
+        /* ===================================================
+
+
+
+   STATS
+=================================================== */
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+        
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 26px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            backdrop-filter: blur(14px);
+            transition: .35s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .stat-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+        }
+        
+        .stat-text h2 {
+            font-size: 30px;
+            font-weight: 700;
+        }
+        
+        .stat-text p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+        /* ===================================================
+   PANELS
+=================================================== */
+        /* ===================================================
+   PREMIUM BIRTHDAY PANELS
+=================================================== */
+        
+        .bday-cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        
+        .bday-panel {
+            position: relative;
+            background: linear-gradient( 135deg, rgba(255, 255, 255, .82), rgba(248, 250, 252, .72));
+            backdrop-filter: blur(18px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, .55);
+            overflow-y: scroll;
+            -webkit-scrollbar-width: none;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .7);
+            animation: fadeUp .5s ease;
+            transition: transform .4s ease, box-shadow .4s ease;
+        }
+        /* PANEL HOVER */
+        
+        .bday-panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 70px rgba(79, 70, 229, .14), inset 0 1px 0 rgba(255, 255, 255, .85);
+        }
+        /* FLOATING GRADIENTS */
+        
+        .bday-panel::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(99, 102, 241, .18), transparent 70%);
+            top: -60px;
+            left: -60px;
+            animation: floatBlob 8s ease-in-out infinite;
+        }
+        
+        .bday-panel::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(251, 191, 36, .18), transparent 70%);
+            right: -30px;
+            bottom: -30px;
+            animation: floatBlob2 10s ease-in-out infinite;
+        }
+        /* ===================================================
+   ROCKET
+=================================================== */
+        
+        .rocket-wrap {
+            position: absolute;
+            left: -35px;
+            bottom: -35px;
+            font-size: 75px;
+            opacity: .06;
+            transform: rotate(-35deg);
+            transition: all 2s ease;
+            z-index: 0;
+        }
+        
+        .bday-panel:hover .rocket-wrap {
+            transform: translate(430px, -600px) rotate(-250deg) scale(.45);
+            opacity: .22;
+        }
+        /* ===================================================
+   FLOATING STARS
+=================================================== */
+        
+        .star {
+            position: absolute;
+            background: radial-gradient( circle, rgba(251, 191, 36, .9), rgba(250, 204, 21, .15));
+            clip-path: polygon( 50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: .16;
+            z-index: 0;
+        }
+        
+        .star-1 {
+            width: 120px;
+            height: 120px;
+            left: -35px;
+            top: -35px;
+            animation: starFloat 8s ease-in-out infinite;
+        }
+        
+        .star-2 {
+            width: 90px;
+            height: 90px;
+            right: -25px;
+            bottom: 20px;
+            animation: starFloat 12s ease-in-out infinite;
+        }
+        
+        .star-3 {
+            width: 20px;
+            height: 20px;
+            top: 80px;
+            right: 120px;
+            animation: rotateStar 8s linear infinite;
+        }
+        
+        .star-4 {
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 45%;
+            animation: rotateStar 6s linear infinite;
+        }
+        /* ===================================================
+   HEADER
+=================================================== */
+        
+        .bday-panel-header {
+            position: relative;
+            z-index: 2;
+            padding: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(226, 232, 240, .6);
+            background: rgba(255, 255, 255, .45);
+            backdrop-filter: blur(12px);
+        }
+        
+        .bday-panel-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .total-badge {
+            background: rgb(137 135 142 / 8%);
+            color: #100f10;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(79, 70, 229, .12);
+        }
+        
+        .bday-panel-body {
+            position: relative;
+            z-index: 2;
+        }
+        /* ===================================================
+   ITEMS
+=================================================== */
+        
+        .birthday-item {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(226, 232, 240, .7);
+            transition: .3s ease;
+            overflow: hidden;
+        }
+        
+        .birthday-item::after {
+            content: "✨";
+            position: absolute;
+            right: 110px;
+            top: 50%;
+            transform: translateY(-50%) translateX(30px);
+            opacity: 0;
+            transition: .45s ease;
+        }
+        
+        .birthday-item:hover::after {
+            opacity: .75;
+            transform: translateY(-50%) translateX(0px) rotate(20deg);
+        }
+        
+        .birthday-item:hover {
+            background: linear-gradient( 90deg, rgba(79, 70, 229, .04), transparent);
+            transform: scale(1.01);
+        }
+        
+        .bday-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .bday-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50px;
+            background: linear-gradient( 135deg, #4f46e5, #2563eb);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, .25);
+        }
+        
+        .bday-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .bday-info p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        /* ===================================================
+   MONTH USERS
+=================================================== */
+        
+        .month-block {
+            padding: 22px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        
+        .month-users {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .month-user {
+            background: rgba(79, 70, 229, .08);
+            color: #4338ca;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .3s ease;
+            border: 1px solid rgba(79, 70, 229, .08);
+        }
+        
+        .month-user:hover {
+            background: #4f46e5;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, .25);
+        }
+        /* ===================================================
+   STATS CARD IMPROVEMENTS
+=================================================== */
+        
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( 135deg, rgba(255, 255, 255, .22), transparent);
+            pointer-events: none;
+        }
+        
+        .stat-icon {
+            box-shadow: 0 10px 30px rgba(79, 70, 229, .25);
+        }
+        /* ===================================================
+   TABLE HOVER
+=================================================== */
+        
+        tbody tr {
+            transition: .25s ease;
+        }
+        
+        tbody tr:hover {
+            transform: scale(1.005);
+            box-shadow: inset 4px 0 0 #4f46e5;
+        }
+        /* ===================================================
+   ANIMATIONS
+=================================================== */
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes floatBlob {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(18px) scale(1.08);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes floatBlob2 {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px) scale(1.06);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes starFloat {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px) rotate(12deg);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes rotateStar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* ===================================================
+   ITEMS
+=================================================== */
+        
+        .birthday-item {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            border-bottom: 1px solid #edf2f7;
+            transition: .3s ease;
+            overflow: hidden;
+        }
+        
+        .birthday-item::after {
+            content: "✨";
+            position: absolute;
+            right: 120px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: .5s ease;
+        }
+        
+        .birthday-item:hover::after {
+            opacity: .6;
+            transform: translateY(-50%) translateX(-10px) rotate(20deg);
+        }
+        
+        .birthday-item:hover {
+            background: rgba(79, 70, 229, .03);
+            transform: scale(1.01);
+        }
+        
+        .bday-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .bday-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, .25);
+        }
+        
+        .bday-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .bday-info p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        
+        .days-pill {
+            padding: 8px 16px;
+            border-radius: 40px;
+            background: #f3f3f3;
+            color: #151517;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        /* ===================================================
+   MONTH USERS
+=================================================== */
+        
+        .month-block {
+            padding: 22px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        
+        .month-users {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .month-user {
+            background: #f3f3f3;
+            color: #151517;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .3s ease;
+        }
+        
+        .month-user:hover {
+            background: #ffe1ff;
+            color: black;
+            inset: -50;
+            transform: translateY(-3px);
+        }
+        /* ===================================================
+   TABLE
+=================================================== */
+        
+        .table-panel {
+            background: rgba(255, 255, 255, .75);
+            backdrop-filter: blur(16px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, .4);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .table-panel-header {
+            padding: 24px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-search {
+            position: relative;
+        }
+        
+        .table-search i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+        
+        .table-search input {
+            width: 280px;
+            padding: 10px 12px 10px 40px;
+            border-radius: 14px;
+            border: 1px solid #dbe4f0;
+            font-family: 'Sora', sans-serif;
+        }
+        
+        .btn-export {
+            border: none;
+            background: white;
+            color: black;
+            padding: 10px 15px;
+            border: 1px solid rgba(79, 70, 229, .12);
+            border-radius: 14px;
+            font-family: 'Sora', sans-serif;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: #f8fafc;
+        }
+        
+        thead th {
+            padding: 18px;
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        
+        tbody td {
+            padding: 18px;
+            text-align: center;
+            font-size: 13px;
+            border-top: 1px solid #eef2f7;
+        }
+        
+        tbody tr:hover {
+            background: rgba(79, 70, 229, .03);
+        }
+        
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .table-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        /* ===================================================
+   ANIMATIONS
+=================================================== */
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes floatStar {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px) rotate(15deg);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes floatMoon {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(12px) translateX(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        /* ===================================================
+   RESPONSIVE
+=================================================== */
+        
+        @media(max-width:1100px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bday-cards-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media(max-width:768px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .table-panel-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            .table-search input {
+                width: 100%;
+            }
+        }
+        /* ===================================================
+   PREMIUM ROCKET EFFECTS
+=================================================== */
+        
+        .bday-panel {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bday-panel::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(99, 102, 241, .18), transparent 70%);
+            top: -60px;
+            left: -60px;
+            animation: floatBlob 8s ease-in-out infinite;
+        }
+        
+        .bday-panel::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(251, 191, 36, .18), transparent 70%);
+            right: -30px;
+            bottom: -30px;
+            animation: floatBlob2 10s ease-in-out infinite;
+        }
+        /* ROCKET */
+        
+        .rocket-wrap {
+            position: absolute;
+            left: -35px;
+            bottom: -35px;
+            font-size: 75px;
+            opacity: .06;
+            transform: rotate(-35deg);
+            transition: all 2s ease;
+            z-index: 0;
+        }
+        
+        .bday-panel:hover .rocket-wrap {
+            transform: translate(430px, -600px) rotate(-250deg) scale(.45);
+            opacity: .22;
+        }
+        
+        .span {
+            background: rgb(137 135 142 / 8%);
+            color: #100f10;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(79, 70, 229, .12);
+        }
+        /* FLOATING STARS */
+        
+        .star {
+            position: absolute;
+            background: radial-gradient( circle, rgba(251, 191, 36, .9), rgba(250, 204, 21, .15));
+            clip-path: polygon( 50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: .16;
+            z-index: 0;
+        }
+        
+        .star-1 {
+            width: 120px;
+            height: 120px;
+            left: -35px;
+            top: -35px;
+            animation: starFloat 8s ease-in-out infinite;
+        }
+        
+        .star-2 {
+            width: 90px;
+            height: 90px;
+            right: -25px;
+            bottom: 20px;
+            animation: starFloat 12s ease-in-out infinite;
+        }
+        
+        .star-3 {
+            width: 20px;
+            height: 20px;
+            top: 80px;
+            right: 120px;
+            animation: rotateStar 8s linear infinite;
+        }
+        
+        .star-4 {
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            left: 45%;
+            animation: rotateStar 6s linear infinite;
+        }
+        /* ITEM HOVER */
+        
+        .birthday-item::after {
+            content: "✨";
+            position: absolute;
+            right: 110px;
+            top: 50%;
+            transform: translateY(-50%) translateX(30px);
+            opacity: 0;
+            transition: .45s ease;
+        }
+        
+        .birthday-item:hover::after {
+            opacity: .75;
+            transform: translateY(-50%) translateX(0px) rotate(20deg);
+        }
+        /* PANEL HOVER */
+        
+        .bday-panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 70px rgba(79, 70, 229, .14);
+        }
+        
+        .month-count {
+            background: rgb(137 135 142 / 8%);
+            color: #100f10;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(79, 70, 229, .12);
+        }
+        
+        .user-text {
+            text-align: left;
+        }
+        /* ANIMATIONS */
+        
+        @keyframes floatBlob {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(18px) scale(1.08);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes floatBlob2 {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px) scale(1.06);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes starFloat {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px) rotate(12deg);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes rotateStar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+        <div id="topbar-container"></div>
+        <!-- MAIN -->
+        <div class="main">
+
+            <!-- TOPBAR -->
+
+
+            <div class="content">
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#f472b6,#ec4899)">
+                            <i class="ti ti-cake"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h2 id="todayCount">0</h2>
+                            <p>Birthdays Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#4f8ef7,#5b4de8)">
+                            <i class="ti ti-calendar-month"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h2 id="monthCount">0</h2>
+                            <p>This Month</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#f0b429,#d97706)">
+                            <i class="ti ti-star"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h2 id="nextBirthday" style="font-size:18px; line-height:1.3;">—</h2>
+                            <p>Next Birthday</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)">
+                            <i class="ti ti-users"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h2 id="totalEmployees">0</h2>
+                            <p>Employees w/ DOB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming + By-Month cards -->
+                <div class="bday-cards-row">
+
+                    <!-- Upcoming Birthdays -->
+                    <div class="bday-panel">
+                        <div class="rocket-wrap">🚀</div>
+
+                        <div class="star star-1"></div>
+                        <div class="star star-2"></div>
+                        <div class="star star-3"></div>
+                        <div class="star star-4"></div>
+                        <div class="bday-panel-header">
+                            <div class="bday-panel-title">
+                                <i class="ti ti-cake"></i> Upcoming Birthdays
+                            </div>
+                            <div class="total-badge" id="upcomingTotal">0 total</div>
+                        </div>
+                        <div class="bday-panel-body" id="upcomingList">
+                            <div class="empty-state small"><i class="ti ti-loader-2 spin"></i>
+                                <p>Loading…</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- By Month -->
+                    <div class="bday-panel">
+                        <div class="rocket-wrap">🚀</div>
+
+                        <div class="star star-1"></div>
+                        <div class="star star-2"></div>
+                        <div class="star star-3"></div>
+                        <div class="star star-4"></div>
+                        <div class="bday-panel-header">
+                            <div class="bday-panel-title">
+                                <i class="ti ti-calendar-event"></i> By Month
+                            </div>
+                            <div class="total-badge" id="monthTotal">0 birthdays</div>
+                        </div>
+                        <div class="bday-panel-body" id="monthList">
+                            <div class="empty-state small"><i class="ti ti-loader-2 spin"></i>
+                                <p>Loading…</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Table -->
+                <div class="table-panel">
+                    <div class="table-panel-header">
+                        <div class="table-panel-title">All Employees — Birthday Directory</div>
+                        <div class="table-tools">
+                            <div class="table-search">
+                                <i class="ti ti-search"></i>
+                                <input type="text" id="search" placeholder="Search name or department…">
+
+                                <button class="btn-export" onclick="exportCSV()">
+            <i class="ti ti-download"></i> Export CSV
+          </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bday-table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Date of Birth</th>
+                                    <th>Birthday</th>
+                                    <th>Days Until</th>
+                                    <th>Age This Year</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content -->
+        </div>
+
+        <!-- Toast -->
+        <div class="toast-container" id="toasts"></div>
+    </div>
+    <!-- Birthday logic -->
+    <script src="./js/birthdays.js"></script>
+
+    <!-- TOPBAR IMPORT -->
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                // ✅ Run AFTER topbar is injected
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                // Set module name + icon
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                // Set live date
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                // Set avatar from localStorage
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+
+</body>
+
+</html>

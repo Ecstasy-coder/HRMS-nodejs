@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sidebar</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================
+SIDEBAR
+========================= */
+        /* =========================================
+   SIDEBAR — EXACT REFERENCE STYLE
+========================================= */
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        .sidebar {
+            width: 232px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #1f3d69;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, .05);
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+        /* =========================================
+   LOGO
+========================================= */
+        
+        .sidebar-logo {
+            height: 92px;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-logo-inner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .sidebar-logo-img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            display: block;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+        
+        .logo-role {
+            display: block;
+            margin-top: 6px;
+            color: rgba(255, 255, 255, .45);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        /* =========================================
+   NAVIGATION
+========================================= */
+        
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 8px 10px;
+        }
+        
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .08);
+            border-radius: 20px;
+        }
+        
+        .nav-label {
+            padding-left: 14px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, .34);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        /* =========================================
+   NAV ITEMS
+========================================= */
+        
+        .nav-link {
+            height: 43px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px;
+            margin-bottom: 1px;
+            letter-spacing: -0.01em;
+            border-radius: 14px;
+            color: rgba(255, 255, 255, .86);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: .22s ease;
+            position: relative;
+        }
+        
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: .9;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, .05);
+            color: #ffffff;
+        }
+        
+        .nav-link.active {
+            background: rgba(255, 255, 255, .12);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(240, 168, 36, .18);
+        }
+        
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            bottom: 9px;
+            width: 4px;
+            background: #ffffff;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            transition: transform 0.25s ease, color 0.25s ease;
+        }
+        
+        .nav-link {
+            overflow: hidden;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, .08);
+            color: #ffffff;
+            transform: translateX(3px);
+        }
+        
+        .nav-link:hover i {
+            transform: translateX(4px) scale(1.08);
+            color: #f0a824;
+        }
+        
+        .nav-link.active {
+            background: rgba(255, 255, 255, .16);
+            color: #ffffff;
+            font-weight: 800;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, .18);
+        }
+        
+        .nav-link.active i {
+            color: #f0a824;
+        }
+        
+        .nav-link.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 4px;
+            background: #f0a824;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .sidebar .nav-link.active {
+            background: #f0a824 !important;
+            color: #ffffff !important;
+            font-weight: 800 !important;
+        }
+        
+        .sidebar .nav-link.active i {
+            color: #ffffff !important;
+        }
+        
+        .sidebar .nav-link.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 4px;
+            background: #ffffff;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .sidebar .nav-link {
+            transition: all 0.25s ease;
+        }
+        
+        .sidebar .nav-link:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.10);
+        }
+        
+        .sidebar .nav-link i {
+            transition: transform 0.25s ease;
+        }
+        
+        .sidebar .nav-link:hover i {
+            transform: translateX(4px);
+        }
+        /* =========================================
+   FOOTER
+========================================= */
+        
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, .05);
+            background: linear-gradient(to top, rgba(0, 0, 0, .06), transparent);
+        }
+        /* USER */
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0a824;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .user-name {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+        
+        .user-role {
+            color: rgba(255, 255, 255, .46);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+        /* LOGOUT */
+        
+        .btn-logout {
+            width: 100%;
+            height: 42px;
+            border: none;
+            outline: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .07);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+        
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, .12);
+            transform: translateY(-2px);
+        }
+        /* =========================================
+   MOBILE
+========================================= */
+        
+        @media(max-width:992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .3s ease;
+                z-index: 999;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+SIDEBAR
+========================= -->
+
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <div class="sidebar-logo-inner">
+
+                <img src="assets/images/logo.png.jpeg" class="sidebar-logo-img">
+
+                <div>
+
+                    <span class="logo-text">
+                    My Ecstasy
+                </span>
+
+                    <span class="logo-role">
+                    MANAGER PORTAL
+                </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-label">
+                MAIN
+            </div>
+
+            <a href="manager.html" class="nav-link">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+
+            <a href="myattendence.html" class="nav-link">
+                <i class="far fa-calendar-check"></i> My Attendance
+            </a>
+
+            <a href="myleaves.html" class="nav-link">
+                <i class="far fa-calendar-alt"></i> My Leaves
+            </a>
+
+            <a href="leaveapprovals.html" class="nav-link">
+                <i class="far fa-user"></i> Leave Approvals
+            </a>
+
+            <a href="reviewem.html" class="nav-link">
+                <i class="far fa-user-circle"></i> Review Employee JobCards
+            </a>
+
+            <a href="myjobcards.html" class="nav-link">
+                <i class="far fa-file-alt"></i> My Job Cards
+            </a>
+
+            <a href="Ticket.html" class="nav-link">
+                <i class="far fa-comment"></i> Help Desk
+            </a>
+
+            <a href="calender.html" class="nav-link">
+                <i class="far fa-calendar"></i> Holiday Calendar
+            </a>
+
+            <a href="birthdays.html" class="nav-link">
+                <i class="fas fa-birthday-cake"></i> Birthdays
+            </a>
+
+            <a href="impevents.html" class="nav-link">
+                <i class="far fa-star"></i> Important Events
+            </a>
+
+            <a href="payslips.html" class="nav-link">
+                <i class="fa-solid fa-sack-dollar"></i> My Payslips
+            </a>
+
+            <a href="analysis.html" class="nav-link">
+                <i class="fa-solid fa-chart-line"></i> Analysis
+            </a>
+
+            <a href="aboutus.html" class="nav-link">
+                <i class="fa-solid fa-circle-info"></i> About Us
+            </a>
+
+            <a href="profile.html" class="nav-link">
+                <i class="fa-solid fa-user"></i> My Profile
+            </a>
+
+        </nav>
+
+        <!-- FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <div class="user-info">
+
+                <div class="user-avatar">
+                    MV
+                </div>
+
+                <div>
+
+                    <div class="user-name">
+                        Rakesh
+                    </div>
+
+                    <div class="user-role">
+                        Manager Portal-Management
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn-logout" onclick="logoutUser()">
+                Sign Out
+            </button>
+        </div>
+
+    </aside>
+    <script>
+        function highlightCurrentSidebarPage() {
+            const currentFile = window.location.pathname
+                .split("/")
+                .pop()
+                .toLowerCase()
+                .replace(/\s+/g, "")
+                .trim();
+
+            const links = document.querySelectorAll(".sidebar .nav-link");
+
+            links.forEach(link => {
+                const href = link.getAttribute("href") || "";
+
+                const linkFile = href
+                    .split("/")
+                    .pop()
+                    .toLowerCase()
+                    .replace(/\s+/g, "")
+                    .trim();
+
+                link.classList.remove("active");
+
+                if (currentFile === linkFile) {
+                    link.classList.add("active");
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(highlightCurrentSidebarPage, 300);
+        });
+    </script>
+
+
+</body>
+
+</html>

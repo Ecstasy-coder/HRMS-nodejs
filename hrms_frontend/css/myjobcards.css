@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #111827;
+}
+
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin-left: 303px;
+}
+
+.header {
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    color: #1e3a8a;
+    font-size: 34px;
+}
+
+.header p {
+    color: #6b7280;
+    margin-top: 6px;
+}
+
+.form-card,
+.table-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 56px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+.form-card h2,
+.table-card h2 {
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: span 2;
+}
+
+label {
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #374151;
+}
+
+input,
+textarea {
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+}
+
+textarea {
+    min-height: 110px;
+    resize: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #2563eb;
+}
+
+button {
+    width: fit-content;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1e40af;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #1e3a8a;
+    color: white;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    font-size: 14px;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+.status {
+    background: #dcfce7;
+    color: #166534;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.delete-btn {
+    background: #ef4444;
+    padding: 9px 13px;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+.empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 25px;
+}
+
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full {
+        grid-column: span 1;
+    }
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Holiday Calendar</title>
+
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <link rel="stylesheet" href="./css/holidaycalendar.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- MAIN PAGE CONTENT ONLY -->
+    <div class="" layout ">
+
+        <!-- SIDEBAR -->
+        <div id="sidebar " class="sidebar "></div>
+
+        <!-- PAGE CONTENT -->
+         <div class="page-wrapper ">
+
+    <div class="page-content ">
+
+        <!-- Header -->
+        <div id="topbar-container "></div>  
+
+        <!-- Upload Card -->
+        <div class="calendar-card ">
+
+            <div class="card-header ">
+                Upload New Calendar
+            </div>
+
+            <div class="card-body ">
+
+                <!-- Year -->
+                <div class="form-group ">
+
+                    <label>
+            Calendar Year
+          </label>
+
+                    <select id="calendarYear ">
+
+            <option value="2026 ">
+              2026
+            </option>
+
+            <option value="2027 ">
+              2027
+            </option>
+
+            <option value="2028 ">
+              2028
+            </option>
+
+          </select>
+
+                </div>
+
+                <!-- Upload -->
+                <div class="upload-box ">
+
+                    <input type="file " id="calendarFile " accept=".pdf,.png,.jpg,.jpeg " />
+
+                    <div class="upload-text ">
+                        Drag & Drop File Here or Click to Browse
+                    </div>
+
+                    <div class="upload-subtext ">
+                        Accepted: PDF, PNG, JPG — Maximum 10 MB
+                    </div>
+
+                </div>
+
+                <!-- Upload Button -->
+                <button id="uploadBtn ">
+          Upload Calendar
+        </button>
+
+            </div>
+
+        </div>
+
+        <!-- Uploaded Calendars -->
+        <div class="uploaded-card ">
+
+            <div class="card-header ">
+                Uploaded Calendars
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>File Name</th>
+                        <th>Year</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Uploaded On</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="calendarTableBody ">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+    <!-- JS -->
+    <script src="./js/holidaycalendar.js "></script>
+
+    <!-- TOPBAR IMPORT -->
+<script>
+  fetch("topbar.html ")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("topbar-container ").innerHTML = html;
+
+      // ✅ Run AFTER topbar is injected
+      const MODULE_MAP = {
+        "manager ":        { name: "Dashboard ",                 icon: "fas fa-th-large "       },
+        "dashboard ":      { name: "Dashboard ",                 icon: "fas fa-th-large "       },
+        "myattendence ":   { name: "My Attendance ",             icon: "far fa-calendar-check " },
+        "myleaves ":       { name: "My Leaves ",                 icon: "far fa-calendar-alt "   },
+        "leaveapprovals ": { name: "Leave Approvals ",           icon: "far fa-user "           },
+        "reviewem ":       { name: "Review Employee Job Cards ", icon: "far fa-user-circle "    },
+        "myjobcards ":     { name: "My Job Cards ",              icon: "far fa-file-alt "       },
+        "ticket ":         { name: "Help Desk ",                 icon: "far fa-comment "        },
+        "calender ":       { name: "Holiday Calendar ",          icon: "far fa-calendar "       },
+        "birthdays ":      { name: "Birthdays ",                 icon: "fas fa-birthday-cake "  },
+        "impevents ":      { name: "Important Events ",          icon: "far fa-star "           },
+        "payslips ":       { name: "My Payslips ",               icon: "fas fa-sack-dollar "    },
+        "analysis ":       { name: "Analysis ",                  icon: "fas fa-chart-line "     },
+        "aboutus ":        { name: "About Us ",                  icon: "fas fa-circle-info "    },
+        "profile ":        { name: "My Profile ",                icon: "fas fa-user "           },
+      };
+
+      const DAYS   = ["Sunday ","Monday ","Tuesday ","Wednesday ","Thursday ","Friday ","Saturday "];
+      const MONTHS = ["January ","February ","March ","April ","May ","June ","July ","August ","September ","October ","November ","December "];
+
+      // Set module name + icon
+      const slug = decodeURIComponent(location.pathname.split("/ ").pop()).replace(".html "," ").toLowerCase();
+      const mod  = MODULE_MAP[slug] || MODULE_MAP["dashboard "];
+      document.getElementById("topbar-module-name ").textContent = mod.name;
+      document.getElementById("topbar-icon ").className          = mod.icon;
+
+      // Set live date
+      function setDate() {
+        const d = new Date();
+        document.getElementById("topbar-date ").textContent =
+          `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+      }
+      setDate();
+      setInterval(setDate, 60000);
+
+      // Set avatar from localStorage
+      const user     = JSON.parse(localStorage.getItem("user ") || "{} ");
+      const username = user.name || user.username || user.fullName || " ";
+      if (username) {
+        const initials = username.split(" ").map(w => w[0]).join(" ").toUpperCase().slice(0,2);
+        document.getElementById("topbar-avatar ").textContent = initials;
+      }
+    });
+</script>
+
+</body>
+
+</html>
