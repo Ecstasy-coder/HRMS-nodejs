@@ -1,14 +1,19 @@
 const API_URL = "http://localhost:5000/api/myjobcards";
 
-fetch('sidebar.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('sidebar').innerHTML = data;
-    })
-    .catch(error => {
-        console.log("Sidebar Error:", error);
-    });
+fetch('sidebar.html').then(r => r.text()).then(html => {
+    document.getElementById('sidebar').innerHTML = html;
 
+    // Highlight active nav link after sidebar is injected
+    const currentFile = window.location.pathname
+        .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+
+    document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+        const linkFile = (link.getAttribute('href') || '')
+            .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+        link.classList.remove('active');
+        if (currentFile === linkFile) link.classList.add('active');
+    });
+});
 
 const form = document.getElementById("myJobCardForm");
 const tableBody = document.getElementById("myJobCardsBody");

@@ -8,8 +8,6 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- ✅ Font Awesome — required for topbar icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
@@ -28,147 +26,179 @@
         
         .main {
             margin-left: 256px;
-            /* sidebar width */
             flex: 1;
             min-height: 100vh;
         }
         /* PAGE CONTENT */
         
         .page {
-            padding: 30px;
+            padding: 28px 30px;
         }
-        /* HERO */
+        /* ── VIEW-ONLY BANNER ── */
+        
+        .view-only-banner {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            font-size: 13.5px;
+            color: #1d4ed8;
+            animation: fadeUp .5s ease;
+        }
+        
+        .view-only-banner i {
+            font-size: 15px;
+            color: #3b82f6;
+            flex-shrink: 0;
+        }
+        
+        .view-only-banner strong {
+            font-weight: 700;
+        }
+        /* ── HERO ── */
         
         .hero {
-            background: linear-gradient(rgba(15, 23, 42, .75), rgba(15, 23, 42, .75)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400') center/cover;
-            border-radius: 28px;
-            padding: 90px 60px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #1a3660 100%);
+            border-radius: 20px;
+            padding: 56px 50px;
             color: white;
-            text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 22px;
             position: relative;
             overflow: hidden;
-            animation: fadeUp .8s ease;
+            animation: fadeUp .6s ease;
         }
         
         .hero::before {
             content: '';
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, .08);
+            width: 340px;
+            height: 340px;
+            background: rgba(255, 255, 255, .04);
             border-radius: 50%;
             top: -120px;
-            right: -100px;
+            right: -80px;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, .03);
+            border-radius: 50%;
+            bottom: -60px;
+            left: 40px;
         }
         
         .hero h1 {
-            font-size: 52px;
+            font-size: 36px;
             font-weight: 800;
-            margin-bottom: 18px;
-            letter-spacing: -1px;
+            margin-bottom: 10px;
+            letter-spacing: -.5px;
+            position: relative;
+            z-index: 1;
         }
         
         .hero p {
-            font-size: 18px;
-            line-height: 1.8;
-            max-width: 850px;
-            margin: auto;
-            color: #e2e8f0;
-        }
-        /* GRID */
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 35px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
-            transition: .4s ease;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #94a3b8;
             position: relative;
-            overflow: hidden;
+            z-index: 1;
+            max-width: 540px;
+        }
+        /* ── MISSION & VALUES GRID ── */
+        
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 22px;
+            animation: fadeUp .7s ease;
+        }
+        
+        .mv-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 26px;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, .06);
+            transition: box-shadow .3s ease, transform .3s ease;
+        }
+        
+        .mv-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .10);
+        }
+        
+        .mv-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: #f0a824;
+            margin-bottom: 12px;
+        }
+        
+        .mv-card p {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.85;
+        }
+        /* ── QUOTES ── */
+        
+        .quotes-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             animation: fadeUp .8s ease;
         }
         
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #2563eb, #7c3aed);
+        .quote-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 26px 28px;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, .06);
+            border-left: 4px solid #f0a824;
+            transition: box-shadow .3s ease, transform .3s ease;
         }
         
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(15, 23, 42, .12);
+        .quote-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .10);
         }
         
-        .card h3 {
-            font-size: 24px;
-            margin-bottom: 18px;
-            color: #0f172a;
-        }
-        
-        .card p {
-            color: #64748b;
-            line-height: 1.9;
+        .quote-card p {
             font-size: 15px;
-        }
-        /* QUOTE */
-        
-        .quote {
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            border-radius: 24px;
-            padding: 40px;
-            color: white;
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeUp 1s ease;
-        }
-        
-        .quote::after {
-            content: '❝';
-            position: absolute;
-            right: 30px;
-            top: 15px;
-            font-size: 90px;
-            opacity: .15;
-        }
-        
-        .quote p {
-            font-size: 22px;
-            line-height: 1.8;
             font-weight: 500;
-            margin-bottom: 20px;
+            color: #1e293b;
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 12px;
         }
         
-        .quote span {
-            font-size: 14px;
-            opacity: .9;
-            letter-spacing: 1px;
+        .quote-card span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: .04em;
         }
-        /* ANIMATIONS */
+        /* ── ANIMATIONS ── */
         
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(24px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        /* RESPONSIVE */
+        /* ── RESPONSIVE ── */
         
         @media (max-width: 992px) {
             .main {
@@ -177,14 +207,14 @@
         }
         
         @media (max-width: 768px) {
+            .mv-grid {
+                grid-template-columns: 1fr;
+            }
             .hero {
-                padding: 60px 25px;
+                padding: 40px 24px;
             }
             .hero h1 {
-                font-size: 38px;
-            }
-            .hero p {
-                font-size: 16px;
+                font-size: 26px;
             }
             .page {
                 padding: 16px;
@@ -199,66 +229,62 @@
         <!-- SIDEBAR -->
         <div id="sidebar"></div>
         <div id="topbar-container"></div>
+
         <div class="main">
-
-            <!-- ✅ TOPBAR — id is correct, outside .page -->
-
-
-            <!-- PAGE CONTENT -->
             <div class="page">
+
+                <!-- VIEW-ONLY BANNER -->
+                <div class="view-only-banner">
+                    <i class="fas fa-circle-info"></i>
+                    <span>This page is <strong>view-only</strong> for RM. Content is managed by HR and reflects here automatically.</span>
+                </div>
 
                 <!-- HERO -->
                 <div class="hero">
-                    <h1>Ecstasy Software Solutions</h1>
-                    <p>
-                        We build innovative digital experiences that empower businesses, enhance productivity, and drive future-ready transformation through technology and creativity.
-                    </p>
+                    <h1>Ecstasy Solutions</h1>
+                    <p>Building the future through technology, talent, and trust.</p>
                 </div>
 
                 <!-- MISSION & VALUES -->
-                <div class="grid">
-                    <div class="card">
-                        <h3>Our Mission</h3>
+                <div class="mv-grid">
+                    <div class="mv-card">
+                        <div class="mv-label">Our Mission</div>
                         <p>
-                            Our mission is to provide world-class software services and digital solutions that help companies scale efficiently and achieve sustainable growth through innovation and collaboration.
+                            To deliver innovative solutions that create meaningful impact for businesses and the communities we serve.
                         </p>
                     </div>
-                    <div class="card">
-                        <h3>Our Values</h3>
+                    <div class="mv-card">
+                        <div class="mv-label">Our Values</div>
                         <p>
-                            Integrity, innovation, teamwork, transparency, and customer success are the core values that guide every project and every relationship we build.
+                            Integrity in everything we do. Innovation as a daily habit. People first, always.
                         </p>
                     </div>
                 </div>
 
                 <!-- QUOTES -->
-                <div class="quote">
-                    <p>"Technology is best when it brings people together and creates impact."</p>
-                    <span>— Leadership Team</span>
-                </div>
-
-                <div class="quote">
-                    <p>"Culture and innovation are the foundations of sustainable success."</p>
-                    <span>— People & Culture</span>
+                <div class="quotes-col">
+                    <div class="quote-card">
+                        <p>"Great companies are built by great people — your growth is our growth."</p>
+                        <span>— Leadership Team</span>
+                    </div>
+                    <div class="quote-card">
+                        <p>"Don't think I as Ecstasy, think We as Ecstasy."</p>
+                        <span>— People &amp; Culture</span>
+                    </div>
                 </div>
 
             </div>
-            <!-- /page -->
+            <div id="footer-container"></div>
         </div>
-        <!-- /main -->
     </div>
-    <!-- /layout -->
 
-
-    <!-- ✅ TOPBAR IMPORT -->
-    <!-- TOPBAR IMPORT -->
+    <!-- TOPBAR IMPORT — UNCHANGED -->
     <script>
         fetch("topbar.html")
             .then(res => res.text())
             .then(html => {
                 document.getElementById("topbar-container").innerHTML = html;
 
-                // ✅ Run AFTER topbar is injected
                 const MODULE_MAP = {
                     "manager": {
                         name: "Dashboard",
@@ -325,13 +351,11 @@
                 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-                // Set module name + icon
                 const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
                 const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
                 document.getElementById("topbar-module-name").textContent = mod.name;
                 document.getElementById("topbar-icon").className = mod.icon;
 
-                // Set live date
                 function setDate() {
                     const d = new Date();
                     document.getElementById("topbar-date").textContent =
@@ -340,7 +364,6 @@
                 setDate();
                 setInterval(setDate, 60000);
 
-                // Set avatar from localStorage
                 const user = JSON.parse(localStorage.getItem("user") || "{}");
                 const username = user.name || user.username || user.fullName || "";
                 if (username) {
@@ -350,25 +373,28 @@
             });
     </script>
 
-    <!-- ✅ SIDEBAR IMPORT -->
+    <!-- SIDEBAR IMPORT — UNCHANGED -->
     <script>
-        fetch("sidebar.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("sidebar").innerHTML = data;
+        fetch('sidebar.html').then(r => r.text()).then(html => {
+            document.getElementById('sidebar').innerHTML = html;
 
-                const currentPage = decodeURIComponent(
-                    location.pathname.split("/").pop()
-                ).toLowerCase();
+            const currentFile = window.location.pathname
+                .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
 
-                document.querySelectorAll(".nav-link").forEach(link => {
-                    const linkPage = decodeURIComponent(
-                        link.getAttribute("href").split("/").pop()
-                    ).toLowerCase();
-                    link.classList.toggle("active", linkPage === currentPage);
-                });
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                const linkFile = (link.getAttribute('href') || '')
+                    .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+                link.classList.remove('active');
+                if (currentFile === linkFile) link.classList.add('active');
             });
+        });
     </script>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+        });
+    </script>
+
 
 </body>
 

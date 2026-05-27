@@ -28,10 +28,12 @@
             background: #ffffff;
             border-bottom: 1px solid #e8edf5;
             padding: 0 32px;
-            position: sticky;
+            position: fixed;
             top: 0;
             z-index: 100;
-            margin-left: 232px;
+            left: 232px;
+            width: calc(100% - 232px);
+            right: 0;
             /* matches sidebar width exactly */
             display: flex;
             align-items: center;
@@ -127,7 +129,8 @@
         
         @media (max-width: 992px) {
             .topbar {
-                margin-left: 0;
+                left: 0;
+                width: 100%;
                 padding: 0 16px;
             }
             .topbar-date {
@@ -168,8 +171,8 @@
 
     <script>
         /* ══════════════════════════════════════════
-                                                                                                                               MODULE MAP — every page in your sidebar
-                                                                                                                            ══════════════════════════════════════════ */
+                                                                                                                                                       MODULE MAP — every page in your sidebar
+                                                                                                                                                    ══════════════════════════════════════════ */
         const MODULE_MAP = {
 
             /* matches filename without .html */

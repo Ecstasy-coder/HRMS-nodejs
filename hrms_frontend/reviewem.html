@@ -65,9 +65,8 @@
 
             </div>
 
-
         </div>
-
+        <div id="footer-container"></div>
     </div>
 
     <script src="./js/reviewJobCards.js">
@@ -170,6 +169,11 @@
                     document.getElementById("topbar-avatar").textContent = initials;
                 }
             });
+    </script>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+        });
     </script>
 </body>
 

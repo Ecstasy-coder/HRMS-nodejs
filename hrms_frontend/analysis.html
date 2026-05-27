@@ -107,27 +107,20 @@
         </div>
     </div>
     <script>
-        fetch("sidebar.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("sidebar").innerHTML = data;
+        fetch('sidebar.html').then(r => r.text()).then(html => {
+            document.getElementById('sidebar').innerHTML = html;
 
-                const currentPage = decodeURIComponent(
-                    window.location.pathname.split("/").pop()
-                ).toLowerCase();
+            // Highlight active nav link after sidebar is injected
+            const currentFile = window.location.pathname
+                .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
 
-                document.querySelectorAll(".nav-link").forEach(link => {
-                    const linkPage = decodeURIComponent(
-                        link.getAttribute("href").split("/").pop()
-                    ).toLowerCase();
-
-                    link.classList.remove("active");
-
-                    if (linkPage === currentPage) {
-                        link.classList.add("active");
-                    }
-                });
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                const linkFile = (link.getAttribute('href') || '')
+                    .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+                link.classList.remove('active');
+                if (currentFile === linkFile) link.classList.add('active');
             });
+        });
     </script>
 
     <!-- TOPBAR IMPORT -->
@@ -228,7 +221,11 @@
                 }
             });
     </script>
-
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+        });
+    </script>
 
     <script src="./js/analysis.js"></script>
 </body>

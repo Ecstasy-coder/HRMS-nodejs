@@ -240,6 +240,8 @@ body {
 }
 
 .rating-stars-yellow {
+    background: #77552c;
+    border-radius: 10%;
     color: #f59e0b !important;
     font-size: 30px;
     letter-spacing: 3px;

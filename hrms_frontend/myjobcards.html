@@ -165,6 +165,11 @@
                     }
                 });
         </script>
+        <script>
+            fetch('footer.html').then(r => r.text()).then(html => {
+                document.getElementById('footer-container').innerHTML = html;
+            });
+        </script>
 </body>
 
 </html>
