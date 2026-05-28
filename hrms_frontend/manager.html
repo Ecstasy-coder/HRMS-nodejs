@@ -47,75 +47,16 @@
 MAIN
 ========================= */
         
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
         .main {
             min-height: 100vh;
         }
         /* TOPBAR */
-        
-        .topbar {
-            height: 74px;
-            background: #fff;
-            border-bottom: 1px solid var(--border);
-            padding: 0 32px;
-            position: sticky;
-            z-index: 50;
-            top: 0;
-            display: flex;
-            margin-left: 17%;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .topbar-title {
-            font-size: 22px;
-            font-weight: 700;
-        }
-        
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        
-        .date {
-            color: var(--muted);
-            font-size: 14px;
-        }
-        
-        .notification {
-            position: relative;
-        }
-        
-        .notification i {
-            font-size: 18px;
-        }
-        
-        .badge {
-            position: absolute;
-            top: -8px;
-            right: -9px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ff3b30;
-            color: #fff;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .top-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700;
-        }
         /* PAGE */
         
         .page {
@@ -128,6 +69,7 @@ MAIN
             grid-template-columns: 340px 1fr;
             gap: 22px;
             align-items: start;
+            margin-top: 88px;
         }
         /* GALLERY */
         /* GALLERY WRAPPER */
@@ -600,7 +542,7 @@ COLOR HOVER LAYERS
         }
         /* DIFFERENT ACCENT COLORS */
         
-        \..quick-card:nth-child(1) {
+        .quick-card:nth-child(1) {
             border-bottom: 4px solid #60a5fa;
         }
         
@@ -1048,13 +990,9 @@ COLOR HOVER LAYERS
 
         <!-- SIDEBAR -->
         <div id="sidebar"></div>
-
-
+        <div id="topbar-container"></div>
 
         <div class="main">
-
-            <div id="topbar-container"></div>
-
 
             <div class="page">
 
@@ -1379,6 +1317,7 @@ COLOR HOVER LAYERS
             </div>
 
         </div>
+        <div id="footer-container"></div>
     </div>
     <!-- TOPBAR IMPORT -->
     <script>

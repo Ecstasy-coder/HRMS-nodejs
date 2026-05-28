@@ -138,3 +138,88 @@ async function deleteMyJobCard(id) {
         alert("Error deleting job card");
     }
 }
+document.addEventListener("DOMContentLoaded", function() {
+
+    const dayFilter = document.getElementById("dayFilter");
+    const monthFilter = document.getElementById("monthFilter");
+    const yearFilter = document.getElementById("yearFilter");
+
+    // DAYS
+    for (let i = 1; i <= 31; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        dayFilter.appendChild(option);
+    }
+
+    // MONTHS
+    const months = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+
+    months.forEach((month, index) => {
+        const option = document.createElement("option");
+        option.value = index + 1;
+        option.textContent = month;
+        monthFilter.appendChild(option);
+    });
+
+    // YEARS
+    const currentYear = new Date().getFullYear();
+
+    for (let year = currentYear; year >= 2020; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
+    }
+
+});
+
+function filterJobCardRows() {
+    const selectedDay = document.getElementById("dayFilter").value;
+    const selectedMonth = document.getElementById("monthFilter").value;
+    const selectedYear = document.getElementById("yearFilter").value;
+
+    const rows = document.querySelectorAll("#myJobCardsBody tr");
+
+    rows.forEach(row => {
+        const dateCell = row.children[0];
+
+        if (!dateCell) return;
+
+        const rowDateText = dateCell.innerText.trim();
+
+        if (!rowDateText || rowDateText === "Loading...") return;
+
+        const rowDate = new Date(rowDateText);
+
+        const rowDay = rowDate.getDate().toString();
+        const rowMonth = (rowDate.getMonth() + 1).toString();
+        const rowYear = rowDate.getFullYear().toString();
+
+        const dayMatch = selectedDay === "" || selectedDay === rowDay;
+        const monthMatch = selectedMonth === "" || selectedMonth === rowMonth;
+        const yearMatch = selectedYear === "" || selectedYear === rowYear;
+
+        if (dayMatch && monthMatch && yearMatch) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+
+document.getElementById("dayFilter").addEventListener("change", filterJobCardRows);
+document.getElementById("monthFilter").addEventListener("change", filterJobCardRows);
+document.getElementById("yearFilter").addEventListener("change", filterJobCardRows);
+
+document.getElementById("clearFilters").addEventListener("click", function() {
+    document.getElementById("dayFilter").value = "";
+    document.getElementById("monthFilter").value = "";
+    document.getElementById("yearFilter").value = "";
+
+    filterJobCardRows();
+});

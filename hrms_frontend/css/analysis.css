@@ -22,6 +22,12 @@ body {
     margin-left: 280px;
 }
 
+.layout {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
 
 /* ─── Filter Bar ──────────────────────────────────────── */
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,7 +12,6 @@
         <div class="sidebar" id="sidebar"></div>
         <div id="topbar-container"></div>
         <div class="container">
-
             <div class="content">
                 <div class="form-card">
                     <h2>Create Job Card</h2>
@@ -66,110 +65,413 @@
                 </div>
             </div>
         </div>
-        <script src="./js/myjobcards.js"></script>
-        <!-- TOPBAR IMPORT -->
-        <script>
-            fetch("topbar.html")
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("topbar-container").innerHTML = html;
+        <div id="footer-container"></div>
+    </div>
+    <script src="./js/myjobcards.js"></script>
 
-                    // ✅ Run AFTER topbar is injected
-                    const MODULE_MAP = {
-                        "manager": {
-                            name: "Dashboard",
-                            icon: "fas fa-th-large"
-                        },
-                        "dashboard": {
-                            name: "Dashboard",
-                            icon: "fas fa-th-large"
-                        },
-                        "myattendence": {
-                            name: "My Attendance",
-                            icon: "far fa-calendar-check"
-                        },
-                        "myleaves": {
-                            name: "My Leaves",
-                            icon: "far fa-calendar-alt"
-                        },
-                        "leaveapprovals": {
-                            name: "Leave Approvals",
-                            icon: "far fa-user"
-                        },
-                        "reviewem": {
-                            name: "Review Employee Job Cards",
-                            icon: "far fa-user-circle"
-                        },
-                        "myjobcards": {
-                            name: "My Job Cards",
-                            icon: "far fa-file-alt"
-                        },
-                        "ticket": {
-                            name: "Help Desk",
-                            icon: "far fa-comment"
-                        },
-                        "calender": {
-                            name: "Holiday Calendar",
-                            icon: "far fa-calendar"
-                        },
-                        "birthdays": {
-                            name: "Birthdays",
-                            icon: "fas fa-birthday-cake"
-                        },
-                        "impevents": {
-                            name: "Important Events",
-                            icon: "far fa-star"
-                        },
-                        "payslips": {
-                            name: "My Payslips",
-                            icon: "fas fa-sack-dollar"
-                        },
-                        "analysis": {
-                            name: "Analysis",
-                            icon: "fas fa-chart-line"
-                        },
-                        "aboutus": {
-                            name: "About Us",
-                            icon: "fas fa-circle-info"
-                        },
-                        "profile": {
-                            name: "My Profile",
-                            icon: "fas fa-user"
-                        },
-                    };
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
 
-                    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-                    // Set module name + icon
-                    const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
-                    const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
-                    document.getElementById("topbar-module-name").textContent = mod.name;
-                    document.getElementById("topbar-icon").className = mod.icon;
+                const MODULE_MAP = {
+                    "manager": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "dashboard": {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    "myattendence": {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    "myleaves": {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    "leaveapprovals": {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    "reviewem": {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    "myjobcards": {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    "ticket": {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    "calender": {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    "birthdays": {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    "impevents": {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    "payslips": {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    "analysis": {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    "aboutus": {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    "profile": {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    },
+                };
 
-                    // Set live date
-                    function setDate() {
-                        const d = new Date();
-                        document.getElementById("topbar-date").textContent =
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                const slug = decodeURIComponent(location.pathname.split("/").pop()).replace(".html", "").toLowerCase();
+                const mod = MODULE_MAP[slug] || MODULE_MAP["dashboard"];
+                document.getElementById("topbar-module-name").textContent = mod.name;
+                document.getElementById("topbar-icon").className = mod.icon;
+
+                function setDate() {
+                    const d = new Date();
+                    document.getElementById("topbar-date").textContent =
+                        `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+                }
+                setDate();
+                setInterval(setDate, 60000);
+
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                if (username) {
+                    const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+                    document.getElementById("topbar-avatar").textContent = initials;
+                }
+            });
+    </script>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+        });
+    </script>
+</body>
+
+</html> -->
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Job Cards</title>
+
+    <link rel="stylesheet" href="./css/myjobcards.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="main-layout">
+        <div class="sidebar" id="sidebar"></div>
+        <div id="topbar-container"></div>
+
+        <main class="jobcard-page">
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <span>PENDING HR REVIEW</span>
+                    <h2 class="orange">0</h2>
+                    <p>Awaiting HR</p>
+                </div>
+
+                <div class="stat-card">
+                    <span>APPROVED BY HR</span>
+                    <h2 class="green">3</h2>
+                    <p>This month</p>
+                </div>
+
+                <div class="stat-card">
+                    <span>REJECTED</span>
+                    <h2 class="red">0</h2>
+                    <p>Need attention</p>
+                </div>
+            </section>
+
+            <section class="submit-header">
+                <h2>Submit My Daily Job Card</h2>
+                <button type="button" id="newEntryBtn">+ New Entry</button>
+            </section>
+
+            <section class="warning-box">
+                <span>⚠️</span>
+                <marquee behavior="scroll" direction="left">
+                    Job cards cannot be edited for entries older than 7 to 14 days from submission date.
+                </marquee>
+            </section>
+
+            <section class="form-card hidden-form" id="jobCardFormBox">
+                <h2>Create Job Card</h2>
+
+                <form id="myJobCardForm">
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="date" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" id="projectName" placeholder="Enter project name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hours Worked</label>
+                        <input type="number" id="hoursWorked" placeholder="Enter hours" required />
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Work Description</label>
+                        <textarea id="workDescription" placeholder="Enter work description" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send to HR</button>
+                </form>
+            </section>
+
+            <section class="filter-card">
+                <h2><i class="fa-regular fa-calendar-days"></i> My Job Cards</h2>
+
+                <div class="filters">
+                    <div>
+                        <label>DAY</label>
+                        <select id="dayFilter">
+                            <option value="">-- Day --</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>MONTH</label>
+                        <select id="monthFilter">
+                            <option value="">-- Month --</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>YEAR</label>
+                        <select id="yearFilter">
+                            <option value="">-- Year --</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="clear-btn" id="clearFilters">× Clear</button>
+                </div>
+            </section>
+
+            <section class="table-card">
+                <h2>Submitted Job Cards</h2>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Project Name</th>
+                                <th>Hours</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="myJobCardsBody">
+                            <tr>
+                                <td colspan="6" class="empty">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <div id="footer-container"></div>
+    </div>
+
+    <script src="./js/myjobcards.js"></script>
+
+    <script>
+        fetch("topbar.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("topbar-container").innerHTML = html;
+
+                const MODULE_MAP = {
+                    manager: {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    dashboard: {
+                        name: "Dashboard",
+                        icon: "fas fa-th-large"
+                    },
+                    myattendence: {
+                        name: "My Attendance",
+                        icon: "far fa-calendar-check"
+                    },
+                    myleaves: {
+                        name: "My Leaves",
+                        icon: "far fa-calendar-alt"
+                    },
+                    leaveapprovals: {
+                        name: "Leave Approvals",
+                        icon: "far fa-user"
+                    },
+                    reviewem: {
+                        name: "Review Employee Job Cards",
+                        icon: "far fa-user-circle"
+                    },
+                    myjobcards: {
+                        name: "My Job Cards",
+                        icon: "far fa-file-alt"
+                    },
+                    ticket: {
+                        name: "Help Desk",
+                        icon: "far fa-comment"
+                    },
+                    calender: {
+                        name: "Holiday Calendar",
+                        icon: "far fa-calendar"
+                    },
+                    birthdays: {
+                        name: "Birthdays",
+                        icon: "fas fa-birthday-cake"
+                    },
+                    impevents: {
+                        name: "Important Events",
+                        icon: "far fa-star"
+                    },
+                    payslips: {
+                        name: "My Payslips",
+                        icon: "fas fa-sack-dollar"
+                    },
+                    analysis: {
+                        name: "Analysis",
+                        icon: "fas fa-chart-line"
+                    },
+                    aboutus: {
+                        name: "About Us",
+                        icon: "fas fa-circle-info"
+                    },
+                    profile: {
+                        name: "My Profile",
+                        icon: "fas fa-user"
+                    }
+                };
+
+                const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                const slug = decodeURIComponent(location.pathname.split("/").pop())
+                    .replace(".html", "")
+                    .toLowerCase();
+
+                const mod = MODULE_MAP[slug] || MODULE_MAP.dashboard;
+
+                const moduleName = document.getElementById("topbar-module-name");
+                const moduleIcon = document.getElementById("topbar-icon");
+
+                if (moduleName) moduleName.textContent = mod.name;
+                if (moduleIcon) moduleIcon.className = mod.icon;
+
+                function setDate() {
+                    const d = new Date();
+                    const topbarDate = document.getElementById("topbar-date");
+
+                    if (topbarDate) {
+                        topbarDate.textContent =
                             `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
                     }
-                    setDate();
-                    setInterval(setDate, 60000);
+                }
 
-                    // Set avatar from localStorage
-                    const user = JSON.parse(localStorage.getItem("user") || "{}");
-                    const username = user.name || user.username || user.fullName || "";
-                    if (username) {
-                        const initials = username.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
-                        document.getElementById("topbar-avatar").textContent = initials;
+                setDate();
+                setInterval(setDate, 60000);
+
+                const user = JSON.parse(localStorage.getItem("user") || "{}");
+                const username = user.name || user.username || user.fullName || "";
+                const avatar = document.getElementById("topbar-avatar");
+
+                if (username && avatar) {
+                    avatar.textContent = username
+                        .split(" ")
+                        .map(word => word[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2);
+                }
+            });
+
+        fetch("footer.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("footer-container").innerHTML = html;
+            });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const newEntryBtn = document.getElementById("newEntryBtn");
+            const formBox = document.getElementById("jobCardFormBox");
+
+            if (newEntryBtn && formBox) {
+                newEntryBtn.addEventListener("click", function() {
+                    formBox.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const newEntryBtn = document.getElementById("newEntryBtn");
+            const formBox = document.getElementById("jobCardFormBox");
+
+            if (newEntryBtn && formBox) {
+                newEntryBtn.addEventListener("click", function() {
+                    formBox.classList.toggle("hidden-form");
+
+                    if (!formBox.classList.contains("hidden-form")) {
+                        formBox.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                        newEntryBtn.innerText = "− Close Entry";
+                    } else {
+                        newEntryBtn.innerText = "+ New Entry";
                     }
                 });
-        </script>
-        <script>
-            fetch('footer.html').then(r => r.text()).then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-            });
-        </script>
+            }
+        });
+    </script>
 </body>
 
 </html>

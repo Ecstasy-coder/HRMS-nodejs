@@ -8,6 +8,7 @@ const attendanceRoutes = require("./routes/attendanceRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+
 const profileRoutes =
     require("./routes/profileRoutes");
 const app = express();
@@ -23,6 +24,8 @@ const birthdayRoutes = require("./routes/birthdayRoutes");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+
 connectDB();
 
 app.use(cors({
@@ -37,7 +40,8 @@ app.use("/api/birthdays", birthdayRoutes);
 
 app.use("/api/myjobcards", myJobCardsRoutes);
 
-
+const leaveRoutes = require("./routes/leaveRoutes");
+app.use("/api/leaves", leaveRoutes);
 app.use(express.json());
 app.use("/api/attendance", attendanceRoutes);
 app.use(

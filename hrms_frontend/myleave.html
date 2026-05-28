@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Leaves</title>
+
+    <link rel="stylesheet" href="./css/myleaves.css" />
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- EMPTY LEFT SIDE -->
+        <div class="sidebar" id="sidebar"></div>
+        <div class="topbar" id="topbar-container"></div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- HEADER -->
+
+
+
+
+
+            <!-- LEAVE BALANCE -->
+            <div class="leave-balance">
+
+                <h2>
+                    Leave Balance — 2026
+                </h2>
+
+                <p>
+                    All balances reset on 1 January each year
+                </p>
+
+                <div class="cards">
+
+                    <!-- CL -->
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h3>
+                                Casual Leave
+                            </h3>
+
+                            <span>CL</span>
+                        </div>
+
+                        <div class="stats">
+
+                            <div>
+                                <h2 id="clTotal">
+                                    12
+                                </h2>
+
+                                <p>TOTAL</p>
+                            </div>
+
+                            <div>
+                                <h2 id="clUsed">
+                                    0.0
+                                </h2>
+
+                                <p>USED</p>
+                            </div>
+
+                            <div>
+                                <h2 id="clLeft">
+                                    12.0
+                                </h2>
+
+                                <p>LEFT</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- SL -->
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h3>
+                                Sick Leave
+                            </h3>
+
+                            <span>SL</span>
+                        </div>
+
+                        <div class="stats">
+
+                            <div>
+                                <h2 id="slTotal">
+                                    12
+                                </h2>
+
+                                <p>TOTAL</p>
+                            </div>
+
+                            <div>
+                                <h2 id="slUsed">
+                                    0.0
+                                </h2>
+
+                                <p>USED</p>
+                            </div>
+
+                            <div>
+                                <h2 id="slLeft">
+                                    12.0
+                                </h2>
+
+                                <p>LEFT</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- LOP -->
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h3>
+                                Loss of Pay
+                            </h3>
+
+                            <span>LOP</span>
+                        </div>
+
+                        <p>
+                            No fixed limit — salary deducted per day
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- BOTTOM SECTION -->
+            <div class="bottom-section">
+
+                <!-- TABLE -->
+                <div class="table-section">
+
+                    <div class="table-header">
+                        <h2>
+                            Leave Requests — 2026
+                        </h2>
+
+                        <span id="pendingCount">
+            0 pending
+          </span>
+                    </div>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>TYPE</th>
+                                <th>FROM</th>
+                                <th>TO</th>
+                                <th>DAYS</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="leaveTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- FORM -->
+                <div class="form-section">
+
+                    <h2>
+                        Apply for Leave
+                    </h2>
+
+                    <form id="leaveForm">
+
+                        <div id="formNotification"></div>
+
+
+                        <label>
+            Leave Type
+          </label>
+
+                        <select id="leaveType">
+            <option value="">
+              Select Leave
+            </option>
+
+            <option value="CL">
+              Casual Leave
+            </option>
+
+            <option value="SL">
+              Sick Leave
+            </option>
+
+            <option value="LOP">
+              Loss Of Pay
+            </option>
+          </select>
+
+
+                        <div class="date-row">
+
+                            <div>
+                                <label>
+                From Date
+              </label>
+
+                                <input type="date" id="fromDate" />
+                            </div>
+
+                            <div>
+                                <label>
+                To Date
+              </label>
+
+                                <input type="date" id="toDate" />
+                            </div>
+
+                        </div>
+
+                        <label>
+            Alternate Mobile
+          </label>
+
+                        <input type="text" id="alternateMobile" />
+
+                        <label>
+            Reason
+          </label>
+
+                        <textarea id="reason"></textarea>
+
+                        <button type="submit">
+            Submit Request
+          </button>
+
+                    </form>
+
+                    <!-- POLICY -->
+                    <div class="policy">
+
+                        <h3>
+                            Leave Policy
+                        </h3>
+
+                        <p>
+                            Casual & Sick leave reset every year — no carry forward
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="./js/myleaves.js"></script>
+    <script>
+        fetch('sidebar.html').then(r => r.text()).then(html => {
+            document.getElementById('sidebar').innerHTML = html;
+
+            // Highlight active nav link after sidebar is injected
+            const currentFile = window.location.pathname
+                .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                const linkFile = (link.getAttribute('href') || '')
+                    .split('/').pop().toLowerCase().replace(/\s+/g, '').trim();
+                link.classList.remove('active');
+                if (currentFile === linkFile) link.classList.add('active');
+            });
+        });
+        fetch('topbar.html').then(r => r.text()).then(html => {
+            document.getElementById('topbar-container').innerHTML = html;
+            try {
+                document.getElementById('topbar-module-name').textContent = 'My Leaves';
+            } catch (e) {}
+            try {
+                document.getElementById('topbar-icon').className = 'far fa-calendar-alt';
+            } catch (e) {}
+            try {
+                const u = JSON.parse(localStorage.getItem('user') || '{}');
+                const name = u.name || u.username || u.fullName || '';
+                if (name) {
+                    const ini = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                    document.getElementById('topbar-avatar').textContent = ini;
+                }
+            } catch (e) {}
+
+            function setDate() {
+                const d = new Date();
+                try {
+                    document.getElementById('topbar-date').textContent =
+                        `${DAYS_LONG[d.getDay()]}, ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+                } catch (e) {}
+            }
+            setDate();
+            setInterval(setDate, 60000);
+        });
+    </script>
+
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-container').innerHTML = html;
+        });
+    </script>
+</body>
+
+</html>

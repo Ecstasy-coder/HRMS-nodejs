@@ -44,19 +44,12 @@
             color: var(--text);
             overflow-x: hidden;
         }
-        /* ===================================================
-   LAYOUT
-        .wrapper {
-            display: grid;
-            grid-template-columns: 260px 1fr;
+        
+        .layout {
+            display: flex;
             min-height: 100vh;
+            flex-direction: column;
         }
-        /* ===================================================
-   SIDEBAR
-=================================================== */
-        /* ===================================================
-   MAIN
-=================================================== */
         
         .main {
             flex: 1;
@@ -1057,14 +1050,16 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <!-- /content -->
+
         </div>
 
         <!-- Toast -->
         <div class="toast-container" id="toasts"></div>
+        <div id="footer-container"></div>
     </div>
+
     <!-- Birthday logic -->
     <script src="./js/birthdays.js"></script>
 

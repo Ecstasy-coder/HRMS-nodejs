@@ -253,7 +253,7 @@ px .form-card,
 
 .ticket-table th {
     padding: 14px 22px;
-    text-align: left;
+    text-align: center;
     font-size: 12px;
     color: #06133d;
     font-weight: 800;
@@ -266,6 +266,7 @@ px .form-card,
     font-size: 14px;
     color: #06133d;
     vertical-align: middle;
+    text-align: center;
 }
 
 .ticket-id {

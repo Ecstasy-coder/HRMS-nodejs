@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-
     <link rel="stylesheet" href="./css/style.css" />
 </head>
 
@@ -19,19 +20,26 @@
                 <p id="userInfo"></p>
             </div>
 
-            <button class="logout-btn" onclick="logoutUser()">
-                Logout
-            </button>
+            <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
 
         <div class="panel">
-            <h3>Create User</h3>
+            <h3>Create HR / Finance User</h3>
 
             <input type="text" id="newName" placeholder="Name" />
-
             <input type="email" id="newEmail" placeholder="Email" />
-
             <input type="password" id="newPassword" placeholder="Password" />
+
+            <input type="text" id="employeeId" placeholder="Employee ID" />
+            <input type="text" id="department" placeholder="Department" />
+            <input type="text" id="designation" placeholder="Designation" />
+            <input type="text" id="phoneNumber" placeholder="Phone Number" />
+
+            <label>Date of Birth</label>
+            <input type="date" id="dateOfBirth" />
+
+            <label>Date of Joining</label>
+            <input type="date" id="dateOfJoining" />
 
             <select id="newRole">
                 <option value="">Select Role</option>
@@ -39,9 +47,7 @@
                 <option value="finance">Finance</option>
             </select>
 
-            <button onclick="createUser()">
-                Create User
-            </button>
+            <button onclick="createUser()">Create User</button>
 
             <p id="createMessage"></p>
         </div>

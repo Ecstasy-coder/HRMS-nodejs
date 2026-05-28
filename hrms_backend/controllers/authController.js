@@ -605,5 +605,3 @@ module.exports = {
     adminCreateUser,
     hrCreateUser,
 };
-
-//

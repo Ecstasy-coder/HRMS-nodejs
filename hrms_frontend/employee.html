@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -16,6 +16,149 @@
         <li>My Leaves</li>
         <li>My Salary</li>
     </ul>
+
+</body>
+
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Dashboard</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+        
+        .dashboard {
+            padding: 30px;
+        }
+        
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logout-btn {
+            background: #e53935;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        .logout-btn:hover {
+            background: #c62828;
+        }
+        
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .panel h3 {
+            margin-bottom: 20px;
+        }
+        
+        .menu-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .menu-list li {
+            background: #f1f5f9;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <div class="topbar">
+
+            <div>
+                <h2>Employee Dashboard</h2>
+                <p id="userInfo"></p>
+            </div>
+
+            <button class="logout-btn" onclick="logoutUser()">
+                Logout
+            </button>
+
+        </div>
+
+        <div class="panel">
+
+            <h3>Employee Portal</h3>
+
+            <ul class="menu-list">
+                <li>My Attendance</li>
+                <li>My Leaves</li>
+                <li>My Salary</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const token = localStorage.getItem("token");
+            const userData = localStorage.getItem("user");
+
+            if (!token || !userData) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            const user = JSON.parse(userData);
+
+            if (user.role !== "employee") {
+                alert("Access denied");
+                window.location.href = "index.html";
+                return;
+            }
+
+            document.getElementById("userInfo").innerText =
+                `${user.name} | ${user.email} | ${user.role}`;
+        });
+
+        function logoutUser() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href = "index.html";
+        }
+    </script>
 
 </body>
 
