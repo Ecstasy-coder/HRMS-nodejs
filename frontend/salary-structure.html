@@ -21,549 +21,552 @@ href="./css/style.css">
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+
+  <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 
 <body>
 
 <div class="layout">
 
-    <!-- MAIN -->
-      <div id="sidebar"></div>
+<!-- SIDEBAR -->
+  <div id="sidebar"></div>
 
+<!-- MAIN CONTENT -->
 
-    <main class="main-content">
+<main class="main-content">
+           <div id="topbar-container"></div>
+<!-- TOPBAR -->
 
-        <!-- TOPBAR -->
 
-        <div class="topbar">
 
-            <h2>
-                Salary Structures
-            </h2>
+<div class="content-layout">
 
-            <div class="topbar-right">
+<!-- EMPLOYEE PANEL -->
 
-                <span id="todayDate">
-                </span>
+<div class="employee-panel">
 
-                <div class="notification">
-                    <i class="fa-solid fa-bell"></i>
-                    <span>5</span>
-                </div>
+<div class="employee-header">
 
-                <div class="top-avatar">
-                    FM
-                </div>
+<h3>
+Employees
+</h3>
 
-            </div>
+<input
+type="text"
+id="employeeSearch"
+placeholder="Search Employee">
 
-        </div>
+</div>
 
-        <!-- CONTENT -->
+<div
+class="employee-scroll"
+id="employeeScroll">
 
-        <div class="content-layout">
+</div>
 
-            <!-- EMPLOYEE PANEL -->
+</div>
 
-            <div class="employee-panel">
+<!-- EMPTY STATE -->
 
-                <div class="employee-header">
+<div
+class="empty-state"
+id="emptyState">
 
-                    <h3>
-                        Employees
-                    </h3>
+<div class="empty-icon">
 
-                    <input
-                    type="text"
-                    id="employeeSearch"
-                    placeholder="Search Employee">
+<i class="fa-regular fa-user"></i>
 
-                </div>
+</div>
 
-                <div
-                class="employee-scroll"
-                id="employeeScroll">
+<h2>
+Select an employee
+</h2>
 
-                </div>
+<p>
+Choose an employee from the left panel to configure their salary structure.
+</p>
 
-            </div>
+</div>
 
-            <!-- EMPTY STATE -->
+<!-- SALARY CONTAINER -->
 
-            <div
-            class="empty-state"
-            id="emptyState">
+<div
+class="salary-container hidden"
+id="salaryContainer">
 
-                <div class="empty-icon">
-                    <i class="fa-regular fa-user"></i>
-                </div>
+<!-- SALARY CARD -->
 
-                <h2>
-                    Select an employee
-                </h2>
+<div class="salary-card">
 
-                <p>
-                    Choose an employee from the left panel to configure their salary structure.
-                </p>
+<!-- HEADER -->
 
-            </div>
+<div class="salary-header">
 
-            <!-- SALARY FORM -->
+<h2 id="employeeTitle">
+Employee Salary Structure
+</h2>
 
-            <div
-            class="salary-container hidden"
-            id="salaryContainer">
+<button
+id="editBtn"
+class="edit-btn">
 
-                <div class="salary-card">
+<i class="fa-solid fa-pen"></i>
 
-                    <h2 id="employeeTitle">
-                        Employee Salary Structure
-                    </h2> 
+Edit Latest
 
-                    <!-- EMPLOYEE DETAILS -->
+</button>
 
-                     <div class="section-title">
-                        Employee Details
-                    </div>
+</div>
 
-                    <div class="grid-3">
+<!-- EMPLOYEE DETAILS -->
 
-                        <div>
+<div class="section-title">
+Employee Details
+</div>
 
-                            <label>
-                                Emp Code
-                            </label>
+<div class="grid-3">
 
-                            <input
-                            type="text"
-                            id="empCode">
+<div>
 
-                        </div>
+<label>
+Emp Code
+</label>
 
-                        <div>
+<input
+type="text"
+id="empCode">
 
-                            <label>
-                                Designation
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="designation">
+<div>
 
-                        </div>
+<label>
+Designation
+</label>
 
-                        <div>
+<input
+type="text"
+id="designation">
 
-                            <label>
-                                Joining Date
-                            </label>
+</div>
 
-                            <input
-                            type="date"
-                            id="joiningDate">
+<div>
 
-                        </div>
+<label>
+Joining Date
+</label>
 
-                        <div>
+<input
+type="date"
+id="joiningDate">
 
-                            <label>
-                                Effective From
-                            </label>
+</div>
 
-                            <input
-                            type="date"
-                            id="effectiveFrom">
+<div>
 
-                        </div>
+<label>
+Effective From
+</label>
 
-                        <div>
+<input
+type="date"
+id="effectiveFrom">
 
-                            <label>
-                                PAN Number
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="panNumber">
+<div>
 
-                        </div>
+<label>
+PAN Number
+</label>
 
-                        <div>
+<input
+type="text"
+id="panNumber">
 
-                            <label>
-                                UAN Number
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="uanNumber">
+<div>
 
-                        </div>
+<label>
+UAN Number
+</label>
 
-                        <div>
+<input
+type="text"
+id="uanNumber">
 
-                            <label>
-                                PF Number
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="pfNumber">
+<div>
 
-                        </div>
+<label>
+PF Number
+</label>
 
-                    </div>
+<input
+type="text"
+id="pfNumber">
 
-                    <!-- BANK DETAILS -->
+</div>
 
-                    <div class="section-title">
-                        Bank Details
-                    </div>
+</div>
 
-                    <div class="grid-3">
+<!-- BANK DETAILS -->
 
-                        <div>
+<div class="section-title">
+Bank Details
+</div>
 
-                            <label>
-                                Bank Name
-                            </label>
+<div class="grid-3">
 
-                            <input
-                            type="text"
-                            id="bankName">
+<div>
 
-                        </div>
+<label>
+Bank Name
+</label>
 
-                        <div>
+<input
+type="text"
+id="bankName">
 
-                            <label>
-                                Account Number
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="accountNumber">
+<div>
 
-                        </div>
+<label>
+Account Number
+</label>
 
-                        <div>
+<input
+type="text"
+id="accountNumber">
 
-                            <label>
-                                IFSC Code
-                            </label>
+</div>
 
-                            <input
-                            type="text"
-                            id="ifscCode">
+<div>
 
-                        </div>
+<label>
+IFSC Code
+</label>
 
-                    </div>
+<input
+type="text"
+id="ifscCode">
 
-                    <!-- EARNINGS -->
+</div>
 
-                    <div class="section-title">
-                        Monthly Earnings (₹)
-                    </div>
+</div>
 
-                    <div class="grid-4">
+<!-- EARNINGS -->
 
-                        <div>
+<div class="section-title">
+Monthly Earnings (₹)
+</div>
 
-                            <label>
-                                Basic Salary
-                            </label>
+<div class="grid-4">
 
-                            <input
-                            type="number"
-                            id="basicSalary"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Basic Salary
+</label>
 
-                        <div>
+<input
+type="number"
+id="basicSalary"
+value="0">
 
-                            <label>
-                                HRA
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="hra"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+HRA
+</label>
 
-                        <div>
+<input
+type="number"
+id="hra"
+value="0">
 
-                            <label>
-                                Conveyance Allowance
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="conveyance"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Conveyance Allowance
+</label>
 
-                        <div>
+<input
+type="number"
+id="conveyance"
+value="0">
 
-                            <label>
-                                Medical Allowance
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="medical"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Medical Allowance
+</label>
 
-                        <div>
+<input
+type="number"
+id="medical"
+value="0">
 
-                            <label>
-                                Special Allowance
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="specialAllowance"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Special Allowance
+</label>
 
-                        <div>
+<input
+type="number"
+id="specialAllowance"
+value="0">
 
-                            <label>
-                                Other Allowance
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="otherAllowance"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Other Allowance
+</label>
 
-                        <div>
+<input
+type="number"
+id="otherAllowance"
+value="0">
 
-                            <label>
-                                Overtime Rate
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="overtimeRate"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Overtime Rate
+</label>
 
-                        <div class="salary-box">
+<input
+type="number"
+id="overtimeRate"
+value="0">
 
-                            <p>
-                                Gross Salary
-                            </p>
+</div>
 
-                            <h2 id="grossSalary">
-                                ₹ 0.00
-                            </h2>
+<div class="salary-box">
 
-                        </div>
+<p>
+Gross Salary
+</p>
 
-                    </div>
+<h2 id="grossSalary">
+₹ 0.00
+</h2>
 
-                    <!-- DEDUCTIONS -->
+</div>
 
-                    <div class="section-title">
-                        Deductions (₹ / month)
-                    </div>
+</div>
 
-                    <div class="grid-4">
+<!-- DEDUCTIONS -->
 
-                        <div>
+<div class="section-title">
+Deductions (₹ / month)
+</div>
 
-                            <label>
-                                PF – Employee (12%)
-                            </label>
+<div class="grid-4">
 
-                            <input
-                            type="number"
-                            id="pfEmployee"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+PF – Employee (12%)
+</label>
 
-                        <div>
+<input
+type="number"
+id="pfEmployee"
+value="0">
 
-                            <label>
-                                PF – Employer (12%)
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="pfEmployer"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+PF – Employer (12%)
+</label>
 
-                        <div>
+<input
+type="number"
+id="pfEmployer"
+value="0">
 
-                            <label>
-                                ESI – Employee
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="esiEmployee"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+ESI – Employee
+</label>
 
-                        <div>
+<input
+type="number"
+id="esiEmployee"
+value="0">
 
-                            <label>
-                                ESI – Employer
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="esiEmployer"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+ESI – Employer
+</label>
 
-                        <div>
+<input
+type="number"
+id="esiEmployer"
+value="0">
 
-                            <label>
-                                Professional Tax
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="professionalTax"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Professional Tax
+</label>
 
-                        <div>
+<input
+type="number"
+id="professionalTax"
+value="0">
 
-                            <label>
-                                Other Statutory
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="otherStatutory"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Other Statutory
+</label>
 
-                        <div>
+<input
+type="number"
+id="otherStatutory"
+value="0">
 
-                            <label>
-                                TDS (Income Tax)
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="tds"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+TDS (Income Tax)
+</label>
 
-                        <div>
+<input
+type="number"
+id="tds"
+value="0">
 
-                            <label>
-                                Other Deduction
-                            </label>
+</div>
 
-                            <input
-                            type="number"
-                            id="otherDeduction"
-                            value="0">
+<div>
 
-                        </div>
+<label>
+Other Deduction
+</label>
 
-                        <div class="salary-box">
+<input
+type="number"
+id="otherDeduction"
+value="0">
 
-                            <p>
-                                Total Deductions
-                            </p>
+</div>
 
-                            <h2 id="totalDeduction">
-                                ₹ 0.00
-                            </h2>
+<div class="salary-box">
 
-                        </div>
+<p>
+Total Deductions
+</p>
 
-                        <div class="salary-box">
+<h2 id="totalDeduction">
+₹ 0.00
+</h2>
 
-                            <p>
-                                Est. Net Salary
-                            </p>
+</div>
 
-                            <h2 id="netSalary">
-                                ₹ 0.00
-                            </h2>
+<div class="salary-box">
 
-                        </div>
+<p>
+Est. Net Salary
+</p>
 
-                        <div class="salary-box">
+<h2 id="netSalary">
+₹ 0.00
+</h2>
 
-                            <p>
-                                Annual CTC
-                            </p>
+</div>
 
-                            <h2 id="annualSalary">
-                                ₹ 0.00
-                            </h2>
+<div class="salary-box">
 
-                        </div>
+<p>
+Annual CTC
+</p>
 
-                    </div>
+<h2 id="annualSalary">
+₹ 0.00
+</h2>
 
-                    <!-- NOTES -->
+</div>
 
-                    <div class="notes-section">
+</div>
 
-                        <label>
-                            Notes / Remarks
-                        </label>
+<!-- NOTES -->
 
-                        <textarea
-                        id="notes"
-                        placeholder="Optional notes about salary structure..."></textarea>
+<div class="notes-section">
 
-                    </div>
+<label>
+Notes / Remarks
+</label>
 
-                    <!-- BUTTONS -->
+<textarea
+id="notes"
+placeholder="Optional notes about salary structure..."></textarea>
 
-                    <div class="button-group">
+</div>
 
-                        <button
-                        class="save-btn"
-                        id="saveBtn">
+<!-- BUTTONS -->
 
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            Save Structure
+<div class="button-group">
 
-                        </button>
+<button
+class="save-btn"
+id="saveBtn">
 
-                        <button
-                        class="cancel-btn"
-                        id="cancelBtn">
+<i class="fa-solid fa-floppy-disk"></i>
 
-                            Cancel
+Save Structure
 
-                        </button>
+</button>
 
-                    </div>
+<button
+class="cancel-btn"
+id="cancelBtn">
 
-                </div>
+Cancel
 
-                <!-- HISTORY -->
-                 <div class="history-card">
+</button>
+
+</div>
+
+</div>
+
+<!-- HISTORY -->
+
+<div class="history-card">
 
 <div class="history-header">
 
@@ -586,52 +589,30 @@ Structure History
 <tr>
 
 <th>Effective From</th>
-
 <th>Basic</th>
-
 <th>HRA</th>
-
 <th>Conveyance</th>
-
 <th>Medical</th>
-
 <th>Special Allowance</th>
-
 <th>Other Allowance</th>
-
 <th>Overtime</th>
-
 <th>Gross</th>
-
 <th>PF (EMP)</th>
-
 <th>PF (Employer)</th>
-
 <th>ESI (EMP)</th>
-
 <th>ESI (Employer)</th>
-
 <th>Professional Tax</th>
-
 <th>Other Stat.</th>
-
 <th>TDS</th>
-
 <th>Other Deduction</th>
-
 <th>Total Deduction</th>
-
 <th>Net Salary</th>
-
 <th>Annual CTC</th>
-
 <th>Bank</th>
-
 <th>Account Number</th>
-
 <th>IFSC</th>
-
 <th>Notes</th>
+<th>Action</th>
 
 </tr>
 
@@ -641,7 +622,8 @@ Structure History
 
 <tr>
 
-<td colspan="24"
+<td
+colspan="24"
 style="
 text-align:center;
 padding:20px;
@@ -662,87 +644,50 @@ No History Found
 
 </div>
 
-                <!-- <div class="history-card">
-
-                    <div class="history-header">
-
-                        <h2>
-                            Structure History
-                        </h2>
-
-                        <span id="historyCount">
-                            0 record(s)
-                        </span>
-
-                    </div>
-
-                    <div class="table-wrapper">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        Effective From
-                                    </th>
-
-                                    <th>
-                                        Basic
-                                    </th>
-
-                                    <th>
-                                        HRA
-                                    </th>
-
-                                    <th>
-                                        Conveyance
-                                    </th>
-
-                                    <th>
-                                        Gross
-                                    </th>
-
-                                    <th>
-                                        Deduction
-                                    </th>
-
-                                    <th>
-                                        Net
-                                    </th>
-
-                                    <th>
-                                        Special
-                                    </th>
-
-                                    <th>
-                                        Other
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody id="historyBody">
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div> -->
-
-            </div>
-
-        </div>
-
-    </main>
-
+</div>
+       
+</div>
+    <div id="footer-container"></div>
+</main>
+      
 </div>
 
 <script src="./js/salary.js"></script>
+<script src="./js/sidebar.js"></script>
+<script src="./js/topbar.js"></script>
 
+<script>
+
+fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
+
+
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("footer-container").innerHTML = data;
+
+});
+</script>
 </body>
 </html>

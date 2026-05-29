@@ -45,23 +45,14 @@ MAIN
 ========================= */
 
 .main{
+     margin-left:232px;
     min-height:100vh;
+    padding-top:70px;
 }
 
 /* TOPBAR */
 
-.topbar{
-    height:74px;
-    background:#fff;
-    border-bottom:1px solid var(--border);
-    padding:0 32px;
-    position: sticky;
-    z-index: 50;
-    top: 0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
+
 
 .topbar-title{
     font-size:22px;
@@ -1234,4 +1225,13 @@ box-shadow:
     .page{
         padding:16px;
     }
+}
+
+@media(max-width:992px){
+
+    .main{
+        margin-left:0;
+        padding-top:70px;
+    }
+
 }

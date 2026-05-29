@@ -1,222 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Payroll Processing</title>
-
-<link rel="stylesheet"
-href="./css/payroll.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Processing</title>
+    <link rel="stylesheet" href="./css/payroll.css">
+     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
-
 <body>
+     <div class="layout">
+                  <div id="sidebar"></div>
 
-
-<!-- Main Content -->
-
+                  <div class="ranu">
 <div class="main-content">
+            <div id="topbar-container"></div>
+    <div class="page-header">
+        <div>
+            <h1>Payroll Processing</h1>
+            <p>Finance department — monthly payroll management</p>
+        </div>
+        <div class="top-actions">
+            <input type="month" id="payrollMonth" value="2026-05">
+            <button class="view-btn">View</button>
+            <button class="run-btn" id="runPayrollBtn">▶ Run Payroll — May 2026</button>
+            <button class="csv-btn">↓ CSV</button>
+        </div>
+    </div>
 
-<!-- Header -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Employees</h3>
+            <h1 id="payrollCount">0</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Draft</h3>
+            <h1 id="draftCount">0</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Finalized</h3>
+            <h1 id="finalizedCount">0</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Paid</h3>
+            <h1 id="paidCount">0</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Total Gross</h3>
+            <h1 id="totalGross">₹ 0</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Total Net</h3>
+            <h1 id="totalNet">₹ 0</h1>
+        </div>
+    </div>
 
-<div class="page-header">
+    <div id="adjustModal" class="adjust-modal" style="display:none;">
+    <div class="adjust-container">
+        <div class="adjust-header">
+            <h2 id="adjustTitle">Adjust Payroll</h2>
+            <button onclick="closeAdjustModal()" style="font-size: 18px; font-weight: bold; color: #666; background: none; border: none; cursor: pointer;">✕ Cancel</button>
+        </div>
 
-<div>
+        <div class="adjust-grid">
+            <div>
+                <label>Bonus</label>
+                <input type="number" id="bonus" value="0" />
+            </div>
+            <div>
+                <label>Incentive</label>
+                <input type="number" id="incentive" value="0" />
+            </div>
+            <div>
+                <label>Arrear / Backpay</label>
+                <input type="number" id="arrear" value="0" />
+            </div>
+            <div>
+                <label>Other Earning</label>
+                <input type="number" id="otherEarning" value="0" />
+            </div>
+            <div>
+                <label>Advance Recovery</label>
+                <input type="number" id="advanceRecovery" value="0" />
+            </div>
+            <div>
+                <label>Other Deduction</label>
+                <input type="number" id="otherDeduction" value="0" />
+            </div>
+        </div>
 
-<h1>
-Payroll Processing
-</h1>
-
-<p>
-Finance department — monthly payroll management
-</p>
-
+        <textarea id="financeRemark" placeholder="Internal note about this adjustment..."></textarea>
+        <button class="save-btn" onclick="saveAdjustment()">Save & Recalculate</button>
+    </div>
 </div>
 
-<div class="top-actions">
-
-<!-- Month Picker -->
-
-<input
-type="month"
-id="payrollMonth"
-value="2026-05">
-
-<button class="view-btn">
-View
-</button>
-
-<button
-class="run-btn"
-id="runPayrollBtn">
-▶ Run Payroll — May 2026
-</button>
-
-<button class="csv-btn">
-↓ CSV
-</button>
-
-</div>
-
-</div>
-
-<!-- Stats -->
-
-<div class="stats-grid">
-
-<div class="stat-card">
-
-<h3>Employees</h3>
-
-<h1 id="employeeCount">
-0
-</h1>
-
-</div>
-
-<div class="stat-card">
-
-<h3>Draft</h3>
-
-<h1>
-0
-</h1>
-
-</div>
-
-<div class="stat-card">
-
-<h3>Finalized</h3>
-
-<h1>
-0
-</h1>
-
-</div>
-
-<div class="stat-card">
-
-<h3>Paid</h3>
-
-<h1 id="paidCount">
-0
-</h1>
-
-</div>
-
-<div class="stat-card">
-
-<h3>Total Gross</h3>
-
-<h1 id="grossTotal">
-₹ 0
-</h1>
-
-</div>
-
-<div class="stat-card">
-
-<h3>Total Net</h3>
-
-<h1 id="netTotal">
-₹ 0
-</h1>
-
-</div>
-
-</div>
-
-<!-- Payroll Records -->
-
-<div class="records-section">
-
-<h2>
-Records —
-<span id="recordMonth">
-May 2026
-</span>
-</h2>
-
-<div class="table-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Employee</th>
-<th>Attendance</th>
-<th>OT / Leave</th>
-<th>Gross</th>
-<th>+Variable</th>
-<th>Deductions</th>
-<th>Net Salary</th>
-<th>Status</th>
-<th>Actions</th>
-
-</tr>
-
-</thead>
-
-<tbody id="payrollTable">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<!-- Run History -->
-
-<div class="history-section">
-
-<h2>
-Run History
-</h2>
-
-<div class="table-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Month</th>
-<th>Count</th>
-<th>Gross</th>
-<th>Net</th>
-<th>Run By</th>
-<th>At</th>
-
-</tr>
-
-</thead>
-
-<tbody id="historyTable">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
+    <div class="payroll-status-box" id="payrollStatusBox">
+        
+        <div class="status-text" id="payrollStatusText">
+            Select a month and click view to check status.
+        </div>
+
+        <div class="payment-controls" id="paymentControls" style="display: none;">
+            <select id="paymentMethod">
+                <option value="">Payment Method</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Bank Check">Bank Check</option>
+                <option value="Cash">Cash</option>
+            </select>
+
+            <input type="date" id="paymentDate" />
+
+            <input type="text" id="utrNumber" placeholder="UTR / Ref no." />
+
+            <button id="markPaidBtn" class="paid-btn">
+                💳 Mark as Paid
+            </button>
+        </div>
+
+        <div id="finalizeActionWrapper">
+            <button id="finalizeBtn" class="finalize-btn" style="display: none; padding: 8px 16px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;">
+                ✔ Finalize Payroll
+            </button>
+        </div>
+
+    </div>
+
+    <div class="records-section">
+        <h2>Records — <span id="payrollMonthText">May 2026</span></h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Attendance</th>
+                        <th>OT / Leave</th>
+                        <th>Gross</th>
+                        <th>+Variable</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="payrollTable"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="history-section">
+        <h2>Run History</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Count</th>
+                        <th>Gross</th>
+                        <th>Net</th>
+                        <th>Run By</th>
+                        <th>At</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+
+       <div id="footer-container"></div>
+     </div>
+       
 </div>
 
 <script src="./js/payroll.js"></script>
+<script src="./js/sidebar.js"></script>
+<script src="./js/topbar.js"></script>
+
+<script>
+
+fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
 
 
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
 
+    document.getElementById("footer-container").innerHTML = data;
+
+});
+</script>
 </body>
-
 </html>

@@ -208,7 +208,7 @@ body{
 
 .content{
   padding:22px;
-margin-left: -173px;
+margin-left: 53px;
 }
 
 .top-box{
@@ -730,13 +730,20 @@ tr:hover{
   }
 
 }
+.raja{
+  margin-left: 230px;
+}
 
 </style>
+
+ <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 
   <div class="layout">
 
-
+            <div id="sidebar"></div>
 <!-- SIDEBAR -->
 
   <!-- <div class="bottom">
@@ -760,9 +767,9 @@ tr:hover{
 <!-- MAIN -->
 
 <div class="main">
-
+            <div id="topbar-container"></div>
   <!-- HEADER -->
-
+<div class="raja">
   <div class="header">
 
     <h1>My Attendance</h1>
@@ -771,13 +778,8 @@ tr:hover{
 
       <div class="date" id="date"></div>
 
-      <div class="notify">
-        <i class="fa-regular fa-bell"></i>
-        <div class="badge">5</div>
-      </div>
-
-      <div class="profile">DS</div>
-
+      
+     
     </div>
 
   </div>
@@ -1126,9 +1128,16 @@ tr:hover{
       </div>
 
     </div>
-
+        
   </div>
+       <div id="footer-container"></div>
+       </div>
 </div>
+</div>
+
+
+<script src="./js/sidebar.js"></script>
+<script src="./js/topbar.js"></script>
 
 <script>
 
@@ -1235,6 +1244,37 @@ months.forEach((month,index)=>{
         });   
     
     });
+
+    fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
+
+
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("footer-container").innerHTML = data;
+
+});
 </script>
 
 </body>

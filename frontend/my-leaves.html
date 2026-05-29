@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        My Leaves
+    </title>
+
+    <link rel="stylesheet" href="./css/common.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/topbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: #f4f7fb;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar-date {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .avatar-topbar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* HERO */
+
+        .balance-hero {
+            background: linear-gradient(135deg, #0f1c2e, #1d2f48);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .balance-hero h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .balance-hero p {
+            color: #b8c9e0;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .balance-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .balance-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .balance-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .balance-card-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .balance-type-badge {
+            background: rgba(255, 255, 255, 0.12);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .balance-numbers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .balance-num-item {
+            text-align: center;
+        }
+
+        .balance-num-item .num {
+            font-size: 24px;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .balance-num-item .label {
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: #b8c9e0;
+        }
+
+        .balance-bar-track {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .balance-bar-fill {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .bar-cl {
+            background: #3b82f6;
+        }
+
+        .bar-sl {
+            background: #f59e0b;
+        }
+
+        .bar-ml {
+            background: #ec4899;
+        }
+
+        .bar-lop {
+            background: #64748b;
+        }
+
+        .lop-box {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 22px;
+            border-radius: 14px;
+            margin-top: 12px;
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #dbeafe;
+        }
+
+        /* MAIN LAYOUT */
+
+        .leaves-layout {
+            display: grid;
+            grid-template-columns: 1fr 370px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* TABLE CARD */
+
+        .requests-card,
+        .apply-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .requests-header,
+        .apply-header {
+            padding: 24px;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .requests-header h2,
+        .apply-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .year-select {
+            padding: 8px 14px;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* TABLE */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        thead th {
+            padding: 14px 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #64748b;
+            text-align: left;
+        }
+
+        tbody td {
+            padding: 18px 20px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .type-CL {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .type-SL {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .type-ML {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-Pending {
+            background: #fff7ed;
+            color: #d97706;
+        }
+
+        .status-Approved {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .cancel-leave-btn {
+            background: #fee2e2;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #dc2626;
+            cursor: pointer;
+        }
+
+        /* FORM */
+
+        .apply-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dbe3ef;
+            border-radius: 12px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: none;
+            min-height: 100px;
+        }
+
+        .date-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #17365d, #2563eb);
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* VALIDATION */
+
+        .error-border {
+            border: 1px solid #ef4444 !important;
+        }
+
+        .error-text {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 6px;
+        }
+
+        /* TOAST */
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #16a34a;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:1000px) {
+
+            .leaves-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        .chandan {
+            margin-left: 230px;
+            margin-top: 70px;
+        }
+        #footer-container{
+            margin-left: 200px;
+
+        }
+        #nimai{
+            margin-left: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="nimai" >
+        <div id="sidebar"></div>
+        <div>
+
+            <!-- TOPBAR -->
+            <div id="topbar-container"></div>
+            <!--<div class="topbar">
+             
+<div class="topbar-title">
+My Leaves
+</div>
+
+<div class="topbar-right">
+
+<span class="topbar-date"
+id="topbarDate">
+</span>
+
+<div class="avatar-topbar">
+FM
+</div>
+
+</div>
+
+</div>
+    </div> -->
+            <!-- HERO -->
+            <div class="chandan">
+                <div class="balance-hero">
+
+                    <h2>
+                        Leave Balance — 2026
+                    </h2>
+
+                    <p>
+                        All balances reset on 1 January every year
+                    </p>
+
+                    <div class="balance-cards">
+
+                        <!-- CASUAL LEAVE -->
+
+                        <div class="balance-card">
+
+                            <div class="balance-card-header">
+
+                                <span class="balance-card-title">
+                                    Casual Leave
+                                </span>
+
+                                <span class="balance-type-badge">
+                                    CL
+                                </span>
+
+                            </div>
+
+                            <div class="balance-numbers">
+
+                                <div class="balance-num-item">
+                                    <span class="num">12</span>
+                                    <span class="label">TOTAL</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">2</span>
+                                    <span class="label">USED</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">10</span>
+                                    <span class="label">LEFT</span>
+                                </div>
+
+                            </div>
+
+                            <div class="balance-bar-track">
+                                <div class="balance-bar-fill bar-cl" style="width:20%">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- SICK LEAVE -->
+
+                        <div class="balance-card">
+
+                            <div class="balance-card-header">
+
+                                <span class="balance-card-title">
+                                    Sick Leave
+                                </span>
+
+                                <span class="balance-type-badge">
+                                    SL
+                                </span>
+
+                            </div>
+
+                            <div class="balance-numbers">
+
+                                <div class="balance-num-item">
+                                    <span class="num">12</span>
+                                    <span class="label">TOTAL</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">1</span>
+                                    <span class="label">USED</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">11</span>
+                                    <span class="label">LEFT</span>
+                                </div>
+
+                            </div>
+
+                            <div class="balance-bar-track">
+                                <div class="balance-bar-fill bar-sl" style="width:10%">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- MATERNITY LEAVE -->
+
+                        <div class="balance-card">
+
+                            <div class="balance-card-header">
+
+                                <span class="balance-card-title">
+                                    Maternity Leave
+                                </span>
+
+                                <span class="balance-type-badge">
+                                    ML
+                                </span>
+
+                            </div>
+
+                            <div class="balance-numbers">
+
+                                <div class="balance-num-item">
+                                    <span class="num">182</span>
+                                    <span class="label">TOTAL</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">0</span>
+                                    <span class="label">USED</span>
+                                </div>
+
+                                <div class="balance-num-item">
+                                    <span class="num">182</span>
+                                    <span class="label">LEFT</span>
+                                </div>
+
+                            </div>
+
+                            <div class="balance-bar-track">
+                                <div class="balance-bar-fill bar-ml" style="width:0%">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- LOSS OF PAY -->
+
+                        <div class="balance-card">
+
+                            <div class="balance-card-header">
+
+                                <span class="balance-card-title">
+                                    Loss Of Pay
+                                </span>
+
+                                <span class="balance-type-badge">
+                                    LOP
+                                </span>
+
+                            </div>
+
+                            <div class="lop-box">
+
+                                No fixed limit — salary deducted per day
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MAIN SECTION -->
+
+                <div class="leaves-layout">
+
+                    <div class="requests-card">
+
+                        <div class="requests-header">
+
+                            <h2>
+                                Leave Requests
+                            </h2>
+
+                            <select class="year-select">
+                                <option>2026</option>
+                            </select>
+
+                        </div>
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>TYPE</th>
+                                    <th>FROM</th>
+                                    <th>TO</th>
+                                    <th>DAYS</th>
+                                    <th>STATUS</th>
+                                    <th>ACTION</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>
+                                        <span class="type-badge type-CL">CL</span>
+                                    </td>
+
+                                    <td>10 May 2026</td>
+
+                                    <td>12 May 2026</td>
+
+                                    <td>3</td>
+
+                                    <td>
+                                        <span class="status-badge status-Pending">
+                                            Pending
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <button class="cancel-leave-btn">
+                                            Cancel
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- FORM -->
+
+                    <div class="apply-card">
+
+                        <div class="apply-header">
+
+                            <h2>
+                                Apply Leave
+                            </h2>
+
+                        </div>
+
+                        <div class="apply-body">
+
+                            <div class="form-group">
+
+                                <label>
+                                    Leave Type
+                                </label>
+
+                                <select id="leaveType">
+
+                                    <option value="">
+                                        Select Leave
+                                    </option>
+
+                                    <option>
+                                        Casual Leave
+                                    </option>
+
+                                    <option>
+                                        Sick Leave
+                                    </option>
+
+                                    <option>
+                                        Maternity Leave
+                                    </option>
+
+                                    <option>
+                                        Loss Of Pay
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="date-row">
+
+                                <div class="form-group">
+
+                                    <label>
+                                        From Date
+                                    </label>
+
+                                    <input type="date" id="fromDate">
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label>
+                                        To Date
+                                    </label>
+
+                                    <input type="date" id="toDate">
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+                                    Alternate Mobile
+                                </label>
+
+                                <input type="text" id="mobile" placeholder="+91 9876543210">
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+                                    Reason
+                                </label>
+
+                                <textarea id="reason" placeholder="Enter reason for leave"></textarea>
+
+                            </div>
+
+                            <button class="submit-btn">
+
+                                Submit Request
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TOAST -->
+
+                <div class="toast" id="toast">
+
+                    Leave Applied Successfully
+
+                </div>
+                
+            </div>
+              <div id="footer-container"></div>
+        </div>
+                
+        <script src="./js/sidebar.js"></script>
+        <script src="./js/topbar.js"></script>
+
+
+        <script>
+
+            /* TOPBAR DATE */
+
+            const topbarDate =
+    document.getElementById("topbarDate");
+
+if (topbarDate) {
+
+    topbarDate.innerHTML =
+        new Date().toLocaleDateString(
+            'en-GB',
+            {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }
+        );
+
+}
+
+            /* SUBMIT */
+
+            const submitBtn =
+                document.querySelector(".submit-btn");
+
+            submitBtn.addEventListener(
+                "click",
+                function (e) {
+
+                    e.preventDefault();
+
+                    /* INPUTS */
+
+                    const leaveType =
+                        document.getElementById("leaveType");
+
+                    const fromDate =
+                        document.getElementById("fromDate");
+
+                    const toDate =
+                        document.getElementById("toDate");
+
+                    const mobile =
+                        document.getElementById("mobile");
+
+                    const reason =
+                        document.getElementById("reason");
+
+                    let valid = true;
+
+                    /* RESET ERRORS */
+
+                    document.querySelectorAll(
+                        ".error-text"
+                    ).forEach(el => el.remove());
+
+                    document.querySelectorAll(
+                        ".error-border"
+                    ).forEach(el => {
+                        el.classList.remove("error-border");
+                    });
+
+                    /* LEAVE TYPE */
+
+                    if (leaveType.value === "") {
+
+                        showError(
+                            leaveType,
+                            "Please select leave type"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* FROM DATE */
+
+                    if (fromDate.value === "") {
+
+                        showError(
+                            fromDate,
+                            "Please select from date"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* TO DATE */
+
+                    if (toDate.value === "") {
+
+                        showError(
+                            toDate,
+                            "Please select to date"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* DATE VALIDATION */
+
+                    if (
+                        fromDate.value &&
+                        toDate.value &&
+                        new Date(toDate.value) <
+                        new Date(fromDate.value)
+                    ) {
+
+                        showError(
+                            toDate,
+                            "To date cannot be before from date"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* MOBILE VALIDATION */
+
+                    const mobileRegex =
+                        /^[6-9]\d{9}$/;
+
+                    if (
+                        !mobileRegex.test(
+                            mobile.value.trim()
+                        )
+                    ) {
+
+                        showError(
+                            mobile,
+                            "Enter valid 10 digit mobile number"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* REASON VALIDATION */
+
+                    if (
+                        reason.value.trim().length < 5
+                    ) {
+
+                        showError(
+                            reason,
+                            "Reason minimum 5 characters"
+                        );
+
+                        valid = false;
+
+                    }
+
+                    /* SUCCESS */
+
+                    if (valid) {
+
+                        /* TOTAL DAYS */
+
+                        const totalDays =
+                            calculateDays(
+                                fromDate.value,
+                                toDate.value
+                            );
+
+                        /* VALUES */
+
+                        const leave =
+                            leaveType.value;
+
+                        const from =
+                            formatDate(fromDate.value);
+
+                        const to =
+                            formatDate(toDate.value);
+
+                        const reasonText =
+                            reason.value;
+
+                        /* BADGE */
+
+                        let badgeClass = "type-CL";
+                        let shortCode = "CL";
+
+                        if (leave.includes("Sick")) {
+
+                            badgeClass = "type-SL";
+                            shortCode = "SL";
+
+                        }
+
+                        if (leave.includes("Maternity")) {
+
+                            badgeClass = "type-ML";
+                            shortCode = "ML";
+
+                        }
+
+                        if (leave.includes("Loss")) {
+
+                            badgeClass = "type-LOP";
+                            shortCode = "LOP";
+
+                        }
+
+                        /* DATA OBJECT */
+
+                        const leaveData = {
+
+                            leaveType: leave,
+                            fromDate: from,
+                            toDate: to,
+                            days: totalDays,
+                            reason: reasonText,
+                            badgeClass: badgeClass,
+                            shortCode: shortCode
+
+                        };
+
+                        /* ADD TO TABLE */
+
+                        addLeaveToTable(leaveData);
+
+                        /* SAVE */
+
+                        saveLeave(leaveData);
+
+                        /* TOAST */
+
+                        const toast =
+                            document.getElementById("toast");
+
+                        toast.classList.add("show");
+
+                        setTimeout(() => {
+
+                            toast.classList.remove("show");
+
+                        }, 3000);
+
+                        /* RESET */
+
+                        leaveType.value = "";
+                        fromDate.value = "";
+                        toDate.value = "";
+                        mobile.value = "";
+                        reason.value = "";
+
+                    }
+
+                });
+
+            /* SHOW ERROR */
+
+            function showError(
+                input,
+                message
+            ) {
+
+                input.classList.add(
+                    "error-border"
+                );
+
+                const error =
+                    document.createElement("div");
+
+                error.className =
+                    "error-text";
+
+                error.innerText =
+                    message;
+
+                input.parentNode.appendChild(error);
+
+            }
+
+            /* FORMAT DATE */
+
+            function formatDate(dateString) {
+
+                const d =
+                    new Date(dateString);
+
+                return d.toLocaleDateString(
+                    'en-GB',
+                    {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                    }
+                );
+
+            }
+
+            /* CALCULATE DAYS */
+
+            function calculateDays(from, to) {
+
+                const start =
+                    new Date(from);
+
+                const end =
+                    new Date(to);
+
+                const diff =
+                    end - start;
+
+                const days =
+                    Math.floor(
+                        diff / (1000 * 60 * 60 * 24)
+                    ) + 1;
+
+                return days;
+
+            }
+
+            /* SAVE TO LOCAL STORAGE */
+
+            function saveLeave(data) {
+
+                let leaves =
+                    JSON.parse(
+                        localStorage.getItem("leaveRequests")
+                    ) || [];
+
+                leaves.unshift(data);
+
+                localStorage.setItem(
+                    "leaveRequests",
+                    JSON.stringify(leaves)
+                );
+
+            }
+
+            /* ADD ROW TO TABLE */
+
+            function addLeaveToTable(data) {
+
+                const tbody =
+                    document.querySelector("tbody");
+
+                const tr =
+                    document.createElement("tr");
+
+                tr.innerHTML = `
+
+<td>
+
+<div style="
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<span class="type-badge ${data.badgeClass}">
+${data.shortCode}
+</span>
+
+<div>
+
+<div style="
+font-size:13px;
+font-weight:700;
+color:#0f172a;
+">
+${data.leaveType}
+</div>
+
+<div style="
+font-size:11px;
+color:#94a3b8;
+">
+${data.reason}
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+<td>
+${data.fromDate}
+</td>
+
+<td>
+${data.toDate}
+</td>
+
+<td style="
+font-weight:700;
+">
+${data.days}
+</td>
+
+<td>
+
+<span class="status-badge status-Pending">
+Pending
+</span>
+
+</td>
+
+<td>
+
+<button class="cancel-leave-btn">
+Cancel
+</button>
+
+</td>
+
+`;
+
+                tbody.prepend(tr);
+
+            }
+
+            /* LOAD SAVED REQUESTS */
+
+            window.addEventListener(
+                "DOMContentLoaded",
+                function () {
+
+                    const savedLeaves =
+                        JSON.parse(
+                            localStorage.getItem("leaveRequests")
+                        ) || [];
+
+                    savedLeaves.forEach(data => {
+
+                        addLeaveToTable(data);
+
+                    });
+
+                });
+
+                fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
+
+
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("footer-container").innerHTML = data;
+
+});
+
+        </script>
+
+</body>
+
+</html>

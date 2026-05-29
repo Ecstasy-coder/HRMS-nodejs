@@ -1,0 +1,137 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f4f6fb;
+        }
+        /* ── TOPBAR ── */
+        
+        .topbar{
+    height:70px;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #e8edf5;
+
+    padding:0 32px;
+
+    position:fixed;
+
+    top:0;
+    left:232px;
+
+    width:calc(100% - 232px);
+
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    box-shadow:0 1px 4px rgba(15,23,42,.06);
+}
+        /* LEFT — icon + module name */
+        
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .topbar-left i {
+            font-size: 19px;
+            color: #8b95a7;
+        }
+        
+        .topbar-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+        }
+        /* RIGHT — date, bell, avatar */
+        
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        
+        .topbar-date {
+            font-size: 13px;
+            color: #8b95a7;
+            font-weight: 500;
+        }
+        /* BELL */
+        
+        .topbar-bell {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .topbar-bell i {
+            font-size: 18px;
+            color: #4b5563;
+            transition: color .2s;
+        }
+        
+        .topbar-bell:hover i {
+            color: #f0a824;
+        }
+        
+        .notif-dot {
+            position: absolute;
+            top: -6px;
+            right: -7px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #ff3b30;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        /* AVATAR */
+        
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f0a824;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        
+        .topbar-avatar:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 14px rgba(240, 168, 36, .4);
+        }
+        /* ── RESPONSIVE ── */
+        
+        @media (max-width: 992px) {
+            .topbar {
+                left: 0;
+                width: 100%;
+                padding: 0 16px;
+            }
+            .topbar-date {
+                display: none;
+            }
+            .topbar-title {
+                font-size: 16px;
+            }
+        }

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Holiday Calendar</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+ <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:#f1f5f9;
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+background:#17365d;
+color:white;
+padding:26px 0;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.sidebar-logo{
+padding:0 28px 30px;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo-text{
+font-size:20px;
+font-weight:800;
+}
+
+.logo-sub{
+font-size:12px;
+opacity:.7;
+margin-top:4px;
+letter-spacing:1px;
+}
+
+.sidebar-nav{
+padding:25px 10px;
+}
+
+.nav-link{
+display:flex;
+align-items:center;
+gap:14px;
+padding:14px 18px;
+margin-bottom:8px;
+border-radius:14px;
+color:white;
+text-decoration:none;
+font-size:15px;
+transition:.2s;
+}
+
+.nav-link:hover{
+background:rgba(255,255,255,.08);
+}
+
+.nav-link.active{
+background:#f2ab1d;
+}
+
+.sidebar-footer{
+padding:20px;
+border-top:1px solid rgba(255,255,255,.08);
+}
+
+.user-box{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:16px;
+}
+
+.avatar{
+width:44px;
+height:44px;
+border-radius:50%;
+background:#f2ab1d;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+}
+
+.logout-btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:rgba(255,255,255,.08);
+color:white;
+cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+margin-left: 210px;
+margin-top: 100px;
+}
+
+/* TOPBAR */
+
+.topbar{
+height:72px;
+background:white;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 28px;
+border-bottom:1px solid #e2e8f0;
+}
+
+.topbar-title{
+font-size:18px;
+font-weight:800;
+color:#0f172a;
+}
+
+.topbar-right{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.date{
+font-size:14px;
+color:#64748b;
+}
+
+.notify{
+position:relative;
+font-size:18px;
+}
+
+.notify-dot{
+position:absolute;
+top:-4px;
+right:-5px;
+width:16px;
+height:16px;
+border-radius:50%;
+background:#ef4444;
+color:white;
+font-size:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.profile{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#f2ab1d;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+color:white;
+}
+
+/* PAGE */
+
+.page{
+padding:36px;
+}
+
+.calendar-card{
+background:white;
+border-radius:22px;
+overflow:hidden;
+box-shadow:0 6px 20px rgba(15,23,42,.05);
+}
+
+.card-header{
+padding:20px 24px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-bottom:1px solid #edf2f7;
+}
+
+.card-title{
+font-size:16px;
+font-weight:800;
+color:#0f172a;
+}
+
+.badge{
+background:#dcfce7;
+color:#15803d;
+padding:6px 14px;
+border-radius:20px;
+font-size:12px;
+font-weight:700;
+}
+
+.card-body{
+padding:24px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+}
+
+.file-info{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.file-icon{
+width:68px;
+height:68px;
+border-radius:18px;
+background:#fff1f2;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+color:#dc2626;
+border:1px solid #fecdd3;
+}
+
+.file-details h3{
+font-size:16px;
+margin-bottom:8px;
+color:#0f172a;
+}
+
+.file-meta{
+font-size:14px;
+color:#64748b;
+}
+
+.actions{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.btn{
+padding:13px 24px;
+border-radius:14px;
+font-size:14px;
+font-weight:700;
+text-decoration:none;
+transition:.2s;
+}
+
+.btn-view{
+background:#17365d;
+color:white;
+}
+
+.btn-view:hover{
+opacity:.92;
+}
+
+.btn-download{
+border:1px solid #cbd5e1;
+color:#0f172a;
+background:white;
+}
+
+.btn-download:hover{
+background:#f8fafc;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+body{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+}
+
+.card-body{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.actions{
+width:100%;
+}
+
+.btn{
+flex:1;
+text-align:center;
+}
+}
+.ranu{
+    margin-left: 20px;
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR
+
+<aside class="sidebar">
+
+<div>
+
+<div class="sidebar-logo">
+
+<div class="logo-text">
+My Ecstasy
+</div>
+
+<div class="logo-sub">
+FINANCE PORTAL
+</div>
+
+</div>
+
+<nav class="sidebar-nav">
+
+<a href="#" class="nav-link">
+<i class="fas fa-th-large"></i>
+Dashboard
+</a>
+
+<a href="#" class="nav-link">
+<i class="fas fa-dollar-sign"></i>
+Salary Structures
+</a>
+
+<a href="#" class="nav-link">
+<i class="fas fa-credit-card"></i>
+Payroll Processing
+</a>
+
+<a href="#" class="nav-link">
+<i class="fas fa-sack-dollar"></i>
+My Payslips
+</a>
+
+<a href="#" class="nav-link active">
+<i class="fas fa-calendar"></i>
+Holiday Calendar
+</a>
+
+<a href="#" class="nav-link">
+<i class="fas fa-user-clock"></i>
+My Attendance
+</a>
+
+<a href="#" class="nav-link">
+<i class="fas fa-calendar-check"></i>
+My Leaves
+</a>
+
+</nav>
+
+</div>
+
+<div class="sidebar-footer">
+
+<div class="user-box">
+
+<div class="avatar">
+FM
+</div>
+
+<div>
+
+<div style="font-weight:700;">
+Finance Manager
+</div>
+
+<div style="font-size:12px;opacity:.7;">
+Finance · Finance
+</div>
+
+</div>
+
+</div>
+
+<button class="logout-btn">
+Sign Out
+</button> -->
+
+</div>
+
+</aside>
+
+<!-- MAIN -->
+       <div id="sidebar"></div>
+<div class="main">
+      
+<!-- TOPBAR -->
+       <div id="topbar-container"></div>
+       <div class="ranu">
+<!-- <header class="topbar">
+
+<div class="topbar-title">
+Holiday Calendar
+</div>
+
+<div class="topbar-right">
+
+<div class="date"
+id="todayDate">
+</div>
+
+<div class="notify">
+
+<i class="far fa-bell"></i>
+
+<div class="notify-dot">
+1
+</div>
+
+</div>
+
+<div class="profile">
+FM
+</div>
+
+</div>
+
+</header> -->
+
+<!-- PAGE -->
+
+<div class="page">
+
+<div class="calendar-card">
+
+<div class="card-header">
+
+<div class="card-title">
+Holiday Calendar 2026
+</div>
+
+<div class="badge">
+Current
+</div>
+
+</div>
+
+<div class="card-body">
+
+<div class="file-info">
+
+<div class="file-icon">
+<i class="far fa-file-pdf"></i>
+</div>
+
+<div class="file-details">
+
+<h3>
+📅 Telangana Public Holidays .pdf
+</h3>
+
+<div class="file-meta">
+Year: 2026 · Size: 356 KB · Uploaded: 21 May 2026
+</div>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<a 
+href="/uploads/calendars/calendar.pdf"
+target="_blank"
+class="btn btn-view">
+
+View Calendar
+
+</a>
+
+<a 
+href="/uploads/calendars/calendar.pdf"
+download
+class="btn btn-download">
+
+Download PDF
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+       <div id="footer-container"></div>
+</div>
+       
+</div>  
+<script src="./js/sidebar.js"></script>
+<script src="./js/topbar.js"></script>
+
+<script>
+
+
+/* LIVE DATE */
+
+const today =
+document.getElementById("todayDate");
+
+const cal_DAYS = [
+"Sunday",
+"Monday",
+"Tuesday",
+"Wednesday",
+"Thursday",
+"Friday",
+"Saturday"
+];
+
+const cal_MONTHS = [
+"January",
+"February",
+"March",
+"April",
+"May",
+"June",
+"July",
+"August",
+"September",
+"October",
+"November",
+"December"
+];
+
+function updateDate() {
+
+    const today =
+        document.getElementById("todayDate");
+
+    if (!today) return;
+
+    const d = new Date();
+
+    today.innerHTML = `
+        ${cal_DAYS[d.getDay()]},
+        ${d.getDate()}
+        ${cal_MONTHS[d.getMonth()]}
+        ${d.getFullYear()}
+    `;
+}
+
+updateDate();
+
+fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
+
+
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("footer-container").innerHTML = data;
+
+});
+
+
+
+</script>
+
+</body>
+</html>

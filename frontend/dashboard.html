@@ -12,18 +12,21 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
-<link rel="stylesheet"
-href="./css/dashboard.css">
+   <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
     <div class="layout">
+                  <div id="sidebar"></div>
+                
 
-            
 
 <div class="main">
-
-    <header class="topbar">
+              <div id="topbar-container"></div>
+    <!-- <header class="topbar">
 
         <div class="topbar-title">
             Dashboard
@@ -46,7 +49,7 @@ href="./css/dashboard.css">
 
         </div>
 
-    </header>
+    </header> -->
 
     <div class="page">
 
@@ -75,7 +78,7 @@ href="./css/dashboard.css">
                 
                         </div>
                 
-                        <a href="galleryy.html" class="gallery-btn">
+                        <a href="gallery.html" class="gallery-btn">
                             View More
                         </a>
                 
@@ -140,9 +143,10 @@ href="./css/dashboard.css">
                 </div>
                 
 
-                <div class="quick-grid">
+               <div class="quick-grid">
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="payroll.html">
                         <div class="quick-top">
                             <div class="pill blue-pill">Not Uploaded</div>
                         </div>
@@ -151,11 +155,12 @@ href="./css/dashboard.css">
                             <i class="far fa-calendar"></i>
                         </div>
 
-                        <div class="quick-title">Holiday Calendar</div>
+                        <div class="quick-title">Pay Roll</div>
                         <div class="quick-sub">Plan</div>
                     </div>
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="salary-structure.html">
                         <div class="quick-top">
                             <div class="pill purple-pill">2 Upcoming</div>
                         </div>
@@ -164,11 +169,12 @@ href="./css/dashboard.css">
                             <i class="far fa-star"></i>
                         </div>
 
-                        <div class="quick-title">Events</div>
+                        <div class="quick-title">Salary Structure</div>
                         <div class="quick-sub">Manage</div>
                     </div>
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="payslip.html">
                         <div class="quick-top">
                             <div class="pill green-pill">All Records</div>
                         </div>
@@ -177,11 +183,12 @@ href="./css/dashboard.css">
                             <i class="far fa-check-square"></i>
                         </div>
 
-                        <div class="quick-title">Attendance</div>
+                        <div class="quick-title"> My PaySlips</div>
                         <div class="quick-sub">Track</div>
                     </div>
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="importantEvent.html">
                         <div class="quick-top">
                             <div class="pill pink-pill">5 Open</div>
                         </div>
@@ -190,11 +197,12 @@ href="./css/dashboard.css">
                             <i class="far fa-comment"></i>
                         </div>
 
-                        <div class="quick-title">Help Desk</div>
+                        <div class="quick-title">Events</div>
                         <div class="quick-sub">Support</div>
                     </div>
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="calendar.html">
                         <div class="quick-top">
                             <div class="pill green-pill">12 Employees</div>
                         </div>
@@ -203,11 +211,12 @@ href="./css/dashboard.css">
                             <i class="far fa-user"></i>
                         </div>
 
-                        <div class="quick-title">Manage Users</div>
+                        <div class="quick-title">Holiday Calendar</div>
                         <div class="quick-sub">Admin</div>
                     </div>
 
-                    <div class="quick-card">
+                    <div class="quick-card"
+                    data-page="attendance.html">
                         <div class="quick-top">
                             <div class="pill blue-pill">2 Requests</div>
                         </div>
@@ -216,7 +225,7 @@ href="./css/dashboard.css">
                             <i class="fa-regular fa-envelope"></i>
                         </div>
 
-                        <div class="quick-title">Leave Approvals</div>
+                        <div class="quick-title">Attendance</div>
                         <div class="quick-sub">Admin</div>
                     </div>
 
@@ -224,59 +233,64 @@ href="./css/dashboard.css">
 
                 <!-- UPCOMING EVENTS -->
 
-                <div class="birthday">
-                
-                    <div class="birthday-header">
-                
-                        <div class="birthday-title">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            Upcoming Events
-                        </div>
-                
-                        <div class="birthday-date">
-                            View all →
-                        </div>
-                
-                    </div>
-                
-                    <div class="event-list">
-                
-                        <div class="event-item orange">
-                            <div class="event-left">
-                                <h4>Monthly Awards</h4>
-                                <p>21 May 2026</p>
-                            </div>
-                
-                            <div class="event-badge">
-                                Today!
-                            </div>
-                        </div>
-                
-                        <div class="event-item green">
-                            <div class="event-left">
-                                <h4>Town Hall Meeting</h4>
-                                <p>23 May 2026</p>
-                            </div>
-                
-                            <div class="event-badge">
-                                In 2d
-                            </div>
-                        </div>
-                
-                        <div class="event-item blue">
-                            <div class="event-left">
-                                <h4>Team Outing</h4>
-                                <p>28 May 2026</p>
-                            </div>
-                
-                            <div class="event-badge">
-                                Upcoming
-                            </div>
-                        </div>
-                
-                    </div>
-                
-                </div>
+                <!-- MONTH PAYROLL STATUS -->
+
+<!-- MONTH PAYROLL STATUS -->
+
+<div class="birthday">
+
+    <div class="birthday-header">
+
+        <div class="birthday-title">
+
+            <i class="fa-solid fa-money-check-dollar"></i>
+
+            May 2026 — Payroll Status
+
+        </div>
+
+        <!-- OPEN BUTTON -->
+
+        <div
+        class="birthday-date"
+        id="openPayrollBtn"
+        style="cursor:pointer;">
+
+            Open →
+
+        </div>
+
+    </div>
+
+    <div class="event-list">
+
+        <div class="event-item green">
+
+            <div class="event-left">
+
+                <h4 id="payrollStatus">
+                    Paid
+                </h4>
+
+                <p id="payrollEmployees">
+                    0 employees
+                </p>
+
+            </div>
+
+            <div
+            class="event-badge"
+            id="payrollAmount">
+
+                ₹ 0
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
                 <!-- NEW MEMBERS -->
 
@@ -418,11 +432,47 @@ href="./css/dashboard.css">
         </div>
 
     </div>
-
+        <div id="footer-container"></div>
 </div>
 </div>
 
-<script src="js/dashboard.js"></script>
+<script src="./js/dashboard.js"></script>
+<script src="./js/sidebar.js"></script>
+<script src="./js/topbar.js"></script>
+
+<script>
+
+fetch("sidebar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("sidebar").innerHTML = data;
+
+    highlightCurrentSidebarPage();
+
+});
+
+fetch("topbar.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("topbar-container").innerHTML = data;
+
+    setModule();
+    setDate();
+    setAvatar();
+
+});
+
+
+fetch("footer.html")
+.then(res => res.text())
+.then(data => {
+
+    document.getElementById("footer-container").innerHTML = data;
+
+});
+</script>
 
 </body>
 </html>
