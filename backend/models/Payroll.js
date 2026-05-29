@@ -11,7 +11,8 @@ department:String,
 empCode:String,
 
 month:String,
-
+ year:String, 
+ 
 attendance:Number,
 
 workingDays:Number,

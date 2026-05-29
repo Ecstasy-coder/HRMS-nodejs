@@ -58,35 +58,22 @@
 
 
 // 2nd modification
-const express =
-require("express");
-
-const router =
-express.Router();
+const express = require("express");
+const router = express.Router();
 
 const {
+  getSalary,
+  createSalary,
+  updateSalary // <-- 1. Add this import
+} = require("../controllers/salaryController");
 
-getSalary,
-createSalary
+/* GET ALL / FILTERED */
+router.get("/", getSalary);
 
-} = require(
-"../controllers/salaryController"
-);
+/* POST (CREATE NEW) */
+router.post("/", createSalary);
 
-/* GET */
+/* PUT (UPDATE EXISTING BY ID) - FIXES THE 404 ERROR */
+router.put("/:id", updateSalary); // <-- 2. Add this route definition
 
-router.get(
-"/",
-getSalary
-);
-
-/* POST */
-
-router.post(
-"/",
-createSalary
-);
-
-module.exports =
-router;
-
+module.exports = router;
