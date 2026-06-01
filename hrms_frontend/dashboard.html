@@ -1,0 +1,924 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/api-config.js"></script>
+<title>Dashboard — My Ecstasy</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+
+<!-- <link rel="stylesheet" href="topbar.css" /> -->
+
+<style>
+  
+/* ── DESIGN TOKENS ───────────────────────────────────────────── */
+:root {
+  /* Sidebar */
+  --sidebar-w:    240px;
+  /* Navy palette */
+  --navy:         #0f1c2e;
+  --navy-mid:     #162338;
+  --navy-light:   #1d2f48;
+  /* Brand colours */
+  --accent:       #4f8ef7;
+  --accent-dark:  #2563eb;
+  --accent-glow:  rgba(79,142,247,0.18);
+  --gold:         #f0b429;
+  /* Text */
+  --text:         #e2eaf5;
+  --text-muted:   #7a95b4;
+  /* Surfaces */
+  --surface:      #ffffff;
+  --surface-alt:  #f3f6fb;
+  --bg:           #eef2f9;
+  /* Borders */
+  --border:       #e5eaf3;
+  --border-dark:  rgba(255,255,255,0.08);
+  /* Semantic */
+  --success:      #22c55e;
+  --error:        #ef4444;
+  --warning:      #f59e0b;
+  /* Shadows */
+  --shadow:       0 4px 24px rgba(15,28,46,0.08);
+  --shadow-lg:    0 8px 40px rgba(15,28,46,0.14);
+  /* Radii */
+  --radius:       14px;
+  --radius-sm:    10px;
+  --radius-lg:    20px;
+}
+
+/* ── TOPBAR ──────────────────────────────────────────────────── */
+.topbar{
+   background: #fff; padding: 13px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom: 1px solid var(--border); position: sticky; top:0; z-index:50;margin-left:14%;
+}
+
+.topbar-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--navy); 
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.topbar-date {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  
+}
+
+.notif-btn {
+  position: relative;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+  position: relative;
+}
+.notif-btn:hover { background: var(--border); }
+
+.notif-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--error);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 1px 5px;
+}
+
+.avatar-top {
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), #5b4de8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.avatar-top img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── PAGE CONTENT WRAPPER ────────────────────────────────────── */
+.content {
+  padding: 32px;
+  flex: 1;
+}
+/* FOOTER */
+.footer{
+  width:86%; background:#041c3b; color:rgba(255,255,255,.85);
+  padding:20px 40px; display:flex; justify-content:space-between;
+  align-items:center; margin-top:48px; font-size:13.5px; margin-left: 14%;
+}
+.footer-links{ display:flex; gap:30px; }
+.footer-links a{ color:rgba(255,255,255,.75); text-decoration:none; font-size:13.5px; transition:color .2s; }
+.footer-links a:hover{ color:#fff; }
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+  --bg:#f4f6fb;
+  --white:#ffffff;
+  --text:#111827;
+  --muted:#8b95a7;
+  --border:#e8edf5;
+  --orange:#f0a824;
+  --blue:#85b6ff;
+  --blue-light:#edf5ff;
+  --purple:#b08cff;
+  --purple-light:#f5efff;
+  --green:#6fe2c0;
+  --green-light:#ecfff8;
+  --pink:#f4afd4;
+  --pink-light:#fff0f8;
+  --shadow:0 1px 2px rgba(15,23,42,.03),0 8px 30px rgba(15,23,42,.04);
+}
+
+body{ font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+.main{ min-height:100vh; }
+
+/* TOPBAR */
+/* .topbar{
+  height:74px; background:#fff; border-bottom:1px solid var(--border);
+  padding:0 32px; position:sticky; z-index:50; top:0;
+  display:flex; margin-left:17%; align-items:center; justify-content:space-between;
+}
+.topbar-title{ font-size:22px; font-weight:700; }
+.topbar-right{ display:flex; align-items:center; gap:18px; }
+.date{ color:var(--muted); font-size:14px; }
+.notification{ position:relative; }
+.notification i{ font-size:18px; }
+.badge{
+  position:absolute; top:-8px; right:-9px; width:18px; height:18px;
+  border-radius:50%; background:#ff3b30; color:#fff; font-size:10px;
+  display:flex; align-items:center; justify-content:center;
+}
+ .top-avatar{
+  width:38px; height:38px; border-radius:50%; background:var(--orange);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:700; font-size:13px; cursor:pointer;
+}  */
+
+/* PAGE */
+.page{ padding:26px; margin-left:15%; }
+.dashboard-grid{ display:grid; grid-template-columns:340px 1fr; gap:22px; align-items:start; }
+
+/* GALLERY */
+.gallery-wrapper{ display:flex; flex-direction:column; gap:18px; }
+.gallery-top{
+  position:relative; height:560px; border-radius:32px;
+  overflow:hidden; background:#fff; box-shadow:var(--shadow);
+}
+.gallery-image{
+  width:100%; height:100%; object-fit:cover;
+  transition:opacity .5s ease;
+  animation:zoomEffect 8s ease infinite alternate;
+}
+.gallery-overlay{
+  position:absolute; inset:0; padding:28px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  background:linear-gradient(to top,rgba(0,0,0,.65),rgba(0,0,0,.15),transparent);
+  color:#fff;
+}
+.gallery-small{ font-size:12px; letter-spacing:3px; font-weight:600; opacity:.9; }
+.gallery-title{ margin-top:10px; font-size:32px; font-weight:800; line-height:1.2; }
+.gallery-btn{
+  align-self:center; display:flex; align-items:center; justify-content:center;
+  width:150px; height:52px; border:none; border-radius:50px;
+  background:rgba(255,255,255,.18); backdrop-filter:blur(14px);
+  color:#fff; text-decoration:none; text-align:center; font-size:15px;
+  font-weight:700; cursor:pointer; transition:.3s;
+}
+.gallery-btn:hover{ background:rgba(255,255,255,.28); transform:translateY(-3px); }
+.mini-gallery{ display:flex; gap:14px; }
+.mini-img{
+  width:88px; height:110px; object-fit:cover; border-radius:20px;
+  cursor:pointer; opacity:.55; border:3px solid transparent; transition:.4s ease;
+}
+.mini-img:hover{ transform:translateY(-5px); opacity:1; }
+.mini-img.active{ opacity:1; border-color:#f0a824; transform:scale(1.05); }
+
+/* GALLERY NAV DOTS */
+.gallery-dots{ position:absolute; bottom:80px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:5; }
+.gallery-dot{ width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.45); cursor:pointer; transition:.3s; }
+.gallery-dot.active{ background:#fff; transform:scale(1.3); }
+
+@keyframes zoomEffect{ from{ transform:scale(1); } to{ transform:scale(1.08); } }
+
+/* RIGHT */
+.right{ display:flex; flex-direction:column; gap:22px; }
+
+/* HERO */
+.moon{
+  position:absolute; top:-35px; left:-35px; width:110px; height:110px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#ffffff,#f8fafc 45%,#dbeafe 100%);
+  box-shadow:0 0 25px rgba(255,255,255,.35),0 0 60px rgba(147,197,253,.15); z-index:2;
+}
+.moon::before{
+  content:''; position:absolute; inset:-15px; border-radius:50%;
+  background:radial-gradient(circle,#ffffff,transparent 70%);
+  animation:moonGlow 4s ease-in-out infinite;
+}
+@keyframes moonGlow{
+  0%{ transform:scale(1); opacity:.7; }
+  50%{ transform:scale(1.08); opacity:1; }
+  100%{ transform:scale(1); opacity:.7; }
+}
+.hero{
+  position:relative; min-height:130px; border-radius:32px; overflow:hidden;
+  padding:10px 21px 0px 41px; display:flex; align-items:center;
+  justify-content:space-between;
+  background:radial-gradient(circle at top left,rgba(168,85,247,.18),transparent 30%),
+  linear-gradient(135deg,#05060a 0%,#0b0d13 45%,#111827 100%);
+  box-shadow:0 10px 35px rgba(0,0,0,.28); isolation:isolate;
+}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(#ffffff 1px,transparent 1px),
+    radial-gradient(#ffffff 1px,transparent 1px),
+    radial-gradient(#ffffff 1.2px,transparent 1.2px);
+  background-size:120px 120px,180px 180px,240px 240px;
+  background-position:20px 30px,80px 120px,150px 70px;
+  opacity:.35; animation:starsMove 40s linear infinite;
+}
+.hero .shooting-star{
+  position:absolute; width:140px; height:2px;
+  background:linear-gradient(to right,rgba(255,255,255,0),rgba(255,255,255,.9),rgba(255,255,255,0));
+  border-radius:50px; transform:rotate(-45deg); opacity:.7;
+}
+.hero .shooting-star:nth-child(1){ top:20px; right:120px; animation:shoot 4s linear infinite; }
+.hero .shooting-star:nth-child(2){ top:60px; right:300px; animation:shoot 6s linear infinite; }
+.hero .shooting-star:nth-child(3){ top:15px; right:500px; animation:shoot 5s linear infinite; }
+.hero-left{ position:relative; z-index:5; display:flex; align-items:center; gap:24px; }
+.hero-img{
+  width:115px; height:115px; object-fit:contain;
+  filter:drop-shadow(0 0 12px rgba(168,85,247,.65));
+  animation:floatAstronaut 4s ease-in-out infinite;
+}
+.hero-small{ color:rgba(102,255,154,1); font-size:10px; font-weight:800; letter-spacing:3px; margin-bottom:3px; }
+.hero-name{ font-size:24px; font-weight:800; color:#ffffff; letter-spacing:2px; margin-bottom:3px; }
+.hero-role{ color:rgba(218,207,207,1); font-size:10px; margin-bottom:8px; }
+.hero-badge{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 20px; margin-left:-23px; margin-top:3px; border-radius:50px;
+  background:rgba(139,92,246,.12); border:1px solid rgba(168,85,247,.35);
+  backdrop-filter:blur(12px); color:#ffffff; font-size:12px; font-weight:600;
+  box-shadow:0 0 20px rgba(168,85,247,.25); transition:.3s ease;
+}
+.hero-badge:hover{ transform:translateY(-3px); box-shadow:0 0 28px rgba(168,85,247,.45); }
+.hero-logo{
+  position:relative; z-index:5; width:147px; margin-bottom:16px; opacity:.95;
+  filter:drop-shadow(0 0 18px rgba(56,189,248,.35));
+  animation:logoFloat 4s ease-in-out infinite;
+}
+@keyframes floatAstronaut{ 0%{ transform:translateY(0px); } 50%{ transform:translateY(-10px); } 100%{ transform:translateY(0px); } }
+@keyframes logoFloat{ 0%{ transform:translateY(0px); } 50%{ transform:translateY(8px); } 100%{ transform:translateY(0px); } }
+@keyframes starsMove{ from{ transform:translateY(0px); } to{ transform:translateY(120px); } }
+@keyframes shoot{
+  0%{ transform:translateX(0) translateY(0) rotate(-45deg); opacity:0; }
+  10%{ opacity:1; }
+  100%{ transform:translateX(-500px) translateY(500px) rotate(-45deg); opacity:0; }
+}
+
+/* QUICK GRID */
+.quick-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.quick-card{
+  background:#fff; border-radius:24px; padding:15px; min-height:170px;
+  box-shadow:var(--shadow); position:relative; overflow:hidden; isolation:isolate;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease;
+  cursor:pointer; text-decoration:none; display:block; color:inherit;
+}
+.quick-card::before{
+  content:''; position:absolute; inset:0; transform:translateY(100%);
+  transition:transform .55s cubic-bezier(.22,1,.36,1); z-index:0;
+}
+.quick-card:nth-child(1)::before{ background:linear-gradient(135deg,#60a5fa,#2563eb); }
+.quick-card:nth-child(2)::before{ background:linear-gradient(135deg,#c084fc,#9333ea); }
+.quick-card:nth-child(3)::before{ background:linear-gradient(135deg,#34d399,#059669); }
+.quick-card:nth-child(4)::before{ background:linear-gradient(135deg,#f472b6,#db2777); }
+.quick-card:nth-child(5)::before{ background:linear-gradient(135deg,#47389e,#284595); }
+.quick-card:nth-child(6)::before{ background:linear-gradient(135deg,#38bdf8,#0284c7); }
+.quick-card::after{
+  content:''; position:absolute; top:-120px; left:-120px; width:240px; height:240px;
+  border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);
+  opacity:0; transition:.6s ease; z-index:1;
+}
+.quick-card:nth-child(1){ border-bottom:4px solid #60a5fa; }
+.quick-card:nth-child(2){ border-bottom:4px solid #a855f7; }
+.quick-card:nth-child(3){ border-bottom:4px solid #10b981; }
+.quick-card:nth-child(4){ border-bottom:4px solid #ec4899; }
+.quick-card:nth-child(5){ border-bottom:4px solid #284595; }
+.quick-card:nth-child(6){ border-bottom:4px solid #06b6d4; }
+.quick-card:hover{ transform:translateY(-12px) scale(1.03); box-shadow:0 22px 45px rgba(0,0,0,.18); }
+.quick-card:hover::before{ transform:translateY(0%); }
+.quick-card:hover::after{ opacity:1; transform:translate(110px,110px); }
+.quick-card > *{ position:relative; z-index:3; transition:.4s ease; }
+.quick-card:hover .quick-title,
+.quick-card:hover .quick-sub,
+.quick-card:hover .pill{ color:#ffffff; }
+.quick-card:hover .quick-icon{ transform:translateY(-8px) scale(1.12); box-shadow:0 12px 28px rgba(255,255,255,.12); }
+.quick-card:hover .blue-icon{ background:#2563eb; color:#fff; }
+.quick-card:hover .purple-icon{ background:#9333ea; color:#fff; }
+.quick-card:hover .green-icon{ background:#059669; color:#fff; }
+.quick-card:hover .pink-icon{ background:#db2777; color:#fff; }
+.quick-card:hover .quick-title{ transform:translateY(-3px); letter-spacing:.3px; }
+.quick-card:hover .quick-sub{ opacity:.85; }
+.quick-card:hover .pill{ background:#ffffff; color:#111827 !important; box-shadow:0 6px 18px rgba(0,0,0,.12); }
+.quick-top{ display:flex; align-items:center; justify-content:space-between; }
+.pill{ padding:6px 12px; border-radius:20px; font-size:9px; font-weight:800; }
+.blue-pill{ background:var(--blue-light); color:var(--blue); }
+.purple-pill{ background:var(--purple-light); color:var(--purple); }
+.green-pill{ background:var(--green-light); color:#26b28a; }
+.pink-pill{ background:var(--pink-light); color:#cf5ca4; }
+.cyan-pill{ background:#e0f2fe; color:#0284c7; }
+.quick-icon{
+  width:48px; height:48px; border-radius:47%; margin:10px auto 20px;
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.blue-icon{ background:var(--blue-light); color:var(--blue); }
+.purple-icon{ background:var(--purple-light); color:var(--purple); }
+.green-icon{ background:var(--green-light); color:#26b28a; }
+.pink-icon{ background:var(--pink-light); color:#cf5ca4; }
+.cyan-icon{ background:#e0f2fe; color:#0284c7; }
+.quick-title{ font-size:14px; font-weight:700; text-align:center; }
+.quick-sub{ color:var(--muted); font-size:11px; margin-top:5px; text-align:center; }
+
+/* BIRTHDAY / EVENTS PANEL */
+.panel{
+  background:#fff; border-radius:24px; overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.panel-header{
+  padding:15px 24px; border-bottom:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.panel-title{ font-size:15px; color:#8285f1; font-weight:700; }
+.panel-link{ color:var(--muted); font-size:11px; text-decoration:none; cursor:pointer; }
+.panel-link:hover{ color:#2563eb; }
+.panel-body{ padding:19px; text-align:center; color:var(--muted); font-size:13px; }
+
+/* EVENTS LIST */
+.event-list{ padding:10px 0; }
+.event-item{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 24px; border-bottom:1px solid var(--border); position:relative;
+}
+.event-item:last-child{ border-bottom:none; }
+.event-item::before{
+  content:''; position:absolute; left:0; top:3px;
+  width:4px; height:45px; border-radius:10px;
+}
+.event-item.orange::before{ background:#f59e0b; }
+.event-item.green::before{ background:#10b981; }
+.event-item.blue::before{ background:#3b82f6; }
+.event-item.purple::before{ background:#8b5cf6; }
+.event-left h4{ font-size:13px; margin-bottom:4px; font-weight:700; }
+.event-left p{ color:var(--muted); font-size:11px; }
+.event-badge{
+  padding:8px 14px; border-radius:30px; background:#eef4ff;
+  color:#2563eb; font-size:10px; font-weight:700; white-space:nowrap;
+}
+.event-badge.today{ background:#dcfce7; color:#16a34a; }
+.event-badge.passed{ background:#f1f5f9; color:#64748b; }
+
+/* MEMBERS */
+.member-list{ width:100%; }
+.member-item{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 24px; border-bottom:1px solid var(--border);
+}
+.member-item:last-child{ border-bottom:none; }
+.member-left{ display:flex; align-items:center; gap:14px; }
+.member-avatar{
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:11px; font-weight:700;
+}
+.av-blue{ background:#3b82f6; }
+.av-cyan{ background:#06b6d4; }
+.av-green{ background:#10b981; }
+.av-purple{ background:#8b5cf6; }
+.av-orange{ background:#f59e0b; }
+.av-pink{ background:#ec4899; }
+.member-name{ font-size:12px; font-weight:700; margin-bottom:2px; }
+.member-role{ color:var(--muted); font-size:11px; }
+.member-badge{
+  padding:2px 14px; border-radius:30px; background:#ecfdf5;
+  color:#10b981; font-size:10px; font-weight:800;
+}
+
+/* BIRTHDAY PEOPLE */
+.bday-item{ display:flex; align-items:center; gap:14px; padding:10px 24px; border-bottom:1px solid var(--border); }
+.bday-item:last-child{ border-bottom:none; }
+.bday-emoji{ font-size:24px; }
+.bday-name{ font-size:13px; font-weight:700; }
+.bday-dept{ color:var(--muted); font-size:11px; }
+
+/* SKELETON LOADER */
+.skeleton{ background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; }
+@keyframes shimmer{ 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+
+
+
+/* RESPONSIVE */
+@media(max-width:1200px){ .dashboard-grid{ grid-template-columns:1fr; } }
+@media(max-width:768px){
+  .quick-grid{ grid-template-columns:1fr 1fr; }
+  .topbar{ padding:0 16px; }
+  .page{ padding:16px; }
+}
+@media(max-width:480px){ .quick-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+
+<body>
+<div class="layout">
+  <div id="sidebar"></div>
+
+  <div class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <h1 class="topbar-title">Dashboard</h1>
+        <div class="topbar-right">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+          <div class="avatar-top" id="topbarAvatar">AD</div>
+        </div>
+      </header>
+
+    <div class="page">
+      <div class="dashboard-grid">
+
+        <!-- LEFT: GALLERY -->
+        <div class="gallery-wrapper">
+          <div class="gallery-top">
+            <img id="mainGalleryImage" src="assets/images/2025-12-08.jpg" class="gallery-image" alt="Gallery">
+            <div class="gallery-overlay">
+              <div>
+                <div class="gallery-small">ECSTASY SOLUTIONS</div>
+                <div class="gallery-title">Company Gallery</div>
+              </div>
+              <div class="gallery-dots" id="galleryDots"></div>
+              <a href="gallery.html" class="gallery-btn">
+                <i class="fas fa-chevron-right" style="margin-right:6px;"></i> VIEW MORE
+              </a>
+            </div>
+          </div>
+          <div class="mini-gallery" id="miniGallery"></div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right">
+
+          <!-- HERO WELCOME CARD -->
+          <div class="hero">
+            <div class="moon"></div>
+            <span class="shooting-star"></span>
+            <span class="shooting-star"></span>
+            <span class="shooting-star"></span>
+            <div class="hero-left">
+              <img src="assets/images/download.png" alt="Avatar" class="hero-img" id="heroAvatar">
+              <div>
+                <div class="hero-small" id="heroGreeting">GOOD MORNING</div>
+                <div class="hero-name" id="heroName">Loading…</div>
+                <div class="hero-role" id="heroRole"></div>
+                <div class="hero-badge" id="heroBadge">HR Portal</div>
+              </div>
+            </div>
+            <img src="assets/images/logo.png.jpeg" class="hero-logo" alt="Logo">
+          </div>
+
+          <!-- QUICK CARDS GRID -->
+          <div class="quick-grid" id="quickGrid">
+            <!-- cards injected by JS -->
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+            <div class="quick-card skeleton" style="min-height:170px;"></div>
+          </div>
+
+          <!-- TODAY'S BIRTHDAYS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><i class="fa-solid fa-cake-candles"></i> Today's Birthdays</div>
+              <div class="panel-link" id="bdayDate"></div>
+            </div>
+            <div id="bdayBody" class="panel-body">Loading…</div>
+          </div>
+
+          <!-- UPCOMING EVENTS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><i class="fa-solid fa-calendar-days"></i> Upcoming Events</div>
+              <a href="important-events.html" class="panel-link">View all →</a>
+            </div>
+            <div id="eventsBody" class="event-list">
+              <div class="panel-body">Loading…</div>
+            </div>
+          </div>
+
+          <!-- NEW TEAM MEMBERS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><i class="fa-solid fa-hand-wave"></i> New Team Members</div>
+              <div class="panel-link">Last 30 days</div>
+            </div>
+            <div id="membersBody" class="member-list">
+              <div class="panel-body">Loading…</div>
+            </div>
+          </div>
+
+        </div><!-- /right -->
+      </div><!-- /dashboard-grid -->
+    </div><!-- /page -->
+
+    <div class="footer">
+      <div>© 2026 My Ecstasy . All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════════════
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const COLORS = ['av-blue','av-cyan','av-green','av-purple','av-orange','av-pink'];
+
+function initials(name) {
+  if (!name) return '?';
+  const p = name.trim().split(' ');
+  return (p[0][0] + (p[1]?.[0] || '')).toUpperCase();
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'GOOD MORNING';
+  if (h < 17) return 'GOOD AFTERNOON';
+  return 'GOOD EVENING';
+}
+
+function liveDateStr() {
+  const now = new Date();
+  return `${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+function formatEventDate(dateStr) {
+  const d = new Date(dateStr);
+  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function getStatusLabel(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev    = new Date(dateStr); ev.setHours(0,0,0,0);
+  const diff  = Math.round((ev - today) / 86400000);
+  if (diff === 0) return { label:'Today!',  cls:'today' };
+  if (diff < 0)  return { label:'Passed',   cls:'passed' };
+  if (diff === 1) return { label:'Tomorrow', cls:'' };
+  if (diff <= 7)  return { label:`In ${diff}d`, cls:'' };
+  return { label:`In ${diff}d`, cls:'' };
+}
+
+const EVENT_COLORS = ['orange','green','blue','purple','orange','green'];
+
+// ════════════════════════════════════════════════════════════════
+//  DATE — live clock
+// ════════════════════════════════════════════════════════════════
+document.getElementById('topbarDate').textContent = liveDateStr();
+setInterval(() => {
+  document.getElementById('topbarDate').textContent = liveDateStr();
+}, 60000);
+
+// ════════════════════════════════════════════════════════════════
+//  SIDEBAR
+// ════════════════════════════════════════════════════════════════
+(async () => {
+  try {
+    const res  = await fetch('sidebar.html');
+    const html = await res.text();
+    document.getElementById('sidebar').innerHTML = html;
+    document.querySelectorAll('#sidebar .nav-item').forEach(a => {
+      const href = (a.getAttribute('href') || '').replace(/\.html$/, '').toLowerCase();
+      if (href && (location.pathname.replace(/\.html$/, '').toLowerCase().endsWith(href) ||
+          href === '/dashboard' || href === 'dashboard')) {
+        a.classList.add('active');
+      }
+    });
+  } catch {}
+})();
+
+// ════════════════════════════════════════════════════════════════
+//  GALLERY — dynamic from assets folder
+// ════════════════════════════════════════════════════════════════
+const galleryImages = [
+  'assets/images/2025-12-08.jpg',
+  'assets/images/2025-12-09.jpg',
+  'assets/images/2026-03-16.jpg'
+];
+
+let curImg = 0;
+const mainImg = document.getElementById('mainGalleryImage');
+const miniGallery = document.getElementById('miniGallery');
+const dotsEl = document.getElementById('galleryDots');
+
+function buildGallery() {
+  miniGallery.innerHTML = galleryImages.map((src, i) => `
+    <img src="${src}" class="mini-img${i === 0 ? ' active' : ''}" data-index="${i}" alt="gallery">
+  `).join('');
+
+  dotsEl.innerHTML = galleryImages.map((_, i) =>
+    `<div class="gallery-dot${i === 0 ? ' active' : ''}" data-index="${i}"></div>`
+  ).join('');
+
+  miniGallery.querySelectorAll('.mini-img').forEach(img => {
+    img.addEventListener('click', () => switchGallery(+img.dataset.index));
+  });
+  dotsEl.querySelectorAll('.gallery-dot').forEach(d => {
+    d.addEventListener('click', () => switchGallery(+d.dataset.index));
+  });
+}
+
+function switchGallery(idx) {
+  curImg = idx;
+  mainImg.style.opacity = 0;
+  setTimeout(() => {
+    mainImg.src = galleryImages[curImg];
+    mainImg.style.opacity = 1;
+  }, 300);
+  document.querySelectorAll('.mini-img').forEach((m, i) => m.classList.toggle('active', i === curImg));
+  document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === curImg));
+}
+
+buildGallery();
+setInterval(() => switchGallery((curImg + 1) % galleryImages.length), 4000);
+
+// ════════════════════════════════════════════════════════════════
+//  QUICK CARDS CONFIG
+// ════════════════════════════════════════════════════════════════
+const CARD_CONFIG = [
+  {
+    key:    'holidayCalendar',
+    title:  'Holiday Calendar',
+    sub:    'Plan',
+    icon:   'fa-regular fa-calendar',
+    iconCls:'blue-icon',
+    pillCls:'blue-pill',
+    href:   'holiday-calendar.html'
+  },
+  {
+    key:    'upcomingEvents',
+    title:  'Events',
+    sub:    'Manage',
+    icon:   'fa-regular fa-star',
+    iconCls:'purple-icon',
+    pillCls:'purple-pill',
+    href:   'important-events.html'
+  },
+  {
+    key:    'attendance',
+    title:  'Attendance',
+    sub:    'Track',
+    icon:   'fa-regular fa-check-square',
+    iconCls:'green-icon',
+    pillCls:'green-pill',
+    href:   'my-attendance.html'
+  },
+  {
+    key:    'helpDesk',
+    title:  'Help Desk',
+    sub:    'Support',
+    icon:   'fa-regular fa-comment',
+    iconCls:'pink-icon',
+    pillCls:'pink-pill',
+    href:   'help-desk.html'
+  },
+  {
+    key:    'manageUsers',
+    title:  'Manage Users',
+    sub:    'Admin',
+    icon:   'fa-regular fa-user',
+    iconCls:'green-icon',
+    pillCls:'green-pill',
+    href:   'users.html'
+  },
+  {
+    key:    'leaveApprovals',
+    title:  'Leave Approvals',
+    sub:    'Admin',
+    icon:   'fa-regular fa-envelope',
+    iconCls:'blue-icon',
+    pillCls:'cyan-pill',
+    href:   'leave-management.html'
+  }
+];
+
+function renderCards(cards) {
+  const grid = document.getElementById('quickGrid');
+  grid.innerHTML = CARD_CONFIG.map(cfg => `
+    <a href="${cfg.href}" class="quick-card">
+      <div class="quick-top">
+        <div class="pill ${cfg.pillCls}">${cards[cfg.key] || '—'}</div>
+        <i class="fas fa-arrow-right" style="color:var(--muted);font-size:12px;"></i>
+      </div>
+      <div class="quick-icon ${cfg.iconCls}">
+        <i class="${cfg.icon}"></i>
+      </div>
+      <div class="quick-title">${cfg.title}</div>
+      <div class="quick-sub">${cfg.sub}</div>
+    </a>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  BIRTHDAY PANEL
+// ════════════════════════════════════════════════════════════════
+function renderBirthdays(people) {
+  const now = new Date();
+  const body = document.getElementById('bdayBody');
+  document.getElementById('bdayDate').textContent =
+    `${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+  if (!people || !people.length) {
+    body.innerHTML = '<div style="padding:19px;text-align:center;color:var(--muted);font-size:13px;">No birthdays today. Next celebrations coming soon!</div>';
+    return;
+  }
+
+  body.outerHTML; // keep ref
+  const container = document.getElementById('bdayBody');
+  container.className = '';
+  container.innerHTML = people.map((p, i) => `
+    <div class="bday-item">
+      <div class="bday-emoji">🎂</div>
+      <div>
+        <div class="bday-name">${p.fullName}</div>
+        <div class="bday-dept">${p.department || 'Team Member'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  EVENTS PANEL
+// ════════════════════════════════════════════════════════════════
+function renderEvents(events) {
+  const body = document.getElementById('eventsBody');
+
+  if (!events || !events.length) {
+    body.innerHTML = '<div class="panel-body">No upcoming events in the next 7 days.</div>';
+    return;
+  }
+
+  body.innerHTML = events.map((ev, i) => {
+    const { label, cls } = getStatusLabel(ev.eventDate);
+    const color = EVENT_COLORS[i % EVENT_COLORS.length];
+    return `
+      <div class="event-item ${color}">
+        <div class="event-left">
+          <h4>${ev.title}</h4>
+          <p>${formatEventDate(ev.eventDate)}</p>
+        </div>
+        <div class="event-badge ${cls}">${label}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  NEW MEMBERS PANEL
+// ════════════════════════════════════════════════════════════════
+function renderMembers(members) {
+  const body = document.getElementById('membersBody');
+
+  if (!members || !members.length) {
+    body.innerHTML = '<div class="panel-body">No new members in the last 30 days.</div>';
+    return;
+  }
+
+  body.innerHTML = members.map((m, i) => {
+    const color = COLORS[i % COLORS.length];
+    const init  = initials(m.fullName);
+    const joinedDate = m.joinedDate
+      ? new Date(m.joinedDate).toLocaleDateString('en-GB', { day:'numeric', month:'short' })
+      : new Date(m.createdAt).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+    return `
+      <div class="member-item">
+        <div class="member-left">
+          <div class="member-avatar ${color}">${init}</div>
+          <div>
+            <div class="member-name">${m.fullName}</div>
+            <div class="member-role">${m.department || 'Team'} · Joined ${joinedDate}</div>
+          </div>
+        </div>
+        <div class="member-badge">NEW</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  HERO PANEL
+// ════════════════════════════════════════════════════════════════
+function renderHero(user) {
+  document.getElementById('heroGreeting').textContent = getGreeting();
+  document.getElementById('heroName').textContent     = user.fullName || 'Welcome';
+  document.getElementById('heroRole').textContent     = `${user.role || ''} · ${user.department || ''}`;
+  document.getElementById('heroBadge').textContent    = user.designation || user.role || 'HR Portal';
+
+  // topbar avatar (topbar-utils.js will handle this too, but set here for speed)
+  const av = initials(user.fullName);
+  const topAv = document.getElementById('topbarAvatar');
+  if (topAv && !topAv.querySelector('img')) topAv.textContent = av;
+
+  // If user has a custom avatar image
+  if (user.avatar) {
+    const heroImg = document.getElementById('heroAvatar');
+    heroImg.src = user.avatar;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  LOAD DASHBOARD DATA
+// ════════════════════════════════════════════════════════════════
+async function loadDashboard() {
+  try {
+    const res  = await fetch('/api/dashboard');
+
+    if (res.status === 401) {
+      window.location.href = '/login.html';
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.success) return;
+
+    renderHero(data.user);
+    renderCards(data.cards);
+    renderBirthdays(data.birthdayPeople);
+    renderEvents(data.upcomingEvents);
+    renderMembers(data.newMembers);
+
+    // Update notification badge with upcoming events count
+    const evCount = data.upcomingEvents ? data.upcomingEvents.length : 0;
+    document.getElementById('notifBadge').textContent = evCount || 0;
+
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+  }
+}
+
+// Initial load
+loadDashboard();
+
+// Auto-refresh every 60 seconds for real-time updates
+setInterval(loadDashboard, 60000);
+</script>
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+  /* ── logout ─────────────────────────────────────── */
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location.href = '/';
+  }
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

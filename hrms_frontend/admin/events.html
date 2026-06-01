@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Important Events — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+ <link rel="stylesheet" href="topbar.css"/>
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    .category-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .ctab { padding: 9px 20px; border-radius: 50px; border: 1.5px solid var(--border); background: #fff; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #6b7280; cursor: pointer; transition: .2s; }
+    .ctab:hover { border-color: var(--navy); color: var(--navy); }
+    .ctab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    .events-section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .section-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot-upcoming { background: var(--success); }
+    .dot-past     { background: #d1d5db; }
+    .section-label { font-size: 14px; font-weight: 700; color: #374151; letter-spacing: 0.3px; }
+    .section-count { font-size: 13px; color: var(--text-muted); }
+
+    .event-card {
+      background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); padding: 18px 22px; margin-bottom: 10px;
+      display: flex; align-items: flex-start; gap: 16px;
+      border-left: 4px solid var(--border); transition: .2s;
+    }
+    .event-card:hover { transform: translateX(3px); }
+    .event-card.Performance\ Review { border-left-color: var(--warning); }
+    .event-card.Company\ Event      { border-left-color: var(--accent); }
+    .event-card.Deadline            { border-left-color: var(--error); }
+    .event-card.Town\ Hall          { border-left-color: var(--success); }
+    .event-card.Other               { border-left-color: #8b5cf6; }
+
+    .event-date-box { flex-shrink: 0; width: 52px; height: 56px; background: #f9fafb; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--border); }
+    .ev-month { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+    .ev-day   { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .event-info { flex: 1; }
+    .event-name { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 5px; }
+    .event-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .event-desc { font-size: 13px; color: #6b7280; margin-top: 6px; }
+    .cat-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .cat-Performance\ Review { background: #fef9ee; color: #92400e; }
+    .cat-Company\ Event      { background: #eff6ff; color: #1d4ed8; }
+    .cat-Deadline            { background: #fef2f2; color: #991b1b; }
+    .cat-Town\ Hall          { background: #f0fdf4; color: #166534; }
+    .cat-Other               { background: #fdf4ff; color: #6b21a8; }
+    .passed-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #f3f4f6; color: #9ca3af; }
+    .event-actions { display: flex; gap: 6px; flex-shrink: 0; margin-left: auto; }
+    .ev-action-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; border: 1.5px solid var(--border); background: #fff; color: #374151; transition: .2s; }
+    .ev-action-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .ev-action-btn.del { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
+    .ev-action-btn.del:hover { background: #fee2e2; }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Important Events</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Category tabs -->
+    <div class="category-tabs">
+      <button class="ctab active" data-cat="All Events" onclick="setCat(this,'All Events')">All Events</button>
+      <button class="ctab" data-cat="Performance Review" onclick="setCat(this,'Performance Review')">Performance Review</button>
+      <button class="ctab" data-cat="Company Event" onclick="setCat(this,'Company Event')">Company Event</button>
+      <button class="ctab" data-cat="Deadline" onclick="setCat(this,'Deadline')">Deadline</button>
+      <button class="ctab" data-cat="Town Hall" onclick="setCat(this,'Town Hall')">Town Hall</button>
+      <button class="ctab" data-cat="Other" onclick="setCat(this,'Other')">Other</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">📌</span>
+          <div class="panel-title">IMPORTANT EVENTS</div>
+        </div>
+        <span class="badge-pill badge-approved" id="eventCount">0 events</span>
+      </div>
+      <div class="panel-body" id="eventsBody">
+        <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><h3>Loading events…</h3></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+let allEvents = [], currentCat = 'All Events';
+
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('events', user);
+  document.getElementById('dateDisplay').textContent = getLiveDate();
+  const topAv = document.getElementById('topAvatar');
+  topAv.textContent = getInitials(user.fullName);
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" alt="avatar"/>`;
+  startPolling(loadEvents, 30000);
+})();
+
+function setCat(el, cat) {
+  document.querySelectorAll('.ctab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active'); currentCat = cat; renderEvents();
+}
+
+async function loadEvents() {
+  try {
+    const r = await fetch('/api/events', { credentials: 'include' });
+    const d = await r.json();
+    allEvents = d.events || d || [];
+    renderEvents();
+  } catch(e) { console.error(e); }
+}
+
+function renderEvents() {
+  const now = new Date();
+  let events = allEvents;
+  if (currentCat !== 'All Events') events = events.filter(e => e.category === currentCat || e.eventType === currentCat);
+
+  document.getElementById('eventCount').textContent = `${events.length} events`;
+
+  const upcoming = events.filter(e => new Date(e.eventDate || e.date) >= now).sort((a,b) => new Date(a.eventDate||a.date) - new Date(b.eventDate||b.date));
+  const past     = events.filter(e => new Date(e.eventDate || e.date) < now).sort((a,b) => new Date(b.eventDate||b.date) - new Date(a.eventDate||a.date));
+
+  const body = document.getElementById('eventsBody');
+  if (events.length === 0) {
+    body.innerHTML = `<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><h3>No events found</h3><p>No ${currentCat === 'All Events' ? '' : currentCat + ' '}events at the moment.</p></div>`;
+    return;
+  }
+
+  let html = '';
+  if (upcoming.length > 0) {
+    html += `<div class="events-section"><div class="section-header"><span class="section-dot dot-upcoming"></span><span class="section-label">UPCOMING EVENTS (${upcoming.length})</span></div>`;
+    html += upcoming.map(e => eventCard(e, false)).join('');
+    html += '</div>';
+  }
+  if (past.length > 0) {
+    html += `<div class="events-section"><div class="section-header"><span class="section-dot dot-past"></span><span class="section-label">PAST EVENTS (${past.length})</span></div>`;
+    html += past.map(e => eventCard(e, true)).join('');
+    html += '</div>';
+  }
+  body.innerHTML = html;
+}
+
+function eventCard(e, isPast) {
+  const d = new Date(e.eventDate || e.date);
+  const month = d.toLocaleDateString('en-IN', { month: 'short' }).toUpperCase();
+  const day   = d.getDate();
+  const cat   = e.category || e.eventType || 'Other';
+  return `
+  <div class="event-card ${cat} fade-up">
+    <div class="event-date-box"><div class="ev-month">${month}</div><div class="ev-day">${day}</div></div>
+    <div class="event-info">
+      <div class="event-name">${e.title || e.eventName || 'Event'}</div>
+      <div class="event-meta">
+        <span class="cat-badge cat-${cat}">${cat}</span>
+        ${isPast ? '<span class="passed-badge">Passed</span>' : `<span style="font-size:12px;color:var(--success);font-weight:600;"><i class="fa-regular fa-clock"></i> ${formatDate(e.eventDate || e.date)}</span>`}
+      </div>
+      ${e.description || e.eventDescription ? `<div class="event-desc">${e.description || e.eventDescription}</div>` : ''}
+    </div>
+  </div>`;
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

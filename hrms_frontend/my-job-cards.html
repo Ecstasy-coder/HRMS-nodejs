@@ -1,0 +1,765 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Job Cards · My Ecstasy HR Portal</title>
+  <script src="/api-config.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="common.css" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Sora', Arial, system-ui, sans-serif; }
+
+    /* ── Stat cards ─────────────────────────────────────────── */
+    .stats { display: flex; gap: 20px; margin-bottom: 28px; }
+    .stat-card {
+      flex: 1; background: #ffffff; border-radius: 18px;
+      padding: 24px 26px; box-shadow: 0 4px 16px rgba(15,23,42,.06);
+      border: 1px solid #eef3fa; transition: transform .18s, box-shadow .18s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,23,42,.09); }
+    .stat-flex { display: flex; justify-content: center; align-items: center; gap: 22px; }
+    .stat-card h3 { font-size: 12px; color: #64748b; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; }
+    .stat-right { display: flex; align-items: center; gap: 14px; }
+    .stat-right h1 { font-size: 42px; line-height: 1; font-weight: 800; }
+    .pending-number  { color: #d97706; }
+    .approved-number { color: #059669; }
+    .rejected-number { color: #dc2626; }
+    .stat-right span { color: #94a3b8; font-size: 13px; }
+
+    /* ── Top bar ────────────────────────────────────────────── */
+    .top-bar {
+      background: #ffffff; padding: 20px 28px; border-radius: 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 22px; box-shadow: 0 4px 16px rgba(15,23,42,.05);
+      border: 1px solid #eef3fa;
+    }
+    .top-bar h2 { font-size: 17px; font-weight: 700; color: #0f172a; }
+    .add-btn {
+      background: linear-gradient(135deg, #17365d, #2563eb);
+      color: #fff; border: none; font-family: inherit; font-size: 14px;
+      font-weight: 700; cursor: pointer; padding: 10px 22px; border-radius: 40px;
+      transition: opacity .2s, transform .18s; display: flex; align-items: center; gap: 6px;
+    }
+    .add-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+    /* ── Form ───────────────────────────────────────────────── */
+    .form-box {
+      background: #fff; border-radius: 18px; margin-bottom: 22px;
+      box-shadow: 0 4px 16px rgba(15,23,42,.05); border: 1px solid #eef3fa; overflow: hidden;
+    }
+    .form-header { display: flex; justify-content: space-between; align-items: center; padding: 22px 28px; border-bottom: 1px solid #eef3fa; }
+    .form-header h2 { font-size: 17px; font-weight: 700; color: #0f172a; }
+    .form-body { padding: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 22px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #334155; }
+    .required { color: #ef4444; }
+    .form-group input, .form-group textarea {
+      width: 100%; border: 1.5px solid #dbe2ef; border-radius: 12px;
+      padding: 13px 16px; font-size: 14px; font-family: inherit; outline: none;
+      background: #fff; color: #0f172a; transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .button-row { display: flex; gap: 14px; margin-top: 8px; }
+    .submit-btn {
+      background: linear-gradient(135deg, #17365d, #2563eb);
+      color: #fff; border: none; padding: 13px 28px; border-radius: 12px;
+      font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity .2s;
+    }
+    .submit-btn:hover { opacity: .88; }
+    .cancel-btn {
+      background: #fff; border: 1.5px solid #dbe2ef; color: #334155;
+      padding: 13px 28px; border-radius: 12px; font-family: inherit;
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: background .18s;
+    }
+    .cancel-btn:hover { background: #f8fafc; }
+
+    /* ── Toast notification ─────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 600;
+      color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.15);
+      transform: translateY(80px); opacity: 0;
+      transition: transform .3s ease, opacity .3s ease;
+    }
+    .toast.show  { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #16a34a; }
+    .toast.error   { background: #dc2626; }
+
+    /* ── Warning ticker ─────────────────────────────────────── */
+    .warning-box {
+      background: #fff8e8; border: 1.5px solid #f4c542; color: #9a5b00;
+      padding: 0 18px; border-radius: 12px; margin-bottom: 20px;
+      display: flex; align-items: center; overflow: hidden; height: 52px; position: relative;
+    }
+    .warning-box i { color: #f0a824; font-size: 18px; min-width: 24px; flex-shrink: 0; z-index: 2; }
+    .scroll-text {
+      position: absolute; white-space: nowrap; font-size: 13px; font-weight: 600;
+      left: 60px; animation: scrollText 22s linear infinite;
+    }
+    @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* ── Filter card ────────────────────────────────────────── */
+    .filter-card {
+      background: #fff; padding: 24px 28px; border-radius: 18px;
+      margin-bottom: 22px; box-shadow: 0 4px 16px rgba(15,23,42,.05); border: 1px solid #eef3fa;
+    }
+    .filter-title { font-size: 17px; font-weight: 700; margin-bottom: 22px; color: #0f172a; }
+    .filter-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+    .filter-group { display: flex; flex-direction: column; }
+    .filter-group label { margin-bottom: 8px; color: #64748b; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+    .filter-group select {
+      width: 140px; height: 48px; border: 1.5px solid #dbe2ef; border-radius: 12px;
+      padding: 0 14px; font-size: 14px; font-family: inherit; outline: none;
+      background: #fff; cursor: pointer; color: #0f172a; transition: border-color .2s;
+    }
+    .filter-group select:focus { border-color: #2563eb; }
+    .clear-btn {
+      height: 48px; padding: 0 22px; border-radius: 12px; border: 1.5px solid #dbe2ef;
+      background: #fff; color: #64748b; font-family: inherit; font-size: 14px;
+      font-weight: 600; cursor: pointer; transition: background .18s;
+    }
+    .clear-btn:hover { background: #f8fafc; }
+
+    /* ── Details section ─────────────────────────────────────── */
+    .details-header {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .details-header h2 { font-size: 22px; font-weight: 800; color: #0f172a; }
+    .date-badge-header {
+      background: linear-gradient(135deg, #17365d, #2563eb);
+      color: #fff; padding: 8px 18px; border-radius: 30px;
+      font-size: 13px; font-weight: 600;
+    }
+
+    /* ── Job card display ─────────────────────────────────────  */
+    .card {
+      background: #fff; border-radius: 20px; padding: 26px 28px;
+      margin-bottom: 28px; box-shadow: 0 4px 16px rgba(15,23,42,.06);
+      border: 1px solid #eef3fa; transition: transform .18s, box-shadow .18s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(15,23,42,.09); }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px 18px; }
+    .full-width { grid-column: 1 / 3; }
+    .info-title { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .info-value { font-size: 15px; line-height: 1.5; color: #0f172a; font-weight: 500; }
+    .status-badge { display: inline-block; padding: 6px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; }
+    .pending  { background: #fff7ed; color: #f59e0b; }
+    .approved { background: #dcfce7; color: #16a34a; }
+    .rejected { background: #fee2e2; color: #dc2626; }
+    .card-footer { margin-top: 18px; padding-top: 16px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; align-items: center; }
+
+    .edit-btn {
+      background: linear-gradient(135deg, #17365d, #2563eb);
+      color: #fff; border: none; padding: 9px 20px; border-radius: 10px;
+      font-family: inherit; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: opacity .2s; display: flex; align-items: center; gap: 6px;
+    }
+    .edit-btn:hover { opacity: .85; }
+    .reviewed-note { color: #94a3b8; font-size: 13px; font-style: italic; }
+
+    /* ── Edit modal ──────────────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 20px; padding: 32px; width: 100%; max-width: 540px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2); animation: modalIn .2s ease;
+    }
+    @keyframes modalIn { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal h2 { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 22px; }
+    .modal .form-group { margin-bottom: 18px; }
+    .modal .button-row { margin-top: 24px; }
+
+    /* ── No data ─────────────────────────────────────────────── */
+    .no-data {
+      background: #fff; border: 2px dashed #dbe4f0; border-radius: 18px;
+      padding: 64px 20px; text-align: center;
+    }
+    .no-data i  { font-size: 52px; color: #94a3b8; margin-bottom: 16px; display: block; }
+    .no-data h2 { font-size: 22px; margin-bottom: 10px; color: #1e2a47; font-weight: 700; }
+    .no-data p  { color: #64748b; font-size: 14px; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .footer {
+      width: 100%; background: #041c3b; color: rgba(255,255,255,.85);
+      padding: 20px 40px; display: flex; justify-content: space-between;
+      align-items: center; margin-top: 48px; font-size: 13.5px;
+    }
+    .footer-links { display: flex; gap: 30px; }
+    .footer-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 13.5px; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+
+    @media (max-width: 860px) { .stats { flex-direction: column; } }
+    @media (max-width: 640px) {
+      .form-row  { grid-template-columns: 1fr; }
+      .card-grid { grid-template-columns: 1fr; }
+      .full-width { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <h1 class="topbar-title">My Job Cards</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <div class="notif-btn" title="Notifications">🔔<span class="notif-badge" id="notifCount">3</span></div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-flex">
+          <h3>PENDING ADMIN REVIEW</h3>
+          <div class="stat-right">
+            <h1 class="pending-number" id="pendingCount">0</h1>
+            <span>Awaiting admin</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-flex">
+          <h3>APPROVED</h3>
+          <div class="stat-right">
+            <h1 class="approved-number" id="approvedCount">0</h1>
+            <span>This month</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-flex">
+          <h3>REJECTED</h3>
+          <div class="stat-right">
+            <h1 class="rejected-number" id="rejectedCount">0</h1>
+            <span>Need attention</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit strip -->
+    <div class="top-bar">
+      <h2>Submit My Daily Job Card</h2>
+      <button class="add-btn" id="addBtn">+ New Entry</button>
+    </div>
+
+    <!-- Submission form (hidden by default) -->
+    <div class="form-box" id="formBox" style="display:none;">
+      <div class="form-header">
+        <h2>Submit Daily Job Card</h2>
+      </div>
+      <div class="form-body">
+        <form id="jobForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date <span class="required">*</span></label>
+              <input type="date" id="date" required />
+            </div>
+            <div class="form-group">
+              <label>Project Name <span class="required">*</span></label>
+              <input type="text" id="projectName" placeholder="e.g. WorkHub Portal, Client ABC" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Hours Worked <span class="required">*</span></label>
+              <input type="number" id="hoursWorked" placeholder="e.g. 8" min="0.5" max="24" step="0.5" required />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:22px;">
+            <label>Work Description <span class="required">*</span></label>
+            <textarea id="workDescription" placeholder="Describe what you worked on today in detail..." required></textarea>
+          </div>
+          <div class="button-row">
+            <button class="submit-btn" type="submit">Submit to Admin</button>
+            <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Warning ticker -->
+    <div class="warning-box">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div class="scroll-text">
+        <b>Job cards cannot be edited for entries older than 7 to 14 days from the current date.</b>
+        &nbsp;|&nbsp; HR staff are advised to review and update their job cards within the allowed time frame to avoid any restrictions.
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-card">
+      <div class="filter-title">🗓️ My Job Cards</div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>DAY</label>
+          <select id="dayFilter"><option value="">-- Day --</option></select>
+        </div>
+        <div class="filter-group">
+          <label>MONTH</label>
+          <select id="monthFilter"><option value="">-- Month --</option></select>
+        </div>
+        <div class="filter-group">
+          <label>YEAR</label>
+          <select id="yearFilter"><option value="">-- Year --</option></select>
+        </div>
+        <button class="clear-btn" id="clearBtn">✕ Clear</button>
+      </div>
+    </div>
+
+    <!-- Details section -->
+    <div class="details-header" id="detailsHeader">
+      <h2>Job Card Details</h2>
+      <div class="date-badge-header" id="detailsDateBadge"></div>
+    </div>
+    <div id="jobCards"></div>
+
+  </div><!-- /content -->
+
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ── Edit Modal ── -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2>✏️ Edit Job Card</h2>
+    <input type="hidden" id="editCardId" />
+    <div class="form-group">
+      <label>Project Name <span class="required">*</span></label>
+      <input type="text" id="editProjectName" required />
+    </div>
+    <div class="form-group">
+      <label>Hours Worked <span class="required">*</span></label>
+      <input type="number" id="editHoursWorked" min="0.5" max="24" step="0.5" required />
+    </div>
+    <div class="form-group">
+      <label>Work Description <span class="required">*</span></label>
+      <textarea id="editWorkDescription" style="min-height:100px;" required></textarea>
+    </div>
+    <div class="button-row">
+      <button class="submit-btn" id="saveEditBtn">Save Changes</button>
+      <button class="cancel-btn" id="closeEditBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Topbar date ───────────────────────────────────────────────────────────
+  const _days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const _now    = new Date();
+  document.getElementById('topbarDate').textContent =
+    `${_days[_now.getDay()]}, ${_now.getDate()} ${_months[_now.getMonth()]} ${_now.getFullYear()}`;
+
+  // ── Sidebar ───────────────────────────────────────────────────────────────
+  (async () => {
+    try {
+      const res  = await fetch('sidebar.html');
+      const html = await res.text();
+      document.getElementById('sidebar-container').innerHTML = html;
+      const currentPath = location.pathname.replace(/\.html$/, '').toLowerCase();
+      document.querySelectorAll('#sidebar-container .nav-item').forEach(a => {
+        const href = (a.getAttribute('href') || '').replace(/\.html$/, '').toLowerCase();
+        if (href && (currentPath === href || currentPath.endsWith(href))) a.classList.add('active');
+      });
+    } catch { /* sidebar optional */ }
+  })();
+
+  // ── Logout ────────────────────────────────────────────────────────────────
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location.href = '/';
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  STATE
+  // ═══════════════════════════════════════════════════════════════════════
+  let allCards      = [];   // all cards for the logged-in user
+  let currentUser   = null; // logged-in user's profile
+
+  // ── Toast helper ──────────────────────────────────────────────────────────
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => { t.className = 'toast'; }, 3500);
+  }
+
+  // ── Load logged-in user profile ───────────────────────────────────────────
+  async function loadProfile() {
+    try {
+      const res  = await fetch('/api/profile');
+      if (!res.ok) { window.location.href = '/'; return; }
+      currentUser = await res.json();
+      // Update topbar avatar initials
+      if (currentUser.fullName) {
+        const parts    = currentUser.fullName.trim().split(' ');
+        const initials = (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+        document.getElementById('topbarAvatar').textContent = initials;
+      }
+    } catch (err) {
+      console.error('Profile load error:', err);
+    }
+  }
+
+  // ── Populate filter dropdowns ─────────────────────────────────────────────
+  const dayFilter   = document.getElementById('dayFilter');
+  const monthFilter = document.getElementById('monthFilter');
+  const yearFilter  = document.getElementById('yearFilter');
+
+  for (let i = 1; i <= 31; i++) {
+    dayFilter.innerHTML += `<option value="${i}">${String(i).padStart(2,'0')}</option>`;
+  }
+
+  const monthNames = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  monthNames.forEach((m, idx) => {
+    monthFilter.innerHTML += `<option value="${idx + 1}">${m}</option>`;
+  });
+
+  for (let y = 2024; y <= 2030; y++) {
+    yearFilter.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+
+  // ── Auto-fill today's date in the form ───────────────────────────────────
+  document.getElementById('date').valueAsDate = new Date();
+
+  // ── Show / hide form ──────────────────────────────────────────────────────
+  document.getElementById('addBtn').addEventListener('click', () => {
+    document.getElementById('formBox').style.display = 'block';
+    document.getElementById('date').valueAsDate = new Date();
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', () => {
+    document.getElementById('jobForm').reset();
+    document.getElementById('formBox').style.display = 'none';
+    document.getElementById('date').valueAsDate = new Date();
+  });
+
+  // ── Submit new job card ───────────────────────────────────────────────────
+  document.getElementById('jobForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const submitBtn = e.target.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const payload = {
+      projectName:     document.getElementById('projectName').value.trim(),
+      hoursWorked:     parseFloat(document.getElementById('hoursWorked').value),
+      workDescription: document.getElementById('workDescription').value.trim(),
+      date:            document.getElementById('date').value
+    };
+
+    try {
+      const res  = await fetch('/api/jobcards', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.error || 'Submission failed', 'error');
+      } else {
+        showToast('Job card submitted successfully! ✅');
+        document.getElementById('jobForm').reset();
+        document.getElementById('formBox').style.display = 'none';
+        document.getElementById('date').valueAsDate = new Date();
+        await loadCards();  // refresh list
+      }
+    } catch (err) {
+      showToast('Network error. Please try again.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit to Admin';
+    }
+  });
+
+  // ── Load all cards from backend ───────────────────────────────────────────
+  async function loadCards() {
+    try {
+      const res  = await fetch('/api/jobcards');
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Failed to load cards:', data.error);
+        return;
+      }
+
+      allCards = data.cards || [];
+
+      updateStats();
+      renderCards();
+    } catch (err) {
+      console.error('loadCards error:', err);
+    }
+  }
+
+  // ── Update stat counters ──────────────────────────────────────────────────
+  function updateStats() {
+    document.getElementById('pendingCount').textContent  = allCards.filter(c => c.status === 'Pending').length;
+    document.getElementById('approvedCount').textContent = allCards.filter(c => c.status === 'Approved').length;
+    document.getElementById('rejectedCount').textContent = allCards.filter(c => c.status === 'Rejected').length;
+  }
+
+  // ── Render cards based on current filter ─────────────────────────────────
+  function renderCards() {
+    const container     = document.getElementById('jobCards');
+    const detailsHeader = document.getElementById('detailsHeader');
+    const dateBadge     = document.getElementById('detailsDateBadge');
+
+    const selDay   = dayFilter.value;
+    const selMonth = monthFilter.value;
+    const selYear  = yearFilter.value;
+
+    container.innerHTML = '';
+
+    // Nothing selected → hide details section
+    if (!selDay && !selMonth && !selYear) {
+      detailsHeader.style.display = 'none';
+      return;
+    }
+
+    // Build a label for the date badge
+    let label = '';
+    if (selDay && selMonth && selYear) {
+      label = `🗓️ ${String(selDay).padStart(2,'0')} ${monthNames[selMonth - 1]} ${selYear}`;
+    } else if (selMonth && selYear) {
+      label = `🗓️ ${monthNames[selMonth - 1]} ${selYear}`;
+    } else if (selYear) {
+      label = `🗓️ ${selYear}`;
+    } else {
+      label = '🗓️ Filtered Results';
+    }
+
+    detailsHeader.style.display = 'flex';
+    dateBadge.textContent = label;
+
+    // Filter
+    const filtered = allCards.filter(card => {
+      if (!card.date) return false;
+      const d     = new Date(card.date);
+      const day   = d.getDate();
+      const month = d.getMonth() + 1;
+      const year  = d.getFullYear();
+      return (
+        (!selDay   || day   == selDay)   &&
+        (!selMonth || month == selMonth) &&
+        (!selYear  || year  == selYear)
+      );
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="no-data">
+          <i class="far fa-calendar"></i>
+          <h2>No job card found</h2>
+          <p>No job card found for the selected date. Use "+ New Entry" to submit one.</p>
+        </div>`;
+      return;
+    }
+
+    filtered.forEach(card => {
+      const cardDate    = new Date(card.date);
+      const today       = new Date();
+      const diffDays    = Math.floor((today - cardDate) / (1000 * 60 * 60 * 24));
+      const canEdit     = card.status === 'Pending' && diffDays <= 7;
+
+      const stars = card.rating > 0
+        ? '⭐'.repeat(card.rating)
+        : 'Not rated yet';
+
+      const statusClass = card.status === 'Approved' ? 'approved'
+                        : card.status === 'Rejected'  ? 'rejected'
+                        : 'pending';
+
+      const footerHtml = canEdit
+        ? `<button class="edit-btn" onclick="openEditModal('${card._id}', ${JSON.stringify(card.projectName).replace(/'/g,"&#39;")}, ${card.hoursWorked}, ${JSON.stringify(card.workDescription).replace(/'/g,"&#39;")})">
+             ✏️ Edit
+           </button>`
+        : `<span class="reviewed-note">
+             ${card.status === 'Pending'
+               ? 'Edit window expired (> 7 days)'
+               : 'Already reviewed — no edits allowed'}
+           </span>`;
+
+      container.innerHTML += `
+        <div class="card" id="card-${card._id}">
+          <div class="card-grid">
+
+            <div class="info-box">
+              <div class="info-title">Project Name</div>
+              <div class="info-value">${escHtml(card.projectName)}</div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-title">Hours Worked</div>
+              <div class="info-value">${card.hoursWorked}h</div>
+            </div>
+
+            <div class="info-box full-width">
+              <div class="info-title">Work Description</div>
+              <div class="info-value">${escHtml(card.workDescription)}</div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-title">Status</div>
+              <div class="info-value">
+                <span class="status-badge ${statusClass}">${card.status}</span>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-title">Admin Comment</div>
+              <div class="info-value">${escHtml(card.adminComment || 'No comment yet')}</div>
+            </div>
+
+            <div class="info-box full-width">
+              <div class="info-title">Rating</div>
+              <div class="info-value">${stars}</div>
+            </div>
+
+          </div>
+          <div class="card-footer">
+            ${footerHtml}
+          </div>
+        </div>`;
+    });
+  }
+
+  // ── HTML escape helper ────────────────────────────────────────────────────
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Filter events ─────────────────────────────────────────────────────────
+  dayFilter.addEventListener('change',   renderCards);
+  monthFilter.addEventListener('change', renderCards);
+  yearFilter.addEventListener('change',  renderCards);
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    dayFilter.value   = '';
+    monthFilter.value = '';
+    yearFilter.value  = '';
+    renderCards();
+  });
+
+  // ── Edit modal ────────────────────────────────────────────────────────────
+  function openEditModal(id, projectName, hoursWorked, workDescription) {
+    document.getElementById('editCardId').value           = id;
+    document.getElementById('editProjectName').value      = projectName;
+    document.getElementById('editHoursWorked').value      = hoursWorked;
+    document.getElementById('editWorkDescription').value  = workDescription;
+    document.getElementById('editModal').classList.add('open');
+  }
+
+  document.getElementById('closeEditBtn').addEventListener('click', () => {
+    document.getElementById('editModal').classList.remove('open');
+  });
+
+  document.getElementById('editModal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+  });
+
+  document.getElementById('saveEditBtn').addEventListener('click', async () => {
+    const id              = document.getElementById('editCardId').value;
+    const projectName     = document.getElementById('editProjectName').value.trim();
+    const hoursWorked     = parseFloat(document.getElementById('editHoursWorked').value);
+    const workDescription = document.getElementById('editWorkDescription').value.trim();
+
+    if (!projectName || !hoursWorked || !workDescription) {
+      showToast('Please fill all fields', 'error');
+      return;
+    }
+
+    const saveBtn = document.getElementById('saveEditBtn');
+    saveBtn.disabled   = true;
+    saveBtn.textContent = 'Saving…';
+
+    try {
+      const res  = await fetch(`/api/jobcards/${id}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ projectName, hoursWorked, workDescription })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.error || 'Update failed', 'error');
+      } else {
+        showToast('Job card updated successfully! ✅');
+        document.getElementById('editModal').classList.remove('open');
+        await loadCards();
+      }
+    } catch (err) {
+      showToast('Network error. Please try again.', 'error');
+    } finally {
+      saveBtn.disabled   = false;
+      saveBtn.textContent = 'Save Changes';
+    }
+  });
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  window.onload = async () => {
+    await loadProfile();
+    await loadCards();
+  };
+   // ── Logout ────────────────────────────────────────────────────────────────
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location.href = '/';
+  }
+</script>
+
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

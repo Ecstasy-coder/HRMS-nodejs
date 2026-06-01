@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+   <link rel="stylesheet" href="topbar.css"/>
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, var(--navy-mid) 0%, #1a3a6b 60%, #163260 100%);
+      border-radius: var(--radius-lg); padding: 48px 52px; color: #fff;
+      position: relative; overflow: hidden; margin-bottom: 24px;
+    }
+    .hero-banner::before {
+      content: ''; position: absolute; right: -60px; top: -60px;
+      width: 280px; height: 280px; background: rgba(255,255,255,0.04); border-radius: 50%;
+    }
+    .hero-banner::after {
+      content: ''; position: absolute; right: 80px; bottom: -80px;
+      width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%;
+    }
+    .hero-company { font-size: 36px; font-weight: 900; letter-spacing: -1px; margin-bottom: 12px; }
+    .hero-tagline { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 500px; line-height: 1.6; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+    @media(max-width:700px){ .info-grid { grid-template-columns: 1fr; } }
+
+    .info-card {
+      background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border);
+      box-shadow: var(--shadow); padding: 26px 28px;
+    }
+    .info-card-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 12px;
+    }
+    .info-card-text { font-size: 14px; color: #374151; line-height: 1.75; }
+
+    .quote-card {
+      background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border);
+      border-left: 5px solid var(--gold); box-shadow: var(--shadow);
+      padding: 22px 28px; margin-bottom: 14px;
+    }
+    .quote-text   { font-size: 15px; font-style: italic; color: #374151; line-height: 1.7; margin-bottom: 8px; }
+    .quote-author { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 16px; margin-top: 8px; }
+    .team-card {
+      background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); padding: 20px 16px; text-align: center;
+    }
+    .team-av {
+      width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; color: #fff; overflow: hidden;
+    }
+    .team-av img { width: 100%; height: 100%; object-fit: cover; }
+    .team-name { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 3px; }
+    .team-role { font-size: 12px; color: var(--text-muted); }
+
+    .contact-row {
+      display: flex; align-items: center; gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6; font-size: 13.5px; color: #374151;
+    }
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row i { width: 18px; text-align: center; color: var(--navy); }
+
+    .view-only-notice {
+      display: flex; align-items: center; gap: 10px; background: #eff6ff;
+      border: 1px solid #bfdbfe; border-radius: var(--radius-sm);
+      padding: 12px 18px; font-size: 13px; color: #1d4ed8; margin-bottom: 24px;
+    }
+    .empty-section {
+      background: #f9fafb; border: 1.5px dashed #e5e7eb; border-radius: var(--radius);
+      padding: 32px; text-align: center; color: #9ca3af; font-size: 13.5px;
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">About Us</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- View-only notice -->
+    <div class="view-only-notice">
+      <i class="fa-solid fa-eye"></i>
+      <span>This page is <strong>view-only</strong> for Admin. Content is managed by HR and reflects here automatically.</span>
+    </div>
+
+    <!-- Loading state -->
+    <div id="aboutContent">
+      <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><h3>Loading company info…</h3></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('about', user);
+  document.getElementById('dateDisplay').textContent = getLiveDate();
+  const topAv = document.getElementById('topAvatar');
+  topAv.textContent = getInitials(user.fullName);
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" alt="avatar"/>`;
+  loadAbout();
+})();
+
+async function loadAbout() {
+  try {
+    const r = await fetch('/api/about-us', { credentials: 'include' });
+    const d = await r.json();
+    const data = d.data || d;
+    renderAbout(data);
+  } catch(e) {
+    console.error(e);
+    // Render default if API not available
+    renderAbout(null);
+  }
+}
+
+function renderAbout(data) {
+  const container = document.getElementById('aboutContent');
+
+  // Map to AboutUs model fields (companyName, heroTagline, mission, values, quote1, quote2)
+  const company  = data?.companyName  || 'Ecstasy Solutions';
+  const tagline  = data?.heroTagline  || data?.tagline || 'Building the future through technology, talent, and trust.';
+  const mission  = data?.mission      || 'To deliver innovative solutions that create meaningful impact for businesses and the communities we serve.';
+  const values   = data?.values       || 'Integrity in everything we do. Innovation as a daily habit. People first, always.';
+  const vision   = data?.vision       || '';
+
+  // Quotes from model (quote1, quote2) or quotes array
+  const rawQuotes = data?.quotes || [];
+  const quotes = rawQuotes.length > 0 ? rawQuotes : [
+    data?.quote1 ? { text: data.quote1, author: 'Leadership Team' } : null,
+    data?.quote2 ? { text: data.quote2, author: 'People & Culture' } : null
+  ].filter(Boolean);
+
+  const teamMembers = data?.teamMembers || [];
+  const contact     = data?.contact     || {};
+
+  let html = `
+    <!-- Hero -->
+    <div class="hero-banner fade-up">
+      <div class="hero-company">${company}</div>
+      <div class="hero-tagline">${tagline}</div>
+    </div>
+
+    <!-- Mission & Values -->
+    <div class="info-grid fade-up">
+      <div class="info-card">
+        <div class="info-card-label">Our Mission</div>
+        <div class="info-card-text">${mission}</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Our Values</div>
+        <div class="info-card-text">${values}</div>
+      </div>
+      ${vision ? `
+      <div class="info-card" style="grid-column:1/-1;">
+        <div class="info-card-label">Our Vision</div>
+        <div class="info-card-text">${vision}</div>
+      </div>` : ''}
+    </div>`;
+
+  // Quotes
+  if (quotes.length > 0) {
+    html += `<div style="margin-bottom:24px;" class="fade-up">`;
+    quotes.forEach(q => {
+      html += `
+      <div class="quote-card">
+        <div class="quote-text">"${q.text || q.quote}"</div>
+        <div class="quote-author">— ${q.author || q.by || 'Leadership Team'}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    // Default quotes
+    html += `
+    <div style="margin-bottom:24px;" class="fade-up">
+      <div class="quote-card">
+        <div class="quote-text">Great companies are built by great people — your growth is our growth.</div>
+        <div class="quote-author">— Leadership Team</div>
+      </div>
+      <div class="quote-card" style="border-left-color:var(--accent);">
+        <div class="quote-text">Don't think I as Ecstasy, think We as Ecstasy.</div>
+        <div class="quote-author">— People & Culture</div>
+      </div>
+    </div>`;
+  }
+
+  // Team Members
+  if (teamMembers.length > 0) {
+    html += `
+    <div class="panel fade-up" style="margin-bottom:24px;">
+      <div class="panel-header"><div class="panel-title">Leadership Team</div></div>
+      <div class="panel-body">
+        <div class="team-grid">
+          ${teamMembers.map(m => {
+            const col = avatarColor(m.name || m.fullName);
+            const avHtml = m.avatar ? `<img src="${m.avatar}" alt=""/>` : getInitials(m.name || m.fullName);
+            return `<div class="team-card">
+              <div class="team-av" style="background:${col}">${avHtml}</div>
+              <div class="team-name">${m.name || m.fullName}</div>
+              <div class="team-role">${m.role || m.designation || ''}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Contact
+  if (contact.email || contact.phone || contact.address || contact.website) {
+    html += `
+    <div class="panel fade-up" style="margin-bottom:24px;">
+      <div class="panel-header"><div class="panel-title">Contact Information</div></div>
+      <div class="panel-body">
+        ${contact.email   ? `<div class="contact-row"><i class="fa-solid fa-envelope"></i> ${contact.email}</div>` : ''}
+        ${contact.phone   ? `<div class="contact-row"><i class="fa-solid fa-phone"></i> ${contact.phone}</div>` : ''}
+        ${contact.address ? `<div class="contact-row"><i class="fa-solid fa-location-dot"></i> ${contact.address}</div>` : ''}
+        ${contact.website ? `<div class="contact-row"><i class="fa-solid fa-globe"></i> <a href="${contact.website}" target="_blank" style="color:var(--accent);">${contact.website}</a></div>` : ''}
+      </div>
+    </div>`;
+  }
+
+  // Additional sections from HR
+  if (data?.sections && data.sections.length > 0) {
+    data.sections.forEach(sec => {
+      html += `
+      <div class="panel fade-up" style="margin-bottom:24px;">
+        <div class="panel-header"><div class="panel-title">${sec.title}</div></div>
+        <div class="panel-body"><div style="font-size:14px;color:#374151;line-height:1.75;">${sec.content}</div></div>
+      </div>`;
+    });
+  }
+
+  container.innerHTML = html;
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

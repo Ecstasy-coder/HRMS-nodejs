@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users · My Ecstasy HR Portal</title>
+  <script src="/api-config.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Shared design system -->
+  <link rel="stylesheet" href="common.css">
+
+  <style>
+    /* ── Users-page-specific styles ──────────────────────────── */
+
+    /* Notice banner */
+    .notice {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: #fff8e7; border: 1px solid #f7e090;
+      border-radius: var(--radius); padding: 16px 20px;
+      color: #6b4e00; font-size: 13.5px; line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .notice i { font-size: 18px; color: #d97706; margin-top: 1px; flex-shrink: 0; }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 28px; flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative; flex: 1; max-width: 340px;
+    }
+    .search-wrap i {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: #9ca3af; font-size: 16px; pointer-events: none;
+    }
+    #search {
+      width: 100%; padding: 11px 14px 11px 40px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      outline: none; font-family: 'Sora', sans-serif; font-size: 13.5px;
+      background: var(--surface); color: #111827;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .filter-buttons { display: flex; gap: 8px; }
+    .filter-btn {
+      padding: 10px 18px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); background: var(--surface);
+      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+      color: #374151; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover         { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active-filter { background: var(--navy); color: white; border-color: var(--navy); }
+
+    .btn-add {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: white; border: none; padding: 11px 20px;
+      border-radius: var(--radius-sm);
+      font-family: 'Sora', sans-serif; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+      box-shadow: 0 4px 12px rgba(79,142,247,0.25);
+      transition: all 0.2s;
+    }
+    .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(79,142,247,0.35); }
+
+    /* Add User Form */
+    .add-user-box {
+      display: none;
+      background: var(--surface); border-radius: var(--radius);
+      padding: 28px 32px; margin-bottom: 32px;
+      box-shadow: var(--shadow-lg); border: 1px solid var(--border);
+      animation: fade-up 0.3s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .form-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 28px;
+    }
+    .form-header h2 {
+      font-size: 18px; font-weight: 700; color: #111827;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .form-footer {
+      display: flex; gap: 12px; margin-top: 28px;
+      padding-top: 24px; border-top: 1px solid var(--border);
+    }
+
+    /* User cards grid */
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 22px;
+    }
+
+    .user-card {
+      background: var(--surface); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fade-up 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .user-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+    .card-top {
+      display: flex; gap: 16px; padding: 22px 24px;
+    }
+
+    .card-avatar {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+      color: white; font-size: 20px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-info { flex: 1; min-width: 0; }
+    .card-info h3 {
+      font-size: 16px; font-weight: 700; color: #111827;
+      margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-info .card-email {
+      font-size: 12.5px; color: #6b7280; margin-bottom: 10px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+    .tag {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    }
+    .tag-role     { background: #fef3c7; color: #92400e; }
+    .tag-active   { background: #dcfce7; color: #166534; }
+    .tag-inactive { background: #fee2e2; color: #991b1b; }
+
+    .card-details { border-top: 1px solid #f3f4f6; padding: 18px 24px; }
+    .detail-row {
+      display: grid; grid-template-columns: 120px 1fr;
+      gap: 6px; margin-bottom: 9px; align-items: start;
+    }
+    .detail-row:last-child { margin-bottom: 0; }
+    .detail-label {
+      font-size: 11px; font-weight: 700; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.5px; padding-top: 1px;
+    }
+    .detail-value { font-size: 13px; color: #111827; font-weight: 500; }
+
+    .card-actions {
+      border-top: 1px solid #f3f4f6;
+      padding: 14px 20px;
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .action-btn {
+      padding: 8px 14px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      font-family: 'Sora', sans-serif; font-size: 12.5px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn.edit-btn  { color: #2563eb; border-color: #bfdbfe; }
+    .action-btn.edit-btn:hover  { background: #eff6ff; }
+    .action-btn.docs-btn  { color: #16a34a; border-color: #bbf7d0; }
+    .action-btn.docs-btn:hover  { background: #f0fdf4; }
+    .action-btn.deact-btn { color: #6b7280; border-color: var(--border); }
+    .action-btn.deact-btn:hover { background: #f9fafb; }
+    .action-btn.activ-btn { color: #16a34a; border-color: #bbf7d0; }
+    .action-btn.activ-btn:hover { background: #f0fdf4; }
+    .action-btn.del-btn   { color: #dc2626; border-color: #fecaca; }
+    .action-btn.del-btn:hover   { background: #fef2f2; }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(10,20,38,0.55);
+      backdrop-filter: blur(3px);
+      z-index: 1000;
+      align-items: flex-start; justify-content: center;
+      overflow-y: auto; padding: 40px 20px;
+    }
+
+    .modal-box {
+      background: var(--surface); border-radius: var(--radius-lg);
+      width: 100%; max-width: 760px;
+      animation: modal-in 0.25s cubic-bezier(0.16,1,0.3,1) both;
+      margin: auto;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(-16px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-docs  { max-width: 640px; }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 28px; border-bottom: 1px solid var(--border);
+    }
+    .modal-header h2 {
+      font-size: 17px; font-weight: 700; color: #111827;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .docs-username { color: var(--accent-dark); }
+    .modal-body   { padding: 28px; }
+    .modal-footer {
+      padding: 18px 28px; border-top: 1px solid var(--border);
+      display: flex; gap: 12px;
+    }
+
+    /* Docs modal */
+    .upload-zone {
+      border: 2px dashed #d1d5db; border-radius: var(--radius);
+      padding: 28px 20px; text-align: center; background: #f9fafb;
+      transition: border-color 0.2s; margin-bottom: 16px;
+    }
+    .upload-zone.drag-over { border-color: var(--accent); background: #eff6ff; }
+    .upload-icon { font-size: 36px; color: var(--accent); margin-bottom: 8px; display: block; }
+    .upload-hint     { font-size: 13.5px; color: #374151; margin-bottom: 4px; }
+    .upload-hint-sub { font-size: 11.5px; color: #9ca3af; margin-bottom: 14px; }
+
+    .btn-choose { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .chosen-file {
+      margin-top: 12px; padding: 10px 14px;
+      background: #eff6ff; border-radius: 8px;
+      font-size: 13px; color: var(--accent-dark); font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-upload { width: 100%; justify-content: center; margin-bottom: 24px; }
+
+    .docs-list-header {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 12px;
+    }
+    .docs-count {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: 12px; font-weight: 600; color: #6b7280;
+    }
+
+    .docs-list {
+      display: flex; flex-direction: column; gap: 10px;
+      max-height: 340px; overflow-y: auto; padding-right: 4px;
+    }
+    .docs-list::-webkit-scrollbar { width: 4px; }
+    .docs-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    .doc-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); gap: 12px;
+    }
+    .doc-left  { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+    .doc-icon  { font-size: 26px; flex-shrink: 0; }
+    .doc-name  { font-size: 13px; font-weight: 600; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+    .doc-meta  { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .doc-right { display: flex; gap: 8px; flex-shrink: 0; }
+    .doc-btn {
+      padding: 6px 14px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+      transition: opacity 0.15s;
+    }
+    .doc-btn:hover    { opacity: 0.82; }
+    .doc-download     { background: #dbeafe; color: #1d4ed8; }
+    .doc-delete       { background: #fee2e2; color: #dc2626; }
+
+    /* Responsive */
+    @media (max-width: 1024px) { .form-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 900px)  { .users-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) {
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .search-wrap { max-width: 100%; }
+      .filter-buttons { flex-wrap: wrap; }
+    }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .modal-body { padding: 20px; }
+      .card-actions { flex-wrap: wrap; }
+      .action-btn { flex: 1; justify-content: center; min-width: 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <header class="topbar">
+    <h1 class="topbar-title">Manage Users</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="currentDate"></span>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notifCount">3</span>
+      </div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Notice -->
+    <div class="notice">
+      <i class="ti ti-info-circle"></i>
+      As HR, you can manage <strong>Employees</strong> and <strong>Reporting Managers</strong> only.
+      To create HR, Admin or Finance accounts, contact your System Administrator.
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#4f8ef7,#5b4de8)">
+          <i class="ti ti-users"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="totalUsers">0</h2>
+          <p>Total Users</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)">
+          <i class="ti ti-user-check"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="activeUsers">0</h2>
+          <p>Active</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#f0b429,#d97706)">
+          <i class="ti ti-briefcase"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="employeeUsers">0</h2>
+          <p>Employees</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
+          <i class="ti ti-crown"></i>
+        </div>
+        <div class="stat-text">
+          <h2 id="managerUsers">0</h2>
+          <p>Managers</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="search" placeholder="Search by name or email…" autocomplete="off">
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active-filter" onclick="filterUsers('all',this)">All</button>
+        <button class="filter-btn" onclick="filterUsers('Employee',this)">Employees</button>
+        <button class="filter-btn" onclick="filterUsers('Reporting Manager',this)">Managers</button>
+      </div>
+      <button class="btn-add" onclick="openAddForm()">
+        <i class="ti ti-user-plus"></i> Add User
+      </button>
+    </div>
+
+    <!-- Add User Form -->
+    <div class="add-user-box" id="addUserBox">
+      <div class="form-header">
+        <h2><i class="ti ti-user-plus"></i> Add New User</h2>
+        <button class="icon-btn" onclick="closeAddForm()" title="Close"><i class="ti ti-x"></i></button>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="addName" placeholder="e.g. Rahul Sharma" required>
+        </div>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="addEmail" placeholder="email@company.com" required>
+        </div>
+        <div class="field">
+          <label>Password <span class="req">*</span></label>
+          <input type="password" id="addPassword" placeholder="Min 8 characters" required>
+        </div>
+        <div class="field">
+          <label>Role <span class="req">*</span></label>
+          <select id="addRole" required>
+            <option value="">Select Role</option>
+            <option value="Employee">Employee</option>
+            <option value="Reporting Manager">Reporting Manager</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Department <span class="req">*</span></label>
+          <select id="addDepartment" required>
+            <option value="">Select Department</option>
+            <option>Engineering</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>Management</option>
+            <option>Operations</option>
+            <option>Sales</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Designation <span class="req">*</span></label>
+          <input type="text" id="addDesignation" placeholder="e.g. Software Engineer" required>
+        </div>
+        <div class="field">
+          <label>Employee Code <span class="req">*</span></label>
+          <input type="text" id="addEmployeeCode" placeholder="e.g. EMP001" required>
+        </div>
+        <div class="field">
+          <label>Phone <span class="req">*</span></label>
+          <input type="tel" id="addPhone" placeholder="10-digit number" required>
+        </div>
+        <div class="field">
+          <label>Date of Birth</label>
+          <input type="date" id="addDob">
+        </div>
+        <div class="field">
+          <label>Date of Joining <span class="req">*</span></label>
+          <input type="date" id="addJoinedDate" required>
+        </div>
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <select id="addGender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Reporting Manager</label>
+          <select id="addReportingManager">
+            <option value="">— None —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn-primary" id="addSubmitBtn" onclick="submitAddUser()">
+          <i class="ti ti-check"></i> Add User
+        </button>
+        <button type="button" class="btn-secondary" onclick="closeAddForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- User Cards Grid -->
+    <div class="users-grid" id="usersGrid">
+      <div class="empty-state">
+        <i class="ti ti-loader-2 spin"></i>
+        <p>Loading users…</p>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+</main>
+
+<!-- ── EDIT MODAL ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="editModal" onclick="overlayClose(event,'editModal')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2><i class="ti ti-edit"></i> Edit User</h2>
+      <button class="icon-btn" onclick="closeEditModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="editName" required>
+        </div>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="editEmail" required>
+        </div>
+        <div class="field">
+          <label>Role</label>
+          <select id="editRole">
+            <option value="">Select Role</option>
+            <option value="Employee">Employee</option>
+            <option value="Reporting Manager">Reporting Manager</option>
+            <option value="HR Admin">HR Admin</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Department</label>
+          <select id="editDepartment">
+            <option value="">Select Department</option>
+            <option>Engineering</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>Management</option>
+            <option>Operations</option>
+            <option>Sales</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Designation</label>
+          <input type="text" id="editDesignation">
+        </div>
+        <div class="field">
+          <label>Employee Code</label>
+          <input type="text" id="editEmployeeCode">
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" id="editPhone">
+        </div>
+        <div class="field">
+          <label>Gender</label>
+          <select id="editGender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date of Birth</label>
+          <input type="date" id="editDob">
+        </div>
+        <div class="field">
+          <label>Date of Joining</label>
+          <input type="date" id="editJoinedDate">
+        </div>
+        <div class="field">
+          <label>Reporting Manager</label>
+          <select id="editReportingManager">
+            <option value="">— None —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>New Password <span class="hint">(leave blank to keep)</span></label>
+          <input type="password" id="editPassword" placeholder="Leave blank to keep current">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" id="editSaveBtn" onclick="saveEdit()">
+        <i class="ti ti-check"></i> Save Changes
+      </button>
+      <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DOCS MODAL (View-only for HR) ──────────────────────── -->
+<div class="modal-overlay" id="docsModal" onclick="overlayClose(event,'docsModal')">
+  <div class="modal-box modal-docs">
+    <div class="modal-header">
+      <h2>
+        <i class="ti ti-file-description"></i> Documents —
+        <span id="docsUserName" class="docs-username"></span>
+      </h2>
+      <button class="icon-btn" onclick="closeDocsModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <!-- HR can VIEW & verify only — no upload option -->
+      <div style="
+        display:flex; align-items:center; gap:10px;
+        background:#fffbeb; border:1px solid #fde68a;
+        border-radius:10px; padding:12px 16px; margin-bottom:20px;
+      ">
+        <i class="ti ti-eye" style="color:#d97706;font-size:18px;flex-shrink:0;"></i>
+        <span style="font-size:13px;color:#92400e;font-weight:500;">
+          HR can <strong>view and verify</strong> employee documents.
+          Documents are uploaded by employees from their profiles.
+        </span>
+      </div>
+
+      <div class="docs-list-header">
+        <span>Uploaded Documents</span>
+        <span id="docsCount" class="docs-count"></span>
+      </div>
+      <div id="docsList" class="docs-list">
+        <div class="empty-state small"><p>No documents yet</p></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeDocsModal()">
+        <i class="ti ti-x"></i> Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Page scripts -->
+<script src="users.js"></script>
+<script src="topbar-utils.js"></script>
+<script>
+  // Footer
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    const fc = document.getElementById('footer-container');
+    if(fc) fc.innerHTML = h;
+  }).catch(()=>{});
+</script>
+</body>
+</html>

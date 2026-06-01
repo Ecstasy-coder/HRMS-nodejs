@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Holiday Calendar — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+  <link rel="stylesheet" href="topbar.css"/>
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    /* ── View-only notice ───────────────────────────────────── */
+    .view-notice {
+      display: flex; align-items: center; gap: 10px;
+      background: #eff6ff; border: 1px solid #bfdbfe;
+      border-radius: var(--radius-sm); padding: 13px 18px;
+      font-size: 13px; color: #1d4ed8; margin-bottom: 24px;
+    }
+    .view-notice i { font-size: 16px; flex-shrink: 0; }
+
+    /* ── Filter bar ─────────────────────────────────────────── */
+    .filter-bar {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .filter-bar label { font-size: 13px; font-weight: 600; color: #374151; }
+    .year-select {
+      padding: 9px 16px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: 'Inter', sans-serif;
+      font-size: 13.5px; color: #111827; background: #fff;
+      outline: none; cursor: pointer; min-width: 130px; transition: border-color .2s;
+    }
+    .year-select:focus { border-color: var(--navy); }
+    .count-badge {
+      margin-left: auto; padding: 5px 14px;
+      background: var(--surface-alt); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 12px; color: #5f6b85; font-weight: 600;
+    }
+
+    /* ── Calendar list cards ────────────────────────────────── */
+    .calendar-card {
+      background: var(--surface); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      padding: 22px 26px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 20px;
+      transition: box-shadow .2s;
+    }
+    .calendar-card:hover { box-shadow: var(--shadow-lg); }
+
+    .cal-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .cal-icon.pdf  { background: #fee2e2; color: #dc2626; }
+    .cal-icon.img  { background: #dcfce7; color: #16a34a; }
+    .cal-icon.file { background: #eff6ff; color: #2563eb; }
+
+    .cal-info { flex: 1; min-width: 0; }
+    .cal-title { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cal-meta  { font-size: 12.5px; color: var(--text-muted); display: flex; gap: 16px; flex-wrap: wrap; }
+    .cal-meta span { display: flex; align-items: center; gap: 5px; }
+    .cal-year-badge {
+      background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+      padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+
+    .cal-actions { display: flex; gap: 10px; flex-shrink: 0; }
+    .btn-view-cal {
+      padding: 9px 18px; border-radius: 10px; border: none;
+      background: #eff6ff; color: #2563eb;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-view-cal:hover { background: #dbeafe; }
+    .btn-dl-cal {
+      padding: 9px 18px; border-radius: 10px; border: none;
+      background: #f0fdf4; color: #16a34a;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s;
+      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    }
+    .btn-dl-cal:hover { background: #dcfce7; }
+
+    /* ── Empty state override ───────────────────────────────── */
+    .cal-empty {
+      padding: 60px 24px; text-align: center; color: #9ca3af;
+    }
+    .cal-empty i { font-size: 48px; display: block; margin-bottom: 14px; opacity: .35; }
+    .cal-empty h3 { font-size: 16px; font-weight: 700; color: #374151; margin-bottom: 6px; }
+    .cal-empty p  { font-size: 13.5px; }
+
+    /* ── Full-screen file viewer ────────────────────────────── */
+    #fileViewer {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.55); z-index: 9999; flex-direction: column;
+    }
+    #fileViewer.open { display: flex; }
+    #viewerBar {
+      background: #fff; padding: 14px 22px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+    #viewerBar button {
+      padding: 9px 20px; border: none; background: var(--navy); color: #fff;
+      border-radius: 8px; font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 7px;
+    }
+    #viewerBar .v-title { font-size: 14px; font-weight: 600; color: #111827; }
+    #viewerFrame { flex: 1; border: none; width: 100%; background: #fff; }
+    #viewerImageWrap { flex: 1; }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+
+  <div class="topbar">
+    <div class="topbar-title">Holiday Calendar</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- View-only notice -->
+    <div class="view-notice">
+      <i class="fa-solid fa-eye"></i>
+      <span>This page is <strong>view-only</strong> for Admin. Holiday calendars are uploaded by HR and appear here automatically.</span>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <label for="yearFilter">Filter by Year:</label>
+      <select id="yearFilter" class="year-select" onchange="renderCalendars()">
+        <option value="">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026" selected>2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+      </select>
+      <span class="count-badge" id="calendarCount">0 files</span>
+    </div>
+
+    <!-- Calendars list -->
+    <div id="calendarsContainer">
+      <div class="cal-empty">
+        <i class="fa-solid fa-calendar"></i>
+        <h3>Loading calendars…</h3>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div>
+
+<!-- Full-screen file viewer -->
+<div id="fileViewer">
+  <div id="viewerBar">
+    <button onclick="closeViewer()">
+      <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+    <span class="v-title" id="viewerTitle">Holiday Calendar</span>
+    <a id="viewerDownload" href="" download style="margin-left:auto;padding:8px 18px;border-radius:8px;background:#f0fdf4;color:#16a34a;font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;">
+      <i class="fa-solid fa-download"></i> Download
+    </a>
+  </div>
+  <!-- PDF viewer -->
+  <iframe id="viewerFrame" src="" style="display:none;"></iframe>
+  <!-- Image viewer -->
+  <div id="viewerImageWrap" style="display:none;flex:1;overflow:auto;display:none;align-items:center;justify-content:center;background:#1a1a1a;">
+    <img id="viewerImage" src="" alt="Calendar" style="max-width:95%;max-height:95vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5);">
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+let allCalendars = [];
+
+// ── Init ──────────────────────────────────────────────────────
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('holiday-calendar', user);
+  document.getElementById('dateDisplay').textContent = getLiveDate();
+  const topAv = document.getElementById('topAvatar');
+  topAv.textContent = getInitials(user.fullName);
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" alt="avatar"/>`;
+  await loadCalendars();
+})();
+
+// ── Load from API ─────────────────────────────────────────────
+async function loadCalendars() {
+  try {
+    const r = await fetch('/api/holiday-calendar/all', { credentials: 'include' });
+    const d = await r.json();
+    allCalendars = d.data || [];
+    renderCalendars();
+  } catch(e) {
+    document.getElementById('calendarsContainer').innerHTML = `
+      <div class="cal-empty">
+        <i class="fa-solid fa-circle-exclamation" style="color:#ef4444;opacity:1;"></i>
+        <h3>Failed to load calendars</h3>
+        <p>Could not connect to the server. Please refresh.</p>
+      </div>`;
+  }
+}
+
+// ── Render (client-side year filter) ──────────────────────────
+function renderCalendars() {
+  const yearFilter = document.getElementById('yearFilter').value;
+  const filtered = yearFilter
+    ? allCalendars.filter(c => String(c.year) === yearFilter)
+    : allCalendars;
+
+  document.getElementById('calendarCount').textContent =
+    `${filtered.length} file${filtered.length !== 1 ? 's' : ''}`;
+
+  const container = document.getElementById('calendarsContainer');
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="cal-empty">
+        <i class="fa-regular fa-calendar"></i>
+        <h3>${yearFilter ? `No calendars for ${yearFilter}` : 'No holiday calendars uploaded yet'}</h3>
+        <p>Holiday calendars uploaded by HR will appear here.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(cal => {
+    const ext = (cal.title || '').split('.').pop().toUpperCase() || 'FILE';
+    const iconClass = ['PDF'].includes(ext) ? 'pdf'
+      : ['PNG','JPG','JPEG','WEBP','GIF'].includes(ext) ? 'img' : 'file';
+    const iconHtml = ext === 'PDF'
+      ? '<i class="fa-regular fa-file-pdf"></i>'
+      : iconClass === 'img'
+        ? '<i class="fa-regular fa-image"></i>'
+        : '<i class="fa-regular fa-file"></i>';
+
+    const uploadedOn = cal.createdAt
+      ? new Date(cal.createdAt).toLocaleDateString('en-IN',
+          { day: '2-digit', month: 'short', year: 'numeric' })
+      : '—';
+
+    return `
+      <div class="calendar-card fade-up">
+        <div class="cal-icon ${iconClass}">${iconHtml}</div>
+        <div class="cal-info">
+          <div class="cal-title">${escHtml(cal.title || 'Calendar')}</div>
+          <div class="cal-meta">
+            <span class="cal-year-badge">${cal.year || '—'}</span>
+            <span><i class="fa-regular fa-hard-drive" style="color:#94a3b8;"></i> ${escHtml(cal.fileSize || '—')}</span>
+            <span><i class="fa-regular fa-clock" style="color:#94a3b8;"></i> ${uploadedOn}</span>
+          </div>
+        </div>
+        <div class="cal-actions">
+          <button class="btn-view-cal"
+            onclick="openViewer('${escAttr(cal.fileUrl)}','${escAttr(cal.title || 'Calendar')}','${escAttr(cal.mimeType || '')}')">
+            <i class="fa-solid fa-eye"></i> View
+          </button>
+          <a class="btn-dl-cal"
+            href="${escAttr(cal.fileUrl)}"
+            download="${escAttr(cal.title || 'calendar')}">
+            <i class="fa-solid fa-download"></i> Download
+          </a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Viewer ────────────────────────────────────────────────────
+function openViewer(url, title, mimeType) {
+  document.getElementById('viewerTitle').textContent = title;
+  document.getElementById('viewerDownload').href     = url;
+  document.getElementById('viewerDownload').download = title;
+
+  const frame    = document.getElementById('viewerFrame');
+  const imgWrap  = document.getElementById('viewerImageWrap');
+  const img      = document.getElementById('viewerImage');
+
+  const ext = (url.split('.').pop() || '').toLowerCase().split('?')[0];
+  const isImage = ['jpg','jpeg','png','gif','webp'].includes(ext)
+    || (mimeType && mimeType.startsWith('image/'));
+
+  if (isImage) {
+    frame.style.display    = 'none';
+    frame.src              = '';
+    imgWrap.style.display  = 'flex';
+    img.src                = url;
+    img.onerror = () => {
+      img.src = '';
+      imgWrap.innerHTML = '<div style="color:#fff;font-size:14px;text-align:center;padding:40px;"><i class="fa-solid fa-image-slash" style="font-size:48px;opacity:.4;display:block;margin-bottom:16px;"></i>Image could not be loaded</div>';
+    };
+  } else {
+    // PDF or other — use iframe; embed PDFs with Google Docs viewer as fallback
+    imgWrap.style.display  = 'none';
+    img.src                = '';
+    frame.style.display    = 'block';
+    const fullUrl = url.startsWith('http') ? url : (window.location.origin + url);
+    frame.src = fullUrl;
+    // fallback handled by browser's native PDF viewer via src
+  }
+
+  document.getElementById('fileViewer').classList.add('open');
+}
+
+function closeViewer() {
+  document.getElementById('fileViewer').classList.remove('open');
+  document.getElementById('viewerFrame').src   = '';
+  document.getElementById('viewerImage').src   = '';
+  document.getElementById('viewerFrame').style.display   = 'none';
+  document.getElementById('viewerImageWrap').style.display = 'none';
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

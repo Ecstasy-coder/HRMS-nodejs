@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Employee Helpdesk</title>
+</head>
+
+<body>
+
+<h2>Raise Ticket</h2>
+
+<input id="employee"
+placeholder="Employee Name">
+
+<br><br>
+
+<input id="department"
+placeholder="Department">
+
+<br><br>
+
+<input id="subject"
+placeholder="Subject">
+
+<br><br>
+
+<select id="category">
+
+<option>Payroll Issue</option>
+<option>IT Support</option>
+<option>HR Query</option>
+<option>General Complaint</option>
+
+</select>
+
+<br><br>
+
+<select id="priority">
+
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+
+</select>
+
+<br><br>
+
+<textarea
+id="description"
+placeholder="Description"
+></textarea>
+
+<br><br>
+
+<button onclick="raiseTicket()">
+Submit Ticket
+</button>
+
+<script>
+
+async function raiseTicket(){
+
+const data={
+
+employee:
+document.getElementById(
+"employee"
+).value,
+
+department:
+document.getElementById(
+"department"
+).value,
+
+subject:
+document.getElementById(
+"subject"
+).value,
+
+category:
+document.getElementById(
+"category"
+).value,
+
+priority:
+document.getElementById(
+"priority"
+).value,
+
+description:
+document.getElementById(
+"description"
+).value
+
+};
+
+
+const response=
+await fetch(
+"http://localhost:3000/api/helpdesk/tickets",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+}
+);
+
+const result=
+await response.json();
+
+if(result.success){
+
+alert(
+"Ticket Raised Successfully"
+);
+
+location.reload();
+
+}
+else{
+
+alert(
+result.message
+);
+
+}
+
+}
+
+</script>
+
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

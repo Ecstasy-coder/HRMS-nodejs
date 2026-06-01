@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Organizational Analysis — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+  <link rel="stylesheet" href="topbar.css"/>
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    .analysis-filters {
+      background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow); padding: 18px 24px; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+    }
+    .filter-group { display: flex; align-items: center; gap: 10px; }
+    .filter-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+    .period-btn { padding: 8px 18px; border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; border: 1.5px solid var(--border); background: #fff; color: #6b7280; cursor: pointer; transition: .2s; }
+    .period-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .af-select { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 13px; color: #374151; outline: none; transition: .2s; background: #fff; }
+    .af-select:focus { border-color: var(--navy); }
+
+    .perf-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 24px; }
+    @media(max-width:900px){ .perf-grid { grid-template-columns: 1fr; } }
+
+    .perf-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+    .perf-card-header { padding: 18px 22px 14px; border-bottom: 1px solid #f3f4f6; }
+    .perf-card-title { font-size: 15px; font-weight: 700; color: #111827; }
+    .perf-card-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .perf-chart-area { padding: 24px; display: flex; justify-content: center; align-items: center; }
+
+    /* Donut chart via SVG */
+    .donut-wrap { position: relative; width: 180px; height: 180px; }
+    .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+    .donut-value { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .donut-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+
+    /* Legend */
+    .legend { padding: 0 22px 18px; }
+    .legend-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .legend-left { display: flex; align-items: center; gap: 8px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .legend-name { font-size: 13px; color: #374151; font-weight: 500; }
+    .legend-pct  { font-size: 13px; font-weight: 700; color: #111827; }
+    .legend-bar-wrap { height: 4px; background: #f3f4f6; border-radius: 2px; margin: 0 22px 18px; overflow: hidden; }
+    .legend-bar { height: 100%; border-radius: 2px; transition: width .6s ease; }
+
+    /* Rating distribution */
+    .rating-dist { padding: 0 22px 20px; }
+    .rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .rating-stars { font-size: 12px; color: #374151; font-weight: 600; min-width: 32px; }
+    .rating-bar-bg { flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+    .rating-bar-fill { height: 100%; border-radius: 4px; background: var(--gold); transition: width .6s; }
+    .rating-count { font-size: 12px; color: var(--text-muted); min-width: 28px; text-align: right; }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Organizational Analysis</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div style="margin-bottom:6px;">
+      <div style="font-size:20px;font-weight:800;color:var(--navy);">Organizational Analysis</div>
+      <div style="font-size:13.5px;color:var(--text-muted);margin-top:4px;">Complete performance overview — Employees, Reporting Managers, and HR</div>
+    </div>
+
+    <!-- Filters -->
+    <div class="analysis-filters" style="margin-top:18px;">
+      <div class="filter-group">
+        <span class="filter-label">Period</span>
+        <button class="period-btn active" id="btnMonthly" onclick="setPeriod('monthly')">Monthly</button>
+        <button class="period-btn" id="btnYearly" onclick="setPeriod('yearly')">Yearly</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Month</span>
+        <select class="af-select" id="selMonth" onchange="loadAnalysis()">
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Year</span>
+        <select class="af-select" id="selYear" onchange="loadAnalysis()"></select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Dept</span>
+        <select class="af-select" id="selDept" onchange="loadAnalysis()">
+          <option value="">All Departments</option>
+          <option>Engineering</option><option>Management</option><option>HR</option>
+          <option>Finance</option><option>Sales</option><option>Marketing</option><option>Operations</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KPI Stats -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div style="font-size:28px;margin-bottom:6px;">⭐</div>
+        <div class="stat-value gold" id="k-avg">—</div>
+        <div class="stat-label">Org Avg Rating</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:28px;margin-bottom:6px;">👥</div>
+        <div class="stat-value blue" id="k-total">—</div>
+        <div class="stat-label">Total Users</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:28px;margin-bottom:6px;">🏆</div>
+        <div class="stat-value green" id="k-high">—</div>
+        <div class="stat-label">High Performers</div>
+        <div class="stat-sub">Employees ≥ 4.0</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:28px;margin-bottom:6px;">📋</div>
+        <div class="stat-value" id="k-cards">—</div>
+        <div class="stat-label">Total Cards</div>
+        <div class="stat-sub" id="k-cards-sub">This month</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size:28px;margin-bottom:6px;">⚠️</div>
+        <div class="stat-value red" id="k-attn">—</div>
+        <div class="stat-label">Need Attention</div>
+        <div class="stat-sub">All roles &lt; 2.5</div>
+      </div>
+    </div>
+
+    <!-- Performance Cards -->
+    <div class="perf-grid">
+      <!-- Employee Performance -->
+      <div class="perf-card">
+        <div class="perf-card-header">
+          <div class="perf-card-title">Employee Performance</div>
+          <div class="perf-card-sub" id="emp-sub">0 employees rated</div>
+        </div>
+        <div class="perf-chart-area">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 100 100" width="180" height="180" id="emp-donut">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#f3f4f6" stroke-width="12"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#22c55e" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55" stroke-linecap="round"
+                id="emp-arc" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#f59e0b" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55"
+                id="emp-arc2" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#ef4444" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55"
+                id="emp-arc3" style="transition:stroke-dasharray .8s ease"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-value" id="emp-avg">—</div>
+              <div class="donut-label">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+        <div class="legend" id="emp-legend"></div>
+        <div class="rating-dist" id="emp-dist"></div>
+      </div>
+
+      <!-- RM Performance -->
+      <div class="perf-card">
+        <div class="perf-card-header">
+          <div class="perf-card-title">RM Performance</div>
+          <div class="perf-card-sub" id="rm-sub">0 managers rated</div>
+        </div>
+        <div class="perf-chart-area">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 100 100" width="180" height="180" id="rm-donut">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#f3f4f6" stroke-width="12"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#818cf8" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55" stroke-linecap="round"
+                id="rm-arc" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#a78bfa" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55"
+                id="rm-arc2" style="transition:stroke-dasharray .8s ease"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-value" id="rm-avg">—</div>
+              <div class="donut-label">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+        <div class="legend" id="rm-legend"></div>
+        <div class="rating-dist" id="rm-dist"></div>
+      </div>
+
+      <!-- HR Performance -->
+      <div class="perf-card">
+        <div class="perf-card-header">
+          <div class="perf-card-title">HR Performance</div>
+          <div class="perf-card-sub" id="hr-sub">0 HR staff rated</div>
+        </div>
+        <div class="perf-chart-area">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 100 100" width="180" height="180" id="hr-donut">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#f3f4f6" stroke-width="12"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#67e8f9" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55" stroke-linecap="round"
+                id="hr-arc" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#38bdf8" stroke-width="12"
+                stroke-dasharray="0 220" stroke-dashoffset="55"
+                id="hr-arc2" style="transition:stroke-dasharray .8s ease"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-value" id="hr-avg">—</div>
+              <div class="donut-label">Avg Rating</div>
+            </div>
+          </div>
+        </div>
+        <div class="legend" id="hr-legend"></div>
+        <div class="rating-dist" id="hr-dist"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+const CIRC = 2 * Math.PI * 35; // ~220
+let currentPeriod = 'monthly';
+
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('analysis', user);
+  document.getElementById('dateDisplay').textContent = getLiveDate();
+  const topAv = document.getElementById('topAvatar');
+  topAv.textContent = getInitials(user.fullName);
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" alt="avatar"/>`;
+
+  // Populate year selector
+  const selYear = document.getElementById('selYear');
+  const now = new Date();
+  for (let y = now.getFullYear(); y >= 2023; y--) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    if (y === now.getFullYear()) opt.selected = true;
+    selYear.appendChild(opt);
+  }
+  // Set current month
+  document.getElementById('selMonth').value = now.getMonth() + 1;
+
+  loadAnalysis();
+})();
+
+function setPeriod(p) {
+  currentPeriod = p;
+  document.getElementById('btnMonthly').classList.toggle('active', p === 'monthly');
+  document.getElementById('btnYearly').classList.toggle('active', p === 'yearly');
+  document.getElementById('selMonth').closest('.filter-group').style.display = p === 'monthly' ? 'flex' : 'none';
+  loadAnalysis();
+}
+
+async function loadAnalysis() {
+  const month = document.getElementById('selMonth').value;
+  const year  = document.getElementById('selYear').value;
+  const dept  = document.getElementById('selDept').value;
+
+  try {
+    const params = new URLSearchParams({ month, year });
+    if (dept) params.set('dept', dept);
+    const r = await fetch(`/api/admin/analysis?${params}`, { credentials: 'include' });
+    const d = await r.json();
+    if (!d.success) return;
+
+    const s = d.stats;
+    document.getElementById('k-avg').textContent   = s.orgAvgRating;
+    document.getElementById('k-total').textContent = s.totalUsers;
+    document.getElementById('k-high').textContent  = s.highPerformers;
+    document.getElementById('k-cards').textContent = s.totalCards;
+    document.getElementById('k-attn').textContent  = s.needAttention;
+
+    const monthName = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month-1];
+    document.getElementById('k-cards-sub').textContent = `${monthName} ${year}`;
+
+    // Render performance panels
+    renderPerfPanel('emp', d.employeeAvg, d.employeeCount, d.employeeRatings || [], '#22c55e', '#f59e0b', '#ef4444', 'employees');
+    renderPerfPanel('rm',  d.rmAvg,       d.rmCount,       d.rmRatings || [],       '#818cf8', '#a78bfa', null,       'managers');
+    renderPerfPanel('hr',  d.hrAvg,       d.hrCount,       d.hrRatings || [],       '#67e8f9', '#38bdf8', null,       'HR staff');
+  } catch(e) { console.error('Analysis error:', e); }
+}
+
+function renderPerfPanel(prefix, avg, count, ratings, c1, c2, c3, label) {
+  document.getElementById(`${prefix}-avg`).textContent = avg || '—';
+  document.getElementById(`${prefix}-sub`).textContent = `${count} ${label} rated`;
+
+  const avgNum = parseFloat(avg) || 0;
+  const circumference = CIRC;
+
+  // Three-segment donut: ≥4 (green/c1), 2.5-4 (amber/c2), <2.5 (red/c3)
+  const total = ratings.length || 1;
+  const high   = ratings.filter(r => r >= 4).length;
+  const mid    = ratings.filter(r => r >= 2.5 && r < 4).length;
+  const low    = ratings.filter(r => r < 2.5).length;
+
+  const highPct = high / total;
+  const midPct  = mid  / total;
+  const lowPct  = low  / total;
+
+  const arc1 = document.getElementById(`${prefix}-arc`);
+  const arc2 = document.getElementById(`${prefix}-arc2`);
+  const arc3 = document.getElementById(`${prefix}-arc3`);
+
+  if (arc1) {
+    const d1 = highPct * circumference;
+    arc1.setAttribute('stroke-dasharray', `${d1} ${circumference - d1}`);
+    arc1.setAttribute('stroke-dashoffset', 55);
+  }
+  if (arc2) {
+    const d2 = midPct * circumference;
+    const offset2 = 55 - (highPct * circumference);
+    arc2.setAttribute('stroke-dasharray', `${d2} ${circumference - d2}`);
+    arc2.setAttribute('stroke-dashoffset', offset2);
+  }
+  if (arc3 && c3) {
+    const d3 = lowPct * circumference;
+    const offset3 = 55 - ((highPct + midPct) * circumference);
+    arc3.setAttribute('stroke-dasharray', `${d3} ${circumference - d3}`);
+    arc3.setAttribute('stroke-dashoffset', offset3);
+  }
+
+  // Legend
+  const legendEl = document.getElementById(`${prefix}-legend`);
+  const rows = [
+    { label: 'High (≥4.0)', count: high, pct: Math.round(highPct*100), color: c1 },
+    { label: 'Average (2.5–4)', count: mid, pct: Math.round(midPct*100), color: c2 },
+  ];
+  if (c3) rows.push({ label: 'Needs Attention (<2.5)', count: low, pct: Math.round(lowPct*100), color: c3 });
+
+  legendEl.innerHTML = rows.map(row => `
+    <div class="legend-row">
+      <div class="legend-left">
+        <div class="legend-dot" style="background:${row.color}"></div>
+        <span class="legend-name">${row.label}</span>
+      </div>
+      <span class="legend-pct">${row.count} (${row.pct}%)</span>
+    </div>
+    <div class="legend-bar-wrap">
+      <div class="legend-bar" style="width:${row.pct}%;background:${row.color}"></div>
+    </div>`).join('');
+
+  // Rating distribution (1-5 stars)
+  const distEl = document.getElementById(`${prefix}-dist`);
+  const maxCount = Math.max(1, ...([1,2,3,4,5].map(s => ratings.filter(r => Math.round(r) === s).length)));
+  distEl.innerHTML = [5,4,3,2,1].map(s => {
+    const cnt = ratings.filter(r => Math.round(r) === s).length;
+    const pct = Math.round((cnt / maxCount) * 100);
+    return `<div class="rating-row">
+      <span class="rating-stars">${'⭐'.repeat(s)}</span>
+      <div class="rating-bar-bg"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+      <span class="rating-count">${cnt}</span>
+    </div>`;
+  }).join('');
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

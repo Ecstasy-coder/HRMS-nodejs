@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthdays — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+  <link rel="stylesheet" href="topbar.css"/>
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    .bday-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:900px){ .bday-grid { grid-template-columns: 1fr; } }
+
+    /* Upcoming list */
+    .bday-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid #f3f4f6; position: relative;
+    }
+    .bday-row:last-child { border-bottom: none; }
+    .bday-av {
+      width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .bday-info { flex: 1; margin-left: 12px; }
+    .bday-name { font-size: 14px; font-weight: 700; color: #111827; }
+    .bday-dept { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .bday-date { font-size: 12px; color: var(--text-muted); }
+    .days-chip {
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+      white-space: nowrap;
+    }
+    .chip-today   { background: #fef9c3; color: #713f12; border: 1px solid #fde047; }
+    .chip-soon    { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .chip-upcoming{ background: #f9fafb; color: #6b7280; border: 1px solid var(--border); }
+
+    /* By month */
+    .month-section { margin-bottom: 18px; }
+    .month-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1.5px solid #f3f4f6; margin-bottom: 10px;
+    }
+    .month-name { font-size: 14px; font-weight: 700; color: #374151; }
+    .month-count {
+      width: 24px; height: 24px; border-radius: 50%; background: #e0e7ff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: #3730a3;
+    }
+    .month-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .person-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #f9fafb; border: 1px solid var(--border); border-radius: 20px;
+      padding: 5px 12px; font-size: 12.5px; font-weight: 600; color: #374151;
+    }
+    .person-chip .chip-av {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .person-chip .chip-day { color: var(--text-muted); font-weight: 500; }
+
+    /* Today banner */
+    .today-banner {
+      background: linear-gradient(135deg, #fef9c3, #fde68a);
+      border: 1.5px solid #fde047; border-radius: var(--radius-lg);
+      padding: 18px 24px; margin-bottom: 24px;
+      display: none; align-items: center; gap: 16px;
+    }
+    .today-banner.show { display: flex; }
+    .banner-icon { font-size: 36px; }
+    .banner-title { font-size: 16px; font-weight: 800; color: #713f12; }
+    .banner-names { font-size: 13.5px; color: #854d0e; margin-top: 3px; }
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Birthdays</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Today banner -->
+    <div class="today-banner" id="todayBanner">
+      <div class="banner-icon">🎂</div>
+      <div>
+        <div class="banner-title">Happy Birthday Today! 🎉</div>
+        <div class="banner-names" id="todayNames">—</div>
+      </div>
+    </div>
+
+    <div class="bday-grid">
+      <!-- Upcoming -->
+      <div class="panel">
+        <div class="panel-header">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">🎂</span>
+            <div class="panel-title">UPCOMING BIRTHDAYS</div>
+          </div>
+          <span class="badge-pill badge-approved" id="totalCount">0 total</span>
+        </div>
+        <div class="panel-body" id="upcomingBody">
+          <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><h3>Loading…</h3></div>
+        </div>
+      </div>
+
+      <!-- By Month -->
+      <div class="panel">
+        <div class="panel-header">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">📅</span>
+            <div class="panel-title">BY MONTH</div>
+          </div>
+          <span class="badge-pill badge-approved" id="monthTotalCount">0 birthdays</span>
+        </div>
+        <div class="panel-body" id="byMonthBody">
+          <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><h3>Loading…</h3></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('birthdays', user);
+  document.getElementById('dateDisplay').textContent = getLiveDate();
+  const topAv = document.getElementById('topAvatar');
+  topAv.textContent = getInitials(user.fullName);
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" alt="avatar"/>`;
+  startPolling(loadBirthdays, 60000);
+})();
+
+async function loadBirthdays() {
+  try {
+    const r = await fetch('/api/admin/birthdays', { credentials: 'include' });
+    const d = await r.json();
+    if (!d.success) return;
+    renderBirthdays(d.users || []);
+  } catch(e) { console.error(e); }
+}
+
+function parseBirthday(bStr) {
+  // Supports YYYY-MM-DD or MM-DD or DD-MM-YYYY
+  if (!bStr) return null;
+  const parts = String(bStr).split('-');
+  if (parts.length === 3) {
+    // Determine format by first part length
+    if (parts[0].length === 4) return { month: parseInt(parts[1]), day: parseInt(parts[2]) };
+    else return { month: parseInt(parts[1]), day: parseInt(parts[0]) };
+  }
+  if (parts.length === 2) return { month: parseInt(parts[0]), day: parseInt(parts[1]) };
+  return null;
+}
+
+function daysUntilBirthday(month, day) {
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  let next = new Date(thisYear, month - 1, day);
+  if (next < now) next = new Date(thisYear + 1, month - 1, day);
+  const diff = Math.floor((next - now) / (1000 * 60 * 60 * 24));
+  return diff;
+}
+
+function renderBirthdays(users) {
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay   = today.getDate();
+
+  // Parse birthdays
+  const withBdays = users.map(u => {
+    const bd = parseBirthday(u.birthday);
+    if (!bd) return null;
+    return { ...u, bdMonth: bd.month, bdDay: bd.day, daysUntil: daysUntilBirthday(bd.month, bd.day) };
+  }).filter(Boolean);
+
+  // Today's birthdays
+  const todayBdays = withBdays.filter(u => u.bdMonth === todayMonth && u.bdDay === todayDay);
+  if (todayBdays.length > 0) {
+    document.getElementById('todayBanner').classList.add('show');
+    document.getElementById('todayNames').textContent = todayBdays.map(u => u.fullName).join(', ');
+  }
+
+  // Sort by days until
+  const sorted = [...withBdays].sort((a, b) => a.daysUntil - b.daysUntil);
+
+  document.getElementById('totalCount').textContent = `${sorted.length} total`;
+  document.getElementById('monthTotalCount').textContent = `${sorted.length} birthdays`;
+
+  // Upcoming list
+  const upcomingBody = document.getElementById('upcomingBody');
+  if (sorted.length === 0) {
+    upcomingBody.innerHTML = `<div class="empty-state"><i class="fa-solid fa-cake-candles"></i><h3>No birthdays found</h3><p>No employees have birthdays on record.</p></div>`;
+  } else {
+    upcomingBody.innerHTML = sorted.map(u => {
+      const col = avatarColor(u.fullName);
+      const isToday = u.daysUntil === 0;
+      const isSoon  = u.daysUntil <= 7 && !isToday;
+      const chipClass = isToday ? 'chip-today' : isSoon ? 'chip-soon' : 'chip-upcoming';
+      const chipText  = isToday ? '🎉 Today!' : `In ${u.daysUntil} days`;
+      const dateStr = `${String(u.bdDay).padStart(2,'0')} ${MONTHS[u.bdMonth-1]}`;
+      return `
+      <div class="bday-row fade-up">
+        <div class="bday-av" style="background:${col}">${getInitials(u.fullName)}</div>
+        <div class="bday-info">
+          <div class="bday-name">${u.fullName}</div>
+          <div class="bday-dept">${u.department || u.role || '—'} · ${dateStr}</div>
+        </div>
+        <span class="days-chip ${chipClass}">${chipText}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // By month
+  const byMonth = {};
+  withBdays.forEach(u => {
+    if (!byMonth[u.bdMonth]) byMonth[u.bdMonth] = [];
+    byMonth[u.bdMonth].push(u);
+  });
+
+  const byMonthBody = document.getElementById('byMonthBody');
+  if (Object.keys(byMonth).length === 0) {
+    byMonthBody.innerHTML = `<div class="empty-state"><i class="fa-solid fa-calendar"></i><h3>No data</h3></div>`;
+    return;
+  }
+
+  byMonthBody.innerHTML = Object.keys(byMonth).sort((a,b) => a-b).map(m => {
+    const people = byMonth[m].sort((a,b) => a.bdDay - b.bdDay);
+    return `
+    <div class="month-section">
+      <div class="month-header">
+        <span class="month-name">${MONTHS[m-1]}</span>
+        <span class="month-count">${people.length}</span>
+      </div>
+      <div class="month-chips">
+        ${people.map(u => {
+          const col = avatarColor(u.fullName);
+          return `<span class="person-chip">
+            <span class="chip-av" style="background:${col}">${getInitials(u.fullName)}</span>
+            ${u.fullName.split(' ')[0]}
+            <span class="chip-day">(${u.bdDay})</span>
+          </span>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

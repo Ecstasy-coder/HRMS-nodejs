@@ -1,0 +1,660 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile · My Ecstasy HR Portal</title>
+  <script src="/api-config.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Shared design system -->
+  <link rel="stylesheet" href="common.css">
+
+  <style>
+    /* ── Profile-specific styles ─────────────────────────────── */
+
+    /* Two-column profile grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+      max-width: 1100px;
+    }
+
+    /* ── Dark profile card (left column) ─────────────────────── */
+    .profile-card {
+      background: linear-gradient(160deg, var(--navy-light) 0%, var(--navy) 100%);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: rgba(79,142,247,0.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .profile-card::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      background: rgba(91,77,232,0.10);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card-avatar-wrap {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: rgba(79,142,247,0.2);
+      border: 3px solid rgba(79,142,247,0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      overflow: hidden;
+    }
+    .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+    }
+    .card-role { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border-dark);
+      margin: 20px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-rows { position: relative; z-index: 1; }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .lbl { color: var(--text-muted); }
+    .info-row .val { color: var(--text); font-weight: 500; text-align: right; max-width: 55%; word-break: break-all; }
+
+    .status-badge {
+      background: rgba(34,197,94,0.15);
+      color: #86efac;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    /* ── Right panels ─────────────────────────────────────────── */
+    .panels { display: flex; flex-direction: column; gap: 24px; }
+
+    /* ── Avatar upload zone ───────────────────────────────────── */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(79,142,247,0.03);
+    }
+
+    .upload-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #5b4de8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .upload-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-avatar .overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; opacity: 0; transition: opacity 0.2s;
+      border-radius: 50%;
+    }
+    .upload-zone:hover .overlay { opacity: 1; }
+    .upload-text { font-size: 13.5px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+    .upload-hint { font-size: 12px; color: var(--text-muted); }
+
+    .uploading-overlay {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.85);
+      border-radius: 14px;
+      display: none; align-items: center; justify-content: center;
+      font-size: 13px; color: var(--accent); font-weight: 600;
+      gap: 8px; flex-direction: column;
+    }
+    .uploading-overlay.show { display: flex; }
+    .upload-spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--accent-glow);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* ── Form rows ────────────────────────────────────────────── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-row.full { grid-template-columns: 1fr; }
+
+    .field-group { display: flex; flex-direction: column; }
+
+    .field-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 7px;
+      letter-spacing: 0.2px;
+    }
+    .field-label .req   { color: var(--error); margin-left: 2px; }
+    .field-label .muted { color: var(--text-muted); font-weight: 400; font-size: 11px; }
+
+    .btn-row {
+      display: flex; gap: 12px;
+      margin-top: 24px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Password strength ────────────────────────────────────── */
+    .pw-strength { margin-top: 8px; }
+    .pw-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+    .pw-bar {
+      height: 3px; flex: 1; border-radius: 2px;
+      background: var(--border); transition: background 0.3s;
+    }
+    .pw-bar.weak   { background: var(--error); }
+    .pw-bar.medium { background: var(--warning); }
+    .pw-bar.strong { background: var(--success); }
+    .pw-strength-text { font-size: 11.5px; color: var(--text-muted); }
+
+    .pw-rules {
+      margin-top: 10px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    }
+    .pw-rule {
+      font-size: 11.5px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .pw-rule.pass { color: var(--success); }
+    .pw-rule .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+    .pw-input-wrap { position: relative; }
+    .pw-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 15px; padding: 4px;
+    }
+    .pw-toggle:hover { color: #475569; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar loaded dynamically -->
+<div id="sidebar-container"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <h1 class="topbar-title">My Profile</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notifCount">3</span>
+      </div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="profile-grid">
+
+      <!-- LEFT: Dark profile card -->
+      <div>
+        <div class="profile-card">
+          <div class="card-avatar-wrap">
+            <div class="card-avatar" id="cardAvatar">MV</div>
+            <div class="card-name" id="cardName">—</div>
+            <div class="card-role">
+              <span id="cardPortal">HR Portal</span><br>
+              <span id="cardDesignation">—</span>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="info-rows">
+            <div class="info-row"><span class="lbl">Email</span><span class="val" id="cardEmail">—</span></div>
+            <div class="info-row"><span class="lbl">Department</span><span class="val" id="cardDept">—</span></div>
+            <div class="info-row"><span class="lbl">Phone</span><span class="val" id="cardPhone">—</span></div>
+            <div class="info-row"><span class="lbl">Birthday</span><span class="val" id="cardBday">—</span></div>
+            <div class="info-row"><span class="lbl">Joined</span><span class="val" id="cardJoined">—</span></div>
+            <div class="info-row">
+              <span class="lbl">Status</span>
+              <span class="val"><span class="status-badge" id="cardStatus">Active</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Panels -->
+      <div class="panels">
+
+        <!-- Edit Profile Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Edit Profile</div>
+              <div class="panel-sub">Update your photo, name, designation and contact details</div>
+            </div>
+          </div>
+
+          <!-- Avatar Upload -->
+          <div class="upload-zone" id="uploadZone" onclick="document.getElementById('avatarInput').click()">
+            <div class="upload-avatar" id="uploadAvatar">
+              <span id="uploadInitials">MV</span>
+              <div class="overlay">📷</div>
+            </div>
+            <div class="upload-text">Click to upload / change photo</div>
+            <div class="upload-hint">JPG · PNG · WEBP · Max 2 MB</div>
+            <div class="uploading-overlay" id="uploadingOverlay">
+              <div class="upload-spinner"></div>
+              Uploading…
+            </div>
+          </div>
+          <input type="file" id="avatarInput" style="display:none" accept="image/jpeg,image/png,image/webp" onchange="uploadAvatar(this)">
+
+          <div id="deletePhotoWrap" style="display:none; text-align:center; margin-top:-12px; margin-bottom:20px;">
+            <button class="btn-danger" style="font-size:12.5px; padding:7px 18px; border-radius:8px; cursor:pointer;" onclick="deleteAvatar()">
+              <i class="ti ti-trash" style="vertical-align:middle; margin-right:4px;"></i> Remove Photo
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Full Name <span class="req">*</span></label>
+              <input class="field-input" type="text" id="fullName" placeholder="Your full name" />
+              <span class="field-error" id="fullNameErr"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Job Position / Designation</label>
+              <input class="field-input" type="text" id="designation" placeholder="e.g. HR Executive" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Phone Number</label>
+              <input class="field-input" type="text" id="phone" placeholder="Phone number" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email <span class="muted">(cannot be changed)</span></label>
+              <input class="field-input" type="email" id="email" disabled />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Department <span class="muted">(set by HR)</span></label>
+              <input class="field-input" type="text" id="dept" disabled />
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" onclick="saveProfile()" id="saveBtn">Save Changes</button>
+            <button class="btn-ghost" onclick="loadProfile()">Discard</button>
+          </div>
+        </div>
+
+        <!-- Change Password Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Change Password</div>
+              <div class="panel-sub">Keep your account secure with a strong password</div>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <div class="field-group">
+              <label class="field-label">Current Password</label>
+              <div class="pw-input-wrap">
+                <input class="field-input" type="password" id="currentPw" placeholder="Enter current password" />
+                <button class="pw-toggle" type="button" onclick="togglePw('currentPw', this)">👁</button>
+              </div>
+              <span class="field-error" id="currentPwErr"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">New Password</label>
+              <div class="pw-input-wrap">
+                <input class="field-input" type="password" id="newPw" placeholder="Create new password" oninput="checkPwStrength()" />
+                <button class="pw-toggle" type="button" onclick="togglePw('newPw', this)">👁</button>
+              </div>
+              <div class="pw-strength" id="pwStrength" style="display:none">
+                <div class="pw-bars">
+                  <div class="pw-bar" id="bar1"></div>
+                  <div class="pw-bar" id="bar2"></div>
+                  <div class="pw-bar" id="bar3"></div>
+                  <div class="pw-bar" id="bar4"></div>
+                </div>
+                <div class="pw-strength-text" id="pwStrengthText">Strength</div>
+                <div class="pw-rules">
+                  <div class="pw-rule" id="rule-len"><span class="dot"></span> 8+ characters</div>
+                  <div class="pw-rule" id="rule-upper"><span class="dot"></span> Uppercase letter</div>
+                  <div class="pw-rule" id="rule-lower"><span class="dot"></span> Lowercase letter</div>
+                  <div class="pw-rule" id="rule-num"><span class="dot"></span> Number</div>
+                  <div class="pw-rule" id="rule-special"><span class="dot"></span> Special character</div>
+                </div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Confirm New Password</label>
+              <div class="pw-input-wrap">
+                <input class="field-input" type="password" id="confirmPw" placeholder="Repeat new password" />
+                <button class="pw-toggle" type="button" onclick="togglePw('confirmPw', this)">👁</button>
+              </div>
+              <span class="field-error" id="confirmPwErr"></span>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" onclick="changePassword()" id="pwBtn">Update Password</button>
+            <button class="btn-ghost" onclick="clearPasswordForm()">Cancel</button>
+          </div>
+        </div>
+
+      </div><!-- /panels -->
+    </div><!-- /profile-grid -->
+  </div><!-- /content -->
+  <div id="footer-container"></div>
+
+</div><!-- /main -->
+
+<!-- Toast container -->
+<div class="toast-container" id="toasts"></div>
+
+<script>
+  // ── Date ──────────────────────────────────────────────────────────────────
+  const _days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const _now    = new Date();
+  document.getElementById('topbarDate').textContent =
+    `${_days[_now.getDay()]}, ${_now.getDate()} ${_months[_now.getMonth()]} ${_now.getFullYear()}`;
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  function toast(msg, type = 'success') {
+    const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${msg}</span>`;
+    document.getElementById('toasts').appendChild(el);
+    el.onclick = () => el.remove();
+    setTimeout(() => { el.style.animation = 'toast-out 0.3s forwards'; setTimeout(() => el.remove(), 300); }, 3500);
+  }
+
+  // ── Format dates ──────────────────────────────────────────────────────────
+  const _mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function formatDate(str) {
+    if (!str) return '—';
+    const d = new Date(str);
+    return `${String(d.getDate()).padStart(2,'0')} ${_mo[d.getMonth()]} ${d.getFullYear()}`;
+  }
+  function formatDateShort(str) {
+    if (!str) return '—';
+    const d = new Date(str);
+    return `${String(d.getDate()).padStart(2,'0')} ${_mo[d.getMonth()]}`;
+  }
+  function getInitials(name) {
+    if (!name) return '?';
+    return name.split(' ').filter(Boolean).slice(0,2).map(n => n[0]).join('').toUpperCase();
+  }
+
+  // ── Update all avatars ────────────────────────────────────────────────────
+  function updateAvatars(user) {
+    const initials = getInitials(user.fullName);
+    const sa = document.getElementById('sidebarAvatar');
+    if (sa) sa.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="">` : initials;
+    const ta = document.getElementById('topbarAvatar');
+    ta.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : initials;
+    const ca = document.getElementById('cardAvatar');
+    ca.innerHTML = user.avatar ? `<img src="${user.avatar}" alt="">` : initials;
+    const ua = document.getElementById('uploadAvatar');
+    ua.innerHTML = user.avatar
+      ? `<img src="${user.avatar}" alt=""><div class="overlay">📷</div>`
+      : `<span id="uploadInitials">${initials}</span><div class="overlay">📷</div>`;
+    document.getElementById('deletePhotoWrap').style.display = user.avatar ? 'block' : 'none';
+  }
+
+  // ── Load Profile ──────────────────────────────────────────────────────────
+  async function loadProfile() {
+    try {
+      const res = await fetch('/api/profile', { credentials: 'include' });
+      if (res.status === 401) { window.location.href = '/'; return; }
+      const user = await res.json();
+      document.getElementById('sidebarName').textContent = user.fullName;
+      document.getElementById('sidebarRole').textContent = `${user.role || 'HR Admin'} · ${user.department}`;
+      document.getElementById('cardName').textContent    = user.fullName;
+      document.getElementById('cardDesignation').textContent = user.designation;
+      document.getElementById('cardEmail').textContent   = user.email;
+      document.getElementById('cardDept').textContent    = user.department;
+      document.getElementById('cardPhone').textContent   = user.phone || '—';
+      document.getElementById('cardBday').textContent    = formatDateShort(user.birthday);
+      document.getElementById('cardJoined').textContent  = formatDate(user.joinedDate);
+      document.getElementById('cardStatus').textContent  = user.status;
+      document.getElementById('fullName').value          = user.fullName;
+      document.getElementById('designation').value       = user.designation || '';
+      document.getElementById('phone').value             = user.phone || '';
+      document.getElementById('email').value             = user.email;
+      document.getElementById('dept').value              = user.department;
+      updateAvatars(user);
+    } catch (err) {
+      toast('Failed to load profile', 'error');
+    }
+  }
+
+  // ── Save Profile ──────────────────────────────────────────────────────────
+  async function saveProfile() {
+    const fullName = document.getElementById('fullName').value.trim();
+    document.getElementById('fullNameErr').textContent = '';
+    if (!fullName) {
+      document.getElementById('fullNameErr').textContent = 'Full name is required.';
+      document.getElementById('fullName').classList.add('error');
+      return;
+    }
+    document.getElementById('fullName').classList.remove('error');
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving…';
+    try {
+      const res = await fetch('/api/profile', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName, phone: document.getElementById('phone').value, designation: document.getElementById('designation').value })
+      });
+      const data = await res.json();
+      if (data.success) { toast(data.message || 'Profile updated!', 'success'); loadProfile(); }
+      else toast(data.error || 'Update failed', 'error');
+    } catch { toast('Connection error', 'error'); }
+    finally { btn.disabled = false; btn.textContent = 'Save Changes'; }
+  }
+
+  // ── Upload Avatar ─────────────────────────────────────────────────────────
+  async function uploadAvatar(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { toast('File too large (max 2 MB)', 'error'); return; }
+    const overlay = document.getElementById('uploadingOverlay');
+    overlay.classList.add('show');
+    const fd = new FormData(); fd.append('avatar', file);
+    try {
+      const res  = await fetch('/api/profile/avatar', { method: 'POST', credentials: 'include', body: fd });
+      const data = await res.json();
+      if (data.success) { toast(data.message || 'Photo updated!', 'success'); loadProfile(); }
+      else toast(data.error || 'Upload failed', 'error');
+    } catch { toast('Upload failed', 'error'); }
+    finally { overlay.classList.remove('show'); input.value = ''; }
+  }
+
+  // ── Delete Avatar ─────────────────────────────────────────────────────────
+  async function deleteAvatar() {
+    if (!confirm('Remove your profile photo?')) return;
+    try {
+      const res  = await fetch('/api/profile/avatar', { method: 'DELETE', credentials: 'include' });
+      const data = await res.json();
+      if (data.success) { toast(data.message || 'Photo removed!', 'success'); loadProfile(); }
+      else toast(data.error || 'Failed to remove photo', 'error');
+    } catch { toast('Connection error', 'error'); }
+  }
+
+  // ── Drag & drop ───────────────────────────────────────────────────────────
+  const zone = document.getElementById('uploadZone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) uploadAvatar({ files: [file], value: '' });
+  });
+
+  // ── Password helpers ──────────────────────────────────────────────────────
+  function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    input.type = input.type === 'password' ? 'text' : 'password';
+    btn.textContent = input.type === 'password' ? '👁' : '🙈';
+  }
+
+  function checkPwStrength() {
+    const pw = document.getElementById('newPw').value;
+    const el = document.getElementById('pwStrength');
+    if (!pw) { el.style.display = 'none'; return; }
+    el.style.display = 'block';
+    const rules = { len: pw.length >= 8, upper: /[A-Z]/.test(pw), lower: /[a-z]/.test(pw), num: /\d/.test(pw), special: /[@$!%*?&]/.test(pw) };
+    Object.entries(rules).forEach(([k, v]) => document.getElementById(`rule-${k}`).classList.toggle('pass', v));
+    const passed = Object.values(rules).filter(Boolean).length;
+    ['bar1','bar2','bar3','bar4'].forEach((b, i) => {
+      const bar = document.getElementById(b); bar.className = 'pw-bar';
+      if (i < passed) bar.classList.add(passed <= 2 ? 'weak' : passed <= 3 ? 'medium' : 'strong');
+    });
+    document.getElementById('pwStrengthText').textContent = ['','Very Weak','Weak','Fair','Strong','Very Strong'][passed] || 'Very Weak';
+  }
+
+  function clearPasswordForm() {
+    ['currentPw','newPw','confirmPw'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('pwStrength').style.display = 'none';
+    ['currentPwErr','confirmPwErr'].forEach(id => document.getElementById(id).textContent = '');
+  }
+
+  // ── Change Password ───────────────────────────────────────────────────────
+  async function changePassword() {
+    const currentPw = document.getElementById('currentPw').value;
+    const newPw     = document.getElementById('newPw').value;
+    const confirmPw = document.getElementById('confirmPw').value;
+    document.getElementById('currentPwErr').textContent = '';
+    document.getElementById('confirmPwErr').textContent = '';
+    if (!currentPw) { document.getElementById('currentPwErr').textContent = 'Current password is required.'; return; }
+    if (!newPw)     { document.getElementById('currentPwErr').textContent = 'New password is required.'; return; }
+    if (newPw !== confirmPw) { document.getElementById('confirmPwErr').textContent = 'Passwords do not match.'; return; }
+    const btn = document.getElementById('pwBtn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Updating…';
+    try {
+      const res  = await fetch('/api/profile/password', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ currentPassword: currentPw, newPassword: newPw, confirmPassword: confirmPw }) });
+      const data = await res.json();
+      if (data.success) { toast(data.message || 'Password updated!', 'success'); clearPasswordForm(); }
+      else if (data.error?.toLowerCase().includes('current')) document.getElementById('currentPwErr').textContent = data.error;
+      else toast(data.error || 'Update failed', 'error');
+    } catch { toast('Connection error', 'error'); }
+    finally { btn.disabled = false; btn.textContent = 'Update Password'; }
+  }
+
+  // ── Logout ────────────────────────────────────────────────────────────────
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location.href = '/';
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  (async () => {
+    try {
+      const res  = await fetch('sidebar.html');
+      const html = await res.text();
+      document.getElementById('sidebar-container').innerHTML = html;
+      const currentPath = location.pathname.replace(/\.html$/, '').toLowerCase();
+      document.querySelectorAll('#sidebar-container .nav-item').forEach(a => {
+        const href = (a.getAttribute('href') || '').replace(/\.html$/, '').toLowerCase();
+        if (href && (currentPath === href || currentPath.endsWith(href))) a.classList.add('active');
+      });
+    } catch { /* sidebar optional */ }
+    loadProfile();
+  })();
+</script>
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

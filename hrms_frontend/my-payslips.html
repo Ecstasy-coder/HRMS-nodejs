@@ -1,0 +1,513 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>My Payslips · My Ecstasy HR Portal</title>
+  <script src="/api-config.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Also load common.css in case it exists (won't break if missing) -->
+  <link rel="stylesheet" href="common.css">
+
+  <style>
+    /* ══════════════════════════════════════════════════════════
+       BASE RESET & BODY
+    ══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       LAYOUT — sidebar + main  (mirrors common.css pattern)
+    ══════════════════════════════════════════════════════════ */
+    :root { --sidebar-w: 240px; --topbar-h: 64px; --navy: #0f1c2e; }
+
+    /* The sidebar itself is injected by sidebar.html and uses
+       position:fixed, so we just need to offset the main area */
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Topbar ─────────────────────────────────────────────── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      height: var(--topbar-h);
+      background: #ffffff;
+      border-bottom: 1px solid #e8eef4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 100;
+      box-shadow: 0 1px 6px rgba(15,23,42,0.06);
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-date {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .notif-btn {
+      position: relative;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-top {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Content area ───────────────────────────────────────── */
+    .content {
+      margin-top: var(--topbar-h);
+      padding: 28px 30px 40px;
+      flex: 1;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       PAGE-SPECIFIC STYLES
+    ══════════════════════════════════════════════════════════ */
+
+    /* Top row */
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .top-row p {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    #yearSelect {
+      padding: 9px 20px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 30px;
+      background: #f8fafc;
+      font-size: 14px;
+      font-family: 'Sora', sans-serif;
+      color: #0f172a;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    #yearSelect:focus { outline: none; border-color: #4f8ef7; }
+
+    /* ── Summary Cards ─────────────────────────────────────── */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .summary-box {
+      background: #ffffff;
+      padding: 22px 18px;
+      border-radius: 18px;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.06);
+      border: 1px solid #eef2f6;
+      animation: fade-up 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .summary-box h4 {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .summary-box p {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .summary-box small {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .summary-box p.green { color: #10b981; }
+    .summary-box p.blue  { color: #4f8ef7; }
+
+    /* ── Payslip Cards ─────────────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .payslip-card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.06);
+      border: 1px solid #eef2f6;
+      transition: box-shadow 0.2s, transform 0.2s;
+      animation: fade-up 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .payslip-card:hover {
+      box-shadow: 0 10px 26px rgba(15,23,42,0.10);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-header h3 { font-size: 18px; font-weight: 700; color: #1e293b; }
+
+    .paid {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      background: #e8faf3;
+      color: #10b981;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+    }
+
+    .salary-boxes { display: flex; gap: 14px; margin-bottom: 18px; }
+
+    .salary { flex: 1; padding: 14px; border-radius: 14px; }
+    .gross     { background: #eef3fb; }
+    .take-home { background: #f0fdf8; }
+
+    .salary h5 {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .salary p { font-size: 18px; font-weight: 700; color: #0f172a; }
+    .take-home p { color: #10b981; }
+
+    .details p { font-size: 13px; color: #475569; margin-bottom: 8px; }
+    .details p:last-child { margin-bottom: 0; }
+
+    .card-buttons { display: flex; gap: 12px; margin-top: 20px; }
+
+    .view-btn {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      background: linear-gradient(135deg, #0f2747, #1a3a6e);
+      color: #fff;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.2s;
+    }
+    .view-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(15,39,71,0.28); }
+
+    .pdf-btn {
+      padding: 13px 20px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #475569;
+      transition: all 0.2s;
+    }
+    .pdf-btn:hover { background: #f8fafc; border-color: #4f8ef7; color: #4f8ef7; }
+
+    /* ── Tip banner ────────────────────────────────────────── */
+    .tip-banner {
+      margin-top: 26px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #4f8ef7;
+      padding: 14px 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tip-icon {
+      font-size: 18px;
+      color: #4f8ef7;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .tip-text {
+      font-size: 13px;
+      color: #1e40af;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tip-text strong {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    .tip-step {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .tip-step i { font-size: 11px; }
+
+    .tip-arrow {
+      color: #93c5fd;
+      font-size: 13px;
+    }
+
+    /* ── No payslip state ─────────────────────────────────── */
+    .no-payslip-box {
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid #eef2f6;
+      padding: 70px 40px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.05);
+      grid-column: 1 / -1;
+    }
+    .no-payslip-box p { font-size: 16px; color: #94a3b8; line-height: 1.7; }
+
+    /* ── Animation ─────────────────────────────────────────── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1200px) {
+      .summary-cards { grid-template-columns: repeat(3, 1fr); }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+      .topbar { left: 0; }
+      .summary-cards { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .summary-cards { grid-template-columns: 1fr; }
+      .content { padding: 20px 16px 32px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Sidebar injected here (sidebar.html is position:fixed) -->
+<div id="sidebar-container"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <header class="topbar">
+    <h1 class="topbar-title">My Payslips</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="currentDate"></span>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notifCount">5</span>
+      </div>
+      <div class="avatar-top" id="topbarAvatar">DS</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Top row -->
+    <div class="top-row">
+      <p>View and download your monthly salary slips</p>
+      <select id="yearSelect">
+        <option>2026</option>
+        <option>2025</option>
+        <option>2024</option>
+      </select>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-box">
+        <h4>Months Paid</h4>
+        <p><span id="monthsPaid">0</span></p>
+        <small>of 12</small>
+      </div>
+      <div class="summary-box">
+        <h4>Total Gross</h4>
+        <p id="totalGross">₹0.00</p>
+      </div>
+      <div class="summary-box">
+        <h4>Total Take Home</h4>
+        <p class="green" id="totalTakeHome">₹0.00</p>
+      </div>
+      <div class="summary-box">
+        <h4>Bonus + Incentive</h4>
+        <p class="blue" id="totalBonus">₹0.00</p>
+      </div>
+      <div class="summary-box">
+        <h4>Total PF Saved</h4>
+        <p id="totalPF">₹0.00</p>
+      </div>
+    </div>
+
+    <!-- Dynamic Payslip Cards -->
+    <div class="cards"></div>
+
+    <!-- PDF Tip Banner -->
+    <div class="tip-banner">
+      <i class="ti ti-info-circle tip-icon"></i>
+      <div class="tip-text">
+        <strong>Save as PDF:</strong>
+        <span class="tip-step"><i class="ti ti-eye"></i> View Payslip</span>
+        <span class="tip-arrow">→</span>
+        <span class="tip-step"><i class="ti ti-keyboard"></i> Ctrl + P</span>
+        <span class="tip-arrow">→</span>
+        <span class="tip-step"><i class="ti ti-file-type-pdf"></i> Save as PDF</span>
+        <span class="tip-arrow">→</span>
+        <span class="tip-step"><i class="ti ti-download"></i> Save</span>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+</main>
+
+<!-- ── SCRIPTS ──────────────────────────────────────────────── -->
+<script>
+  // Load sidebar
+  fetch('sidebar.html')
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.nav-item').forEach(el => {
+        if (el.getAttribute('href') === 'my-payslips.html') el.classList.add('active');
+      });
+    })
+    .catch(() => {}); // sidebar missing is fine during local dev
+
+  // Current date
+  const d = new Date();
+  const dateEl = document.getElementById('currentDate');
+  if (dateEl) dateEl.textContent = d.toLocaleDateString('en-IN', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+</script>
+
+<script src="js/my-payslips.js"></script>
+
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

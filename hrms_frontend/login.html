@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Ecstasy · Sign In</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #0f1c2e; --navy-mid: #162338; --navy-light: #1e3052;
+      --accent: #4f8ef7; --accent-glow: rgba(79,142,247,0.25);
+      --gold: #f0b429; --gold-glow: rgba(240,180,41,0.25);
+      --text: #e8edf5; --text-muted: #8ba0bb;
+      --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08);
+      --success: #22c55e; --error: #ef4444;
+    }
+    body {
+      font-family: 'Sora', sans-serif; background: var(--navy);
+      color: var(--text); min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .bg-orb {
+      position: fixed; border-radius: 50%; filter: blur(80px);
+      opacity: 0.12; animation: orb-drift 12s ease-in-out infinite; pointer-events: none;
+    }
+    .bg-orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -100px; }
+    .bg-orb-2 { width: 400px; height: 400px; background: #7c3aed; bottom: -100px; right: -50px; animation-delay: -4s; }
+    .bg-orb-3 { width: 300px; height: 300px; background: var(--gold); top: 40%; left: 55%; animation-delay: -8s; }
+    @keyframes orb-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 30px) scale(0.95); }
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(79,142,247,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(79,142,247,0.03) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none;
+    }
+    .login-wrapper {
+      position: relative; z-index: 10; width: 100%; max-width: 460px;
+      padding: 24px; animation: fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .login-card {
+      background: rgba(22,35,56,0.88); backdrop-filter: blur(24px);
+      border: 1px solid var(--border); border-radius: 24px;
+      padding: 44px 40px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .brand { text-align: center; margin-bottom: 36px; }
+    .brand-icon {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      border-radius: 18px; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 14px; box-shadow: 0 8px 24px var(--accent-glow);
+      transition: all 0.4s ease;
+    }
+    .brand-icon.admin-mode {
+      background: linear-gradient(135deg, var(--gold), #e0a520);
+      box-shadow: 0 8px 24px var(--gold-glow);
+    }
+    .brand-name { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; transition: color 0.3s; }
+    .brand-sub.admin-mode { color: var(--gold); }
+
+    /* Single login — no tabs needed */
+
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 5px; }
+    .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 8px; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; pointer-events: none; }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 13px 14px 13px 42px;
+      font-family: 'Sora', sans-serif; font-size: 14px; color: var(--text);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    input:focus { border-color: var(--accent); background: rgba(79,142,247,0.06); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .admin-mode input:focus { border-color: var(--gold); background: rgba(240,180,41,0.06); box-shadow: 0 0 0 3px var(--gold-glow); }
+    .toggle-pw {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; padding: 4px;
+    }
+    .toggle-pw:hover { color: var(--text); }
+
+    .btn-primary {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--accent), #3b6fd4);
+      color: white; font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 600;
+      border: none; border-radius: 12px; cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s, background 0.3s;
+      box-shadow: 0 8px 24px rgba(79,142,247,0.3); margin-top: 6px;
+    }
+    .btn-primary.admin-mode {
+      background: linear-gradient(135deg, var(--gold), #e0a520);
+      color: var(--navy); box-shadow: 0 8px 24px var(--gold-glow);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .alert {
+      padding: 12px 16px; border-radius: 10px; font-size: 13px;
+      margin-bottom: 18px; display: none; align-items: center; gap: 8px;
+    }
+    .alert.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; display: flex; }
+    .alert.success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #86efac; display: flex; }
+
+    .admin-badge { display: none; }
+
+    .demo-hint {
+      margin-top: 22px; padding: 13px 16px;
+      background: rgba(240,180,41,0.07); border: 1px solid rgba(240,180,41,0.15);
+      border-radius: 10px; font-size: 12px; color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .demo-hint strong { color: var(--gold); display: block; margin-bottom: 4px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+    .demo-row { display: flex; justify-content: space-between; margin-top: 3px; }
+    .demo-label { color: rgba(139,160,187,0.7); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    .btn-primary.admin-mode .spinner { border-color: rgba(15,28,46,0.3); border-top-color: var(--navy); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <div class="login-wrapper">
+    <div class="login-card" id="loginCard">
+      <div class="brand">
+        <div class="brand-icon" id="brandIcon">∞</div>
+        <div class="brand-name">My Ecstasy</div>
+        <div class="brand-sub" id="brandSub">HR Portal</div>
+      </div>
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to continue — you'll be directed to the right portal automatically.</p>
+
+      <div class="alert" id="alert"></div>
+
+      <div class="field">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+          <button class="toggle-pw" type="button" onclick="togglePw()" id="pwToggle">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="login()" id="loginBtn" type="button">Sign In</button>
+
+      <div class="demo-hint" id="demoHint">
+        <strong>Demo Credentials</strong>
+        <div class="demo-row">
+          <span>hr@ecstasysolutions.org / Admin@123</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const alertEl  = document.getElementById('alert');
+    const loginBtn = document.getElementById('loginBtn');
+
+    function showAlert(msg, type = 'error') {
+      alertEl.textContent  = msg;
+      alertEl.className    = `alert ${type}`;
+    }
+
+    function togglePw() {
+      const pwEl = document.getElementById('password');
+      pwEl.type  = pwEl.type === 'password' ? 'text' : 'password';
+      document.getElementById('pwToggle').textContent = pwEl.type === 'password' ? '👁' : '🙈';
+    }
+
+    async function login() {
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      if (!email || !password) return showAlert('Please enter your email and password.');
+
+      loginBtn.disabled = true;
+      const originalText = loginBtn.textContent;
+      loginBtn.innerHTML = '<span class="spinner"></span> Signing in...';
+
+      try {
+        const res  = await fetch('/api/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+          showAlert(data.error || 'Invalid email or password.');
+          loginBtn.disabled  = false;
+          loginBtn.innerHTML = originalText;
+          return;
+        }
+
+        const role = (data.user?.role || '').trim();
+
+        if (role === 'Admin') {
+          showAlert('Admin login successful! Redirecting to Admin Portal…', 'success');
+          setTimeout(() => { window.location.href = '/admin/dashboard.html'; }, 700);
+        } else {
+          showAlert('Login successful! Redirecting…', 'success');
+          setTimeout(() => { window.location.href = '/dashboard.html'; }, 700);
+        }
+      } catch (err) {
+        showAlert('Connection error. Please try again.');
+        loginBtn.disabled  = false;
+        loginBtn.innerHTML = originalText;
+      }
+    }
+
+    // Enter key support
+    ['email', 'password'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') login();
+      });
+    });
+
+    // If already logged in, redirect immediately
+    (async () => {
+      try {
+        const r = await fetch('/api/profile', { credentials: 'include' });
+        if (r.ok) {
+          const u = await r.json();
+          if (u.role === 'Admin') window.location.href = '/admin/dashboard.html';
+          else                    window.location.href = '/dashboard.html';
+        }
+      } catch (_) {}
+    })();
+  </script>
+</body>
+</html>

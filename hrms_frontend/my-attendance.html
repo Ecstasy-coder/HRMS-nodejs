@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/api-config.js"></script>
+<title>My Attendance — My Ecstasy</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+<link rel="stylesheet" href="common.css" />
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+:root {
+  --sidebar-w:    240px;
+  --navy:         #0f1c2e;
+  --navy-mid:     #162338;
+  --navy-light:   #1d2f48;
+  --accent:       #4f8ef7;
+  --accent-dark:  #2563eb;
+  --accent-glow:  rgba(79,142,247,0.18);
+  --gold:         #f0b429;
+  --text:         #e2eaf5;
+  --text-muted:   #7a95b4;
+  --surface:      #ffffff;
+  --surface-alt:  #f3f6fb;
+  --bg:           #eef2f9;
+  --border:       #e5eaf3;
+  --border-dark:  rgba(255,255,255,0.08);
+  --success:      #22c55e;
+  --error:        #ef4444;
+  --warning:      #f59e0b;
+  --shadow:       0 4px 24px rgba(15,28,46,0.08);
+  --shadow-lg:    0 8px 40px rgba(15,28,46,0.14);
+  --radius:       14px;
+  --radius-sm:    10px;
+  --radius-lg:    20px;
+  --green:        #22c55e;
+  --red:          #ef4444;
+  --orange:       #f59e0b;
+  --blue:         #4f8ef7;
+  --muted:        #7a95b4;
+}
+
+body { background: var(--bg); display:flex; overflow-x:hidden; }
+
+/* ── MAIN ─────────────────────────────────────── */
+.main { margin-left: var(--sidebar-w); width: calc(100% - var(--sidebar-w)); min-height:100vh; display:flex; flex-direction:column; }
+
+/* ── HEADER ───────────────────────────────────── */
+.header {
+  background: #fff; padding: 13px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom: 1px solid var(--border); position: sticky; top:0; z-index:50;
+}
+.topbar-title { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: var(--navy); }
+.header-right { display:flex; align-items:center; gap:18px; }
+.date-display { font-size: 13.5px; color: var(--muted); }
+.notif-btn {
+  position: relative; background: var(--surface-alt);
+  border: 1px solid var(--border); width: 38px; height: 38px;
+  border-radius: var(--radius-sm); display: flex;
+  align-items: center; justify-content: center;
+  cursor: pointer; font-size: 16px; transition: background 0.2s;
+}
+.notif-btn:hover { background: var(--border); }
+.notif-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--error); color: white;
+  font-size: 9px; font-weight: 700;
+  border-radius: 6px; padding: 1px 5px;
+}
+.avatar-top {
+  width: 38px; height: 38px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), #5b4de8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: white;
+  overflow: hidden; cursor: pointer; flex-shrink: 0;
+}
+.avatar-top img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── CONTENT ──────────────────────────────────── */
+.content { padding: 22px 28px; flex:1; }
+
+/* ── TOP BOX ──────────────────────────────────── */
+.top-box {
+  background: #fff; padding: 16px 22px; border-radius: 14px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+}
+.top-box h2 { font-size: 20px; color:black; font-weight: 700; }
+.selects { display:flex; gap:10px; }
+.selects select {
+  padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px;
+  outline: none; font-size: 13px; font-family:'Poppins',sans-serif;
+  color: black; cursor:pointer;
+}
+
+/* ── GRID ─────────────────────────────────────── */
+.att-grid {
+  display: grid; grid-template-columns: 260px 1fr;
+  gap: 16px; margin-bottom: 18px; align-items: stretch;
+}
+@media(max-width:1100px) { .att-grid { grid-template-columns: 1fr; } }
+
+/* ── STAT CARDS ───────────────────────────────── */
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.card {
+  background: #fff; border-radius: 14px; text-align:center;
+  padding: 18px 10px; min-height: 110px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.card h1 { font-size: 34px; margin-bottom: 4px; font-weight: 600; }
+.card p { font-size: 11px; color: var(--muted); font-weight: 600; }
+.big { grid-column: span 2; min-height: 95px; }
+.big h1 { font-size: 42px; color: var(--navy); }
+.big .big-sub { font-size: 11px; color: var(--muted); font-weight: 600; }
+.c-green  { color: var(--green);  }
+.c-red    { color: var(--red);    }
+.c-orange { color: var(--orange); }
+.c-blue   { color: var(--blue);   }
+
+/* ── CHART BOX ────────────────────────────────── */
+.chart-box {
+  background: #fff; border-radius: 16px; padding: 18px 20px;
+  overflow: hidden; display:flex; flex-direction:column;
+}
+.graph-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
+.graph-title { font-size:14px; font-weight:600; color:var(--navy); }
+.graph-legends { display:flex; gap:14px; }
+.legend { display:flex; align-items:center; gap:7px; font-size:12px; color:#6d7695; font-weight:500; }
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot.blue { background:#4d82f3; }
+.dot.ash  { background:#dce3fb; }
+
+/* Monthly chart */
+.chart {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:6px; height:200px; width:100%; overflow-x:auto; padding-bottom:4px;
+}
+.bar-wrap { flex:1; min-width:32px; text-align:center; position:relative; }
+.bar-bg {
+  width:16px; height:150px; background:#dce3fb; border-radius:30px;
+  margin:auto; position:relative; overflow:hidden;
+}
+.bar-fill {
+  width:100%; position:absolute; bottom:0;
+  background: linear-gradient(180deg,#4d82f3,#6fa3ff);
+  border-radius:30px; transition: height .5s cubic-bezier(.4,0,.2,1);
+}
+.month-label { margin-top:8px; font-size:9.5px; color:#67728f; font-weight:600; }
+.bar-wrap .tooltip-tip {
+  position:absolute; bottom:158px; left:50%; transform:translateX(-50%);
+  background:#1d2b4f; width:120px; padding:10px 12px; border-radius:12px;
+  opacity:0; visibility:hidden; transition:.22s ease; z-index:100;
+  box-shadow:0 4px 14px rgba(0,0,0,0.18); pointer-events:none;
+}
+.bar-wrap:hover .tooltip-tip { opacity:1; visibility:visible; }
+.tooltip-tip::after {
+  content:""; position:absolute; bottom:-8px; left:50%; transform:translateX(-50%);
+  border-width:8px 8px 0 8px; border-style:solid;
+  border-color:#1d2b4f transparent transparent transparent;
+}
+.tip-month { font-size:11px; font-weight:600; color:#fff; margin-bottom:8px; text-align:center; }
+.tip-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+.tip-left { display:flex; align-items:center; gap:6px; }
+.tip-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.blue-dot { background:#4d82f3; } .ash-dot { background:#dce3fb; }
+.red-dot  { background:#ef4444; } .org-dot  { background:#f59e0b; }
+.tip-label { font-size:10px; color:#afc3e8; }
+.tip-value { font-size:11px; font-weight:600; color:#fff; }
+
+/* ── CALENDAR ─────────────────────────────────── */
+.calendar {
+  background:#fff; border-radius:16px;
+  overflow:hidden; margin-bottom:20px;
+  box-shadow: var(--shadow);
+}
+.cal-header {
+  display:flex; align-items:center; justify-content:center;
+  padding:14px 20px; border-bottom:1px solid var(--bg);
+  background:var(--navy); color:#fff;
+}
+.cal-header h3 { font-size:15px; font-weight:600; letter-spacing:0.3px; }
+
+.days-head {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  border-bottom:1px solid var(--bg);
+}
+.days-head div {
+  padding:10px 4px; text-align:center;
+  font-size:11px; font-weight:700; color:var(--muted);
+  letter-spacing:0.5px;
+}
+.days-head div.wknd { color:#ef4444; opacity:0.7; }
+
+.days { display:grid; grid-template-columns:repeat(7,1fr); }
+.day {
+  min-height:84px; border-right:1px solid #f0f3fa;
+  border-bottom:1px solid #f0f3fa;
+  padding:7px 6px; background:#fff;
+  transition: background 0.15s;
+}
+.day:hover { background:#f8fbff; }
+.day.empty { background:#fafbfc; }
+.day.today-day { background:#eff6ff; position:relative; }
+.day.today-day::after {
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:3px; background:var(--accent); border-radius:0 0 3px 3px;
+}
+.day.weekend-day { background:#fdf8f8; }
+.day-number {
+  font-size:13px; font-weight:600; color:#2d3a52;
+  margin-bottom:5px; line-height:1;
+}
+.day.today-day .day-number { color:var(--accent-dark); }
+.day.weekend-day .day-number { color:#c0a0a0; }
+
+.status-badge {
+  display:inline-block; padding:2px 6px; border-radius:5px;
+  font-size:9px; font-weight:600; line-height:1.5;
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.s-present  { background:#e5f7ec; color:#0d7d4c; }
+.s-late     { background:#fff0de; color:#c27600; }
+.s-absent   { background:#ffe7e7; color:#d62222; }
+.s-halfday  { background:#eef0ff; color:#3730a3; }
+.s-weekend  { background:#f1f1f1; color:#8a8a8a; }
+.s-weekoff  { background:#fef9ee; color:#92400e; }
+.s-holiday  { background:#fdf2ff; color:#7c3aed; }
+.s-nodata   { background:#f5f5f5; color:#a0a0a0; }
+.time-info  { font-size:9px; color:var(--muted); margin-top:3px; line-height:1.4; }
+
+/* ── HOLIDAY CELL (🎉 badge + name) ──────────── */
+.holiday-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.holiday-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fde047;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.holiday-name-label {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  color: #6b21a8;
+  background: #fdf2ff;
+  border-radius: 4px;
+  padding: 1px 5px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+/* ── RECORDS TABLE ────────────────────────────── */
+.records { margin-bottom: 30px; }
+.records h3 { margin-bottom:14px; color:var(--navy); font-size:20px; font-weight:700; }
+.table-wrap { overflow-x:auto; background:#fff; border-radius:14px; box-shadow:var(--shadow); }
+table { width:100%; border-collapse:collapse; }
+th {
+  padding:13px 16px; font-size:11px; color:var(--muted); font-weight:700;
+  border-bottom:1px solid var(--border); text-align:center; letter-spacing:0.4px;
+  background:#fafbfd;
+}
+td { padding:13px 16px; text-align:center; font-size:13px; border-bottom:1px solid var(--bg); color:#2d3a52; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#f8fbff; }
+.empty-row td { color:var(--muted); font-style:italic; padding:30px; }
+.hours-pill {
+  display:inline-block; background:#f0f5ff; color:#3b5bdb;
+  padding:2px 8px; border-radius:20px; font-size:12px; font-weight:600;
+}
+
+/* ── SKELETON ─────────────────────────────────── */
+.skel {
+  background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+  background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px;
+}
+@keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+</style>
+</head>
+<body>
+<div id="sidebar"></div>
+
+<div class="main">
+  <div class="header">
+    <h1 class="topbar-title">My Attendance</h1>
+    <div class="header-right">
+      <div class="date-display" id="dateDisplay"></div>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notifCount">3</span>
+      </div>
+      <div class="avatar-top" id="topAv"></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="top-box">
+      <h2 id="monthTitle">Attendance</h2>
+      <div class="selects">
+        <select id="monthSel" onchange="loadAttendance()">
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+        <select id="yearSel" onchange="loadAttendance()"></select>
+      </div>
+    </div>
+
+    <!-- Summary cards + chart -->
+    <div class="att-grid">
+      <div class="cards" id="statCards">
+        <div class="card skel" style="min-height:110px;"></div>
+        <div class="card skel" style="min-height:110px;"></div>
+        <div class="card skel" style="min-height:110px;"></div>
+        <div class="card skel" style="min-height:110px;"></div>
+        <div class="card big skel" style="min-height:95px;grid-column:span 2;"></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="graph-top">
+          <div class="graph-title" id="chartTitle">Monthly Overview</div>
+          <div class="graph-legends">
+            <div class="legend"><div class="dot blue"></div> Present</div>
+            <div class="legend"><div class="dot ash"></div> Working Days</div>
+          </div>
+        </div>
+        <div class="chart" id="chart">
+          <div style="margin:auto;color:var(--muted);font-size:13px;">Loading chart…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar" id="calendarSection">
+      <div class="cal-header">
+        <h3 id="calMonthTitle">Calendar</h3>
+      </div>
+      <div class="days-head">
+        <div>MON</div><div>TUE</div><div>WED</div>
+        <div>THU</div><div>FRI</div>
+        <div class="wknd">SAT</div><div class="wknd">SUN</div>
+      </div>
+      <div class="days" id="calendarBody"></div>
+    </div>
+
+    <!-- Records table -->
+    <div class="records">
+      <h3>Detailed Records</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DATE</th><th>DAY</th>
+              <th>PUNCH IN</th><th>PUNCH OUT</th>
+              <th>WORKING HOURS</th><th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+            <tr class="empty-row"><td colspan="6">Loading records…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <div id="footer-container"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   CONSTANTS & CONFIG
+   ════════════════════════════════════════════════ */
+const MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+const MONTH_SHORT = ['JAN','FEB','MAR','APR','MAY','JUN',
+                     'JUL','AUG','SEP','OCT','NOV','DEC'];
+const DAY_SHORT   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ── Office hours config ──
+const OFFICE_START_H   = 10;
+const OFFICE_END_H     = 18;
+const OFFICE_END_M     = 30;
+const FULL_WORK_HOURS  = (OFFICE_END_H + OFFICE_END_M / 60) - OFFICE_START_H; // 8.5h
+const HALF_WORK_HOURS  = FULL_WORK_HOURS / 2;                                  // 4.25h
+
+let currentUser   = null;
+let attendanceMap = {};   // YYYY-MM-DD → record
+let holidayMap    = {};   // YYYY-MM-DD → { name, type }
+
+/* ════════════════════════════════════════════════
+   TIME HELPERS
+   ════════════════════════════════════════════════ */
+
+/** Convert any time value (Excel decimal, "HH:MM:SS", "HH:MM") → decimal hours */
+function toDecimalHours(val) {
+  if (val === null || val === undefined || val === '' || val === '—') return null;
+  const s = String(val).trim();
+  if (!s) return null;
+
+  // Excel decimal fraction 0–1
+  if (!s.includes(':') && !isNaN(s)) {
+    const n = parseFloat(s);
+    if (n >= 0 && n <= 1) return n * 24;
+    if (n > 1) return null;
+  }
+
+  // HH:MM or HH:MM:SS
+  if (s.includes(':')) {
+    const parts = s.split(':');
+    const h = parseInt(parts[0], 10);
+    const m = parseInt(parts[1] || '0', 10);
+    const sec = parseInt(parts[2] || '0', 10);
+    if (!isNaN(h)) return h + m / 60 + sec / 3600;
+  }
+  return null;
+}
+
+/** Format any time value as 12-hour "H:MM AM/PM" */
+function formatTime12(val) {
+  if (!val || String(val).trim() === '' || String(val).trim() === '—') return '—';
+  const dh = toDecimalHours(val);
+  if (dh === null) return String(val).trim();
+
+  const totalMin = Math.round(dh * 60);
+  const h   = Math.floor(totalMin / 60);
+  const min = totalMin % 60;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12  = h % 12 || 12;
+  return `${h12}:${String(min).padStart(2, '0')} ${ampm}`;
+}
+
+/** Calculate worked hours from punch-in and punch-out */
+function calcWorkingHours(inTime, outTime) {
+  const inH  = toDecimalHours(inTime);
+  const outH = toDecimalHours(outTime);
+  if (inH === null || outH === null) return 0;
+  const diff = outH - inH;
+  return diff > 0 ? parseFloat(diff.toFixed(4)) : 0;
+}
+
+/** Derive attendance status from worked hours */
+function calcStatus(workedHours) {
+  if (workedHours <= 0)                 return 'Absent';
+  if (workedHours < HALF_WORK_HOURS)    return 'Late';
+  if (workedHours < FULL_WORK_HOURS)    return 'Half Day';
+  return 'Present';
+}
+
+/** Format decimal hours as "Xh Ym" */
+function formatHours(h) {
+  if (!h || h <= 0) return '—';
+  const hrs  = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  if (mins === 0) return `${hrs}h`;
+  return `${hrs}h ${mins}m`;
+}
+
+/* ════════════════════════════════════════════════
+   MISC HELPERS
+   ════════════════════════════════════════════════ */
+function initials(name) {
+  if (!name) return '?';
+  const p = name.trim().split(' ');
+  return (p[0][0] + (p[1]?.[0] || '')).toUpperCase();
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+function selectedMonth() { return parseInt(document.getElementById('monthSel').value); }
+function selectedYear()  { return parseInt(document.getElementById('yearSel').value);  }
+
+/* ════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════ */
+(async () => {
+  // Sidebar
+  fetch('sidebar.html').then(r => r.text()).then(h => {
+    document.getElementById('sidebar').innerHTML = h;
+    document.querySelectorAll('#sidebar .nav-link, #sidebar .nav-item').forEach(a => {
+      const href = (a.getAttribute('href') || '').replace(/\.html$/, '').toLowerCase();
+      if (href.includes('my-attendance') || href.includes('myattendance')) a.classList.add('active');
+    });
+  }).catch(() => {});
+
+  // Footer
+  fetch('footer.html').then(r => r.text()).then(h => {
+    const fc = document.getElementById('footer-container');
+    if (fc) fc.innerHTML = h;
+  }).catch(() => {});
+
+  // Date display
+  const now = new Date();
+  document.getElementById('dateDisplay').textContent =
+    now.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  // Year dropdown
+  const yearSel = document.getElementById('yearSel');
+  for (let y = now.getFullYear() + 1; y >= now.getFullYear() - 2; y--) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    if (y === now.getFullYear()) opt.selected = true;
+    yearSel.appendChild(opt);
+  }
+  document.getElementById('monthSel').value = now.getMonth() + 1;
+
+  // Profile
+  try {
+    const r = await fetch('/api/profile', { credentials: 'include' });
+    if (!r.ok) { window.location.href = '/login.html'; return; }
+    currentUser = await r.json();
+  } catch(e) { window.location.href = '/login.html'; return; }
+
+  const topAv = document.getElementById('topAv');
+  topAv.textContent = initials(currentUser.fullName);
+  if (currentUser.avatar) topAv.innerHTML = `<img src="${currentUser.avatar}" alt="av">`;
+
+  await loadAttendance();
+})();
+
+/* ════════════════════════════════════════════════
+   LOAD ATTENDANCE
+   ════════════════════════════════════════════════ */
+async function loadAttendance() {
+  const m = selectedMonth();
+  const y = selectedYear();
+
+  document.getElementById('monthTitle').textContent    = `Attendance — ${MONTH_NAMES[m-1]} ${y}`;
+  document.getElementById('calMonthTitle').textContent = `${MONTH_NAMES[m-1]} ${y}`;
+
+  try {
+    const [monthRes, holidayRes] = await Promise.all([
+      fetch(`/api/attendance/my-records?month=${m}&year=${y}`, { credentials: 'include' }),
+      fetch(`/api/holidays?year=${y}`, { credentials: 'include' }).catch(() => null)
+    ]);
+
+    const monthData = await monthRes.json();
+    const records   = monthData.records  || [];
+
+    let allHolidays = monthData.holidays || [];
+    if (holidayRes && holidayRes.ok) {
+      try {
+        const hd = await holidayRes.json();
+        if (Array.isArray(hd))               allHolidays = hd;
+        else if (Array.isArray(hd.holidays)) allHolidays = hd.holidays;
+      } catch(_) {}
+    }
+
+    // Build maps
+    attendanceMap = {};
+    holidayMap    = {};
+    records.forEach(rec   => { attendanceMap[rec.date] = rec; });
+    allHolidays.forEach(h => { holidayMap[h.date]      = h;   });
+
+    renderStats(records, m, y);
+    renderCalendar(m, y);
+    renderTable(records);
+
+    loadYearChart(y, m);
+
+  } catch(e) {
+    console.error('Attendance load error:', e);
+    showError();
+  }
+}
+
+/* ════════════════════════════════════════════════
+   YEARLY CHART DATA
+   ════════════════════════════════════════════════ */
+async function loadYearChart(y, currentM) {
+  document.getElementById('chartTitle').textContent = `${y} — Monthly Performance`;
+
+  const promises = Array.from({ length: 12 }, (_, i) =>
+    fetch(`/api/attendance/my-records?month=${i+1}&year=${y}`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(d => ({ month: i + 1, records: d.records || [] }))
+      .catch(() => ({ month: i + 1, records: [] }))
+  );
+
+  const yearData = await Promise.all(promises);
+  renderChart(yearData, currentM, y);
+}
+
+/* ════════════════════════════════════════════════
+   RENDER STAT CARDS
+   ════════════════════════════════════════════════ */
+function renderStats(records, m, y) {
+  let present = 0, absent = 0, late = 0, halfDay = 0, totalHrs = 0;
+
+  records.forEach(r => {
+    const wh     = calcWorkingHours(r.inTime, r.outTime);
+    const status = calcStatus(wh);
+    if (status === 'Present')  present++;
+    if (status === 'Absent')   absent++;
+    if (status === 'Late')   { late++; }
+    if (status === 'Half Day') halfDay++;
+    totalHrs += wh;
+  });
+
+  document.getElementById('statCards').innerHTML = `
+    <div class="card">
+      <h1 class="c-green">${present}</h1>
+      <p>DAYS PRESENT</p>
+    </div>
+    <div class="card">
+      <h1 class="c-red">${absent}</h1>
+      <p>DAYS ABSENT</p>
+    </div>
+    <div class="card">
+      <h1 class="c-orange">${late}</h1>
+      <p>LATE ARRIVALS</p>
+    </div>
+    <div class="card">
+      <h1 class="c-blue">${halfDay}</h1>
+      <p>HALF DAYS</p>
+    </div>
+    <div class="card big">
+      <h1>${totalHrs > 0 ? formatHours(totalHrs) : '—'}</h1>
+      <div class="big-sub">${MONTH_SHORT[m-1]} ${y} · Total Hours Worked</div>
+    </div>
+  `;
+}
+
+/* ════════════════════════════════════════════════
+   RENDER CALENDAR
+   ════════════════════════════════════════════════ */
+function renderCalendar(m, y) {
+  const today    = new Date();
+  const todayStr = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+
+  const firstDay    = new Date(y, m - 1, 1);
+  const lastDay     = new Date(y, m, 0);
+  const daysInMonth = lastDay.getDate();
+
+  // Monday-first offset
+  let startOffset = firstDay.getDay() - 1;
+  if (startOffset < 0) startOffset = 6;
+
+  const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+
+  let html = '';
+  for (let i = 0; i < totalCells; i++) {
+    const dayNum = i - startOffset + 1;
+
+    if (dayNum < 1 || dayNum > daysInMonth) {
+      html += `<div class="day empty"></div>`;
+      continue;
+    }
+
+    const dateStr   = `${y}-${pad(m)}-${pad(dayNum)}`;
+    const jsDay     = new Date(y, m - 1, dayNum).getDay(); // 0=Sun, 6=Sat
+    const isToday   = dateStr === todayStr;
+    const isSat     = jsDay === 6;
+    const isSun     = jsDay === 0;
+    const isWeekend = isSat || isSun;
+
+    const holidayEntry = holidayMap[dateStr];
+    const isHoliday    = !!(holidayEntry && holidayEntry.type === 'Holiday');
+
+    const rec = attendanceMap[dateStr];
+    let badge    = '';
+    let timeHtml = '';
+
+    if (isWeekend && !rec) {
+      // ── Weekend / Week Off ──────────────────────
+      const wkLabel = isSat ? 'Saturday' : 'Sunday';
+      badge = `<span class="status-badge s-weekoff">${wkLabel}</span>`;
+
+    } else if (isHoliday && !rec) {
+      // ── PUBLIC HOLIDAY — show 🎉 Holiday pill + name ──
+      const hName   = holidayEntry.name || 'Holiday';
+      const display = hName.length > 14 ? hName.substring(0, 13) + '…' : hName;
+      badge = `
+        <div class="holiday-cell">
+          <span class="holiday-pill">🎉 Holiday</span>
+          <span class="holiday-name-label" title="${hName}">${display}</span>
+        </div>`;
+
+    } else if (holidayEntry && holidayEntry.type === 'Week Off' && !rec) {
+      // ── Week Off from holiday calendar ──────────
+      const label = holidayEntry.name || 'Week Off';
+      badge = `<span class="status-badge s-weekoff">${label}</span>`;
+
+    } else if (rec) {
+      // ── Attendance record exists ─────────────────
+      const wh     = calcWorkingHours(rec.inTime, rec.outTime);
+      const status = (wh > 0) ? calcStatus(wh) : (rec.status || 'Present');
+      const s      = status.toLowerCase();
+      const cls    = s === 'present'  ? 's-present' : s === 'late'     ? 's-late'
+                   : s === 'absent'   ? 's-absent'  : s === 'half day' ? 's-halfday'
+                   : 's-present';
+      badge = `<span class="status-badge ${cls}">${status}</span>`;
+
+      const inFmt  = formatTime12(rec.inTime);
+      const outFmt = formatTime12(rec.outTime);
+      if (inFmt !== '—' || outFmt !== '—') {
+        timeHtml = `<div class="time-info">${inFmt} – ${outFmt}</div>`;
+        if (wh > 0) timeHtml += `<div class="time-info" style="color:#4f8ef7">${formatHours(wh)}</div>`;
+      }
+
+    } else {
+      // ── No record — show No Data for past weekdays ──
+      const cellDate = new Date(y, m - 1, dayNum);
+      cellDate.setHours(23, 59, 59, 0);
+      if (!isWeekend && cellDate < today) {
+        badge = `<span class="status-badge s-nodata">No Data</span>`;
+      }
+    }
+
+    const wkClass = isWeekend ? ' weekend-day' : '';
+    html += `
+      <div class="day${isToday ? ' today-day' : ''}${wkClass}">
+        <div class="day-number">${dayNum}</div>
+        ${badge}
+        ${timeHtml}
+      </div>`;
+  }
+
+  document.getElementById('calendarBody').innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════
+   RENDER TABLE (Detailed Records)
+   ════════════════════════════════════════════════ */
+function renderTable(records) {
+  const tbody = document.getElementById('recordsBody');
+
+  if (!records.length) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">No attendance records found for this period.</td></tr>`;
+    return;
+  }
+
+  const sorted = [...records].sort((a, b) => b.date.localeCompare(a.date));
+
+  tbody.innerHTML = sorted.map(r => {
+    const d         = new Date(r.date + 'T00:00:00');
+    const dateLabel = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const dayLabel  = DAY_SHORT[d.getDay()];
+
+    const wh     = calcWorkingHours(r.inTime, r.outTime);
+    const status = (wh > 0 || (r.inTime && r.outTime)) ? calcStatus(wh) : (r.status || 'Present');
+    const s      = status.toLowerCase();
+    const cls    = s === 'present'  ? 's-present' : s === 'late'     ? 's-late'
+                 : s === 'absent'   ? 's-absent'  : s === 'half day' ? 's-halfday'
+                 : 's-present';
+
+    const inFmt  = formatTime12(r.inTime  || r.punchIn);
+    const outFmt = formatTime12(r.outTime || r.punchOut);
+
+    return `<tr>
+      <td>${dateLabel}</td>
+      <td>${dayLabel}</td>
+      <td>${inFmt}</td>
+      <td>${outFmt}</td>
+      <td>${wh > 0 ? `<span class="hours-pill">${formatHours(wh)}</span>` : '—'}</td>
+      <td><span class="status-badge ${cls}">${status}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   RENDER MONTHLY CHART
+   ════════════════════════════════════════════════ */
+function renderChart(yearData, currentM, y) {
+  const chartEl = document.getElementById('chart');
+
+  const monthStats = yearData.map(({ month, records }) => {
+    let present = 0, absent = 0, late = 0, halfDay = 0;
+    let workingDays = 0;
+
+    records.forEach(r => {
+      workingDays++;
+      const wh     = calcWorkingHours(r.inTime, r.outTime);
+      const status = calcStatus(wh);
+      if (status === 'Present')  present++;
+      if (status === 'Absent')   absent++;
+      if (status === 'Late')     late++;
+      if (status === 'Half Day') halfDay++;
+    });
+
+    return { month, label: MONTH_SHORT[month - 1], present, absent, late, halfDay, workingDays };
+  });
+
+  const maxDays = Math.max(...monthStats.map(s => s.workingDays), 1);
+
+  chartEl.innerHTML = monthStats.map(s => {
+    const fillH   = Math.round((s.present / maxDays) * 140);
+    const bgH     = Math.round((s.workingDays / maxDays) * 140);
+    const isActive = s.month === currentM;
+
+    return `
+      <div class="bar-wrap">
+        <div class="tooltip-tip">
+          <div class="tip-month">${s.label} ${y}</div>
+          <div class="tip-row">
+            <span class="tip-left"><span class="tip-dot blue-dot"></span><span class="tip-label">Present</span></span>
+            <span class="tip-value">${s.present}</span>
+          </div>
+          <div class="tip-row">
+            <span class="tip-left"><span class="tip-dot org-dot"></span><span class="tip-label">Late</span></span>
+            <span class="tip-value">${s.late}</span>
+          </div>
+          <div class="tip-row">
+            <span class="tip-left"><span class="tip-dot red-dot"></span><span class="tip-label">Absent</span></span>
+            <span class="tip-value">${s.absent}</span>
+          </div>
+          <div class="tip-row">
+            <span class="tip-left"><span class="tip-dot ash-dot"></span><span class="tip-label">Half Day</span></span>
+            <span class="tip-value">${s.halfDay}</span>
+          </div>
+        </div>
+        <div class="bar-bg" style="height:${bgH || 20}px; opacity:${s.workingDays === 0 ? 0.3 : 1};">
+          <div class="bar-fill" style="height:${fillH}px; ${isActive ? 'background:linear-gradient(180deg,#2563eb,#4d82f3);' : ''}"></div>
+        </div>
+        <div class="month-label" style="${isActive ? 'color:#2563eb;font-weight:700;' : ''}">${s.label}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ════════════════════════════════════════════════
+   ERROR STATE
+   ════════════════════════════════════════════════ */
+function showError() {
+  document.getElementById('statCards').innerHTML = `
+    <div class="card" style="grid-column:span 2;">
+      <p style="color:var(--error);font-size:13px;">Failed to load attendance data.</p>
+    </div>`;
+  document.getElementById('recordsBody').innerHTML =
+    `<tr class="empty-row"><td colspan="6">Failed to load records. Please refresh.</td></tr>`;
+}
+
+/* ── logout ─────────────────────────────────────── */
+async function logout() {
+  await fetch('/api/logout', { method: 'POST' });
+  window.location.href = '/';
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

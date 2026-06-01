@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Attendance Management · My Ecstasy HR Portal</title>
+  <script src="/api-config.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Shared design system -->
+  <link rel="stylesheet" href="common.css">
+
+  <style>
+
+    /* ══════════════════════════════════════════════════════════
+       SELF-CONTAINED LAYOUT (mirrors common.css exactly)
+    ══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+      scrollbar-width: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    :root {
+      --sidebar-w: 240px;
+      --topbar-h: 64px;
+      --accent: #4f8ef7;
+      --accent-dark: #5b4de8;
+      --accent-glow: rgba(79,142,247,0.12);
+      --navy: #0f1c2e;
+      --radius: 16px;
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Topbar ─────────────────────────────────────────────── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      height: var(--topbar-h);
+      background: #ffffff;
+      border-bottom: 1px solid #e8eef4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 100;
+      box-shadow: 0 1px 6px rgba(15,23,42,0.06);
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topbar-date {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .notif-btn {
+      position: relative;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-top {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Content area ───────────────────────────────────────── */
+    .content {
+      margin-top: var(--topbar-h);
+      padding: 28px 30px 40px;
+      flex: 1;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       STAT CARDS ROW
+    ══════════════════════════════════════════════════════════ */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      border: 1px solid #eef2f6;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.05);
+      animation: fade-up 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .stat-card:nth-child(2) { animation-delay: 0.05s; }
+    .stat-card:nth-child(3) { animation-delay: 0.10s; }
+    .stat-card:nth-child(4) { animation-delay: 0.15s; }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.green  { background: #e8faf3; color: #10b981; }
+    .stat-icon.red    { background: #fef2f2; color: #ef4444; }
+    .stat-icon.orange { background: #fff7ed; color: #f97316; }
+    .stat-icon.blue   { background: #eff6ff; color: #4f8ef7; }
+
+    .stat-body {}
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .stat-row-val {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .stat-val {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-val.green  { color: #10b981; }
+    .stat-val.red    { color: #ef4444; }
+    .stat-val.orange { color: #f97316; }
+    .stat-val.blue   { color: #0f172a; }
+
+    .stat-sub {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       UPLOAD BANNER
+    ══════════════════════════════════════════════════════════ */
+    .upload-banner {
+      background: #ffffff;
+      border: 1px solid #eef2f6;
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.05);
+      animation: fade-up 0.4s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .upload-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .upload-banner-left i {
+      font-size: 22px;
+      color: var(--accent);
+    }
+
+    .upload-banner-left strong {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .upload-banner-left span {
+      font-size: 12px;
+      color: #94a3b8;
+      display: block;
+    }
+
+    .btn-upload {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 12px rgba(79,142,247,0.25);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-upload:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,142,247,0.35); }
+
+    /* Hidden file input */
+    #fileInput { display: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       TABS
+    ══════════════════════════════════════════════════════════ */
+    .tabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 2px solid #e8eef4;
+      margin-bottom: 22px;
+      animation: fade-up 0.4s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .tab-btn {
+      padding: 12px 22px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #94a3b8;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+      transition: color 0.18s, border-color 0.18s;
+    }
+
+    .tab-btn:hover { color: #475569; }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       TAB PANELS
+    ══════════════════════════════════════════════════════════ */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fade-up 0.3s cubic-bezier(0.16,1,0.3,1) both; }
+
+    /* ── Date picker row ─────────────────────────────────────── */
+    .date-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .date-filter-row label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .date-input {
+      padding: 9px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      color: #0f172a;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .date-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .record-count {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-left: 4px;
+    }
+
+    /* ── Month/Year selects ──────────────────────────────────── */
+    .month-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .select-input {
+      padding: 9px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      color: #0f172a;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .select-input:focus { outline: none; border-color: var(--accent); }
+
+    /* ══════════════════════════════════════════════════════════
+       TABLE
+    ══════════════════════════════════════════════════════════ */
+    .table-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      border: 1px solid #eef2f6;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.05);
+      overflow: hidden;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    thead tr {
+      background: #f8fafc;
+      border-bottom: 1px solid #eef2f6;
+    }
+
+    thead th {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #f1f5f9;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+
+    tbody td {
+      padding: 13px 16px;
+      color: #334155;
+      vertical-align: middle;
+    }
+
+    .emp-name {
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .emp-code {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* Status badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-present { background: #e8faf3; color: #10b981; }
+    .badge-absent  { background: #fef2f2; color: #ef4444; }
+    .badge-late    { background: #fff7ed; color: #f97316; }
+    .badge-half    { background: #fefce8; color: #ca8a04; }
+
+    /* ── Empty state ─────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+    }
+
+    .empty-icon {
+      width: 64px;
+      height: 64px;
+      background: #f1f5f9;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #94a3b8;
+      margin: 0 auto 18px;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(79,142,247,0.25);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,142,247,0.35); }
+
+    /* ── Summary table for monthly view ─────────────────────── */
+    .summary-legend {
+      display: flex;
+      gap: 20px;
+      padding: 14px 18px;
+      border-top: 1px solid #f1f5f9;
+      background: #fafcff;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Upload history items */
+    .history-list { padding: 0; }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      transition: background 0.15s;
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-item:hover { background: #f8fafc; }
+
+    .history-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .history-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .history-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .history-meta {
+      font-size: 11.5px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .history-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #e8faf3;
+      color: #10b981;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       MODAL (upload)
+    ══════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: 32px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 24px 64px rgba(15,23,42,0.18);
+      transform: translateY(16px) scale(0.98);
+      transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-header h3 i { color: var(--accent); }
+
+    .btn-close-modal {
+      background: #f1f5f9;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .btn-close-modal:hover { background: #e2e8f0; }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed #bfdbfe;
+      border-radius: 16px;
+      background: #eff6ff;
+      padding: 36px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: #dbeafe;
+    }
+
+    .drop-zone i {
+      font-size: 36px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .drop-zone p {
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .drop-zone small {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .selected-file {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .selected-file.show { display: flex; }
+    .selected-file i { color: #10b981; font-size: 18px; }
+    .selected-file span { font-size: 13px; font-weight: 600; color: #065f46; }
+
+    .form-group-modal { margin-bottom: 16px; }
+    .form-label-modal {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #475569;
+      margin-bottom: 7px;
+    }
+
+    .form-input-modal {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-family: 'Sora', sans-serif;
+      color: #0f172a;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .form-input-modal:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .btn-submit-upload {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(79,142,247,0.3);
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+    .btn-submit-upload:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(79,142,247,0.38); }
+    .btn-submit-upload:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ══════════════════════════════════════════════════════════
+       FLASH MESSAGE
+    ══════════════════════════════════════════════════════════ */
+    .flash-message {
+      padding: 13px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fade-up 0.25s ease;
+    }
+    .flash-success { background: #e0f2e9; color: #0b5e42; border-left: 4px solid #10b981; }
+    .flash-error   { background: #fee9e6; color: #b91c1c; border-left: 4px solid #ef4444; }
+
+    /* Loading spinner */
+    .loading-overlay {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ══════════════════════════════════════════════════════════
+       ANIMATION
+    ══════════════════════════════════════════════════════════ */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 0px; }
+      .topbar { left: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .content { padding: 20px 16px 32px; }
+      .upload-banner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    }
+
+    @media (max-width: 400px) {
+      .stat-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── Export CSV button ─────────────────────────────────── */
+    .btn-export {
+      padding: 9px 18px;
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 30px;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #16a34a;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-export:hover { background: #dcfce7; transform: translateY(-1px); }
+
+    /* ── Footer spacing ─────────────────────────────────────── */
+    .content { padding-bottom: 0; }
+  </style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar-container"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <header class="topbar">
+    <h1 class="topbar-title">Attendance Management</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="currentDate"></span>
+      <div class="notif-btn" title="Notifications">
+        🔔
+        <span class="notif-badge" id="notifCount">4</span>
+      </div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Flash container -->
+    <div id="flashContainer"></div>
+
+    <!-- ── Stat Cards ──────────────────────────────────────── -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="ti ti-user-check"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Present Today</div>
+          <div class="stat-row-val">
+            <span class="stat-val green" id="statPresent">0</span>
+            <span class="stat-sub" id="statPresentSub">of 0 employees</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon red"><i class="ti ti-user-x"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Absent Today</div>
+          <div class="stat-row-val">
+            <span class="stat-val red" id="statAbsent">0</span>
+            <span class="stat-sub" id="statAbsentDate"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon orange"><i class="ti ti-clock"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Late Today</div>
+          <div class="stat-row-val">
+            <span class="stat-val orange" id="statLate">0</span>
+            <span class="stat-sub">After 10:00 AM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="ti ti-users"></i></div>
+        <div class="stat-body">
+          <div class="stat-label">Total Employees</div>
+          <div class="stat-row-val">
+            <span class="stat-val blue" id="statTotal">0</span>
+            <span class="stat-sub">Active accounts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Upload Biometric Banner ─────────────────────────── -->
+    <div class="upload-banner">
+      <div class="upload-banner-left">
+        <i class="ti ti-file-upload"></i>
+        <div>
+          <strong>Upload Biometric Attendance File</strong>
+          <span>Any file format accepted (.xlsx, .xls, .csv, etc.) · Max 20 MB</span>
+        </div>
+      </div>
+      <button class="btn-upload" id="openUploadModal">
+        <i class="ti ti-plus"></i> Upload File
+      </button>
+    </div>
+
+    <!-- ── Tabs ───────────────────────────────────────────── -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" data-tab="daily">Daily View</button>
+      <button class="tab-btn" data-tab="monthly">Monthly Summary</button>
+      <button class="tab-btn" data-tab="history">Upload History</button>
+    </div>
+
+    <!-- ── DAILY VIEW ─────────────────────────────────────── -->
+    <div class="tab-panel active" id="tab-daily">
+
+      <div class="date-filter-row">
+        <label for="dailyDate">View Date:</label>
+        <input type="date" id="dailyDate" class="date-input">
+        <span class="record-count" id="dailyCount">0 records</span>
+        <button class="btn-export" id="exportDailyCSV" title="Export as CSV">
+          <i class="ti ti-download"></i> Export CSV
+        </button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table id="dailyTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>In Time</th>
+                <th>Out Time</th>
+                <th>Duration</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="dailyTbody">
+              <!-- filled by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="dailyEmpty">
+          <div class="empty-icon"><i class="ti ti-calendar-off"></i></div>
+          <h3 id="dailyEmptyTitle">No attendance data for today</h3>
+          <p>Upload the biometric file for this date using the form above.</p>
+          <button class="btn-primary" id="emptyUploadBtn">
+            <i class="ti ti-upload"></i> Upload Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MONTHLY SUMMARY ────────────────────────────────── -->
+    <div class="tab-panel" id="tab-monthly">
+
+      <div class="month-filter-row">
+        <label style="font-size:13px;font-weight:600;color:#475569;">Month:</label>
+        <select id="monthSelect" class="select-input" style="margin-right:0;">
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5" selected>May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+        <select id="yearSelect" class="select-input">
+          <option>2026</option><option>2025</option><option>2024</option>
+        </select>
+        <button class="btn-primary" id="loadMonthlyBtn" style="padding:9px 20px;font-size:13px;">
+          <i class="ti ti-refresh"></i> Load
+        </button>
+        <button class="btn-export" id="exportMonthlyCSV" title="Export as CSV" style="margin-left:auto;">
+          <i class="ti ti-download"></i> Export CSV
+        </button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table id="monthlyTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Late</th>
+                <th>Half Day</th>
+                <th>Working Days</th>
+                <th>Attendance %</th>
+              </tr>
+            </thead>
+            <tbody id="monthlyTbody">
+              <!-- filled by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="monthlyEmpty">
+          <div class="empty-icon"><i class="ti ti-calendar-stats"></i></div>
+          <h3>No monthly data found</h3>
+          <p>Select a month and year, then click Load to fetch the summary.</p>
+        </div>
+        <div class="summary-legend" id="monthlyLegend" style="display:none;">
+          <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>Present</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span>Absent</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#f97316;"></span>Late</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ca8a04;"></span>Half Day</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── UPLOAD HISTORY ─────────────────────────────────── -->
+    <div class="tab-panel" id="tab-history">
+      <div class="table-card">
+        <div class="history-list" id="historyList">
+          <!-- filled by JS -->
+        </div>
+        <div class="empty-state" id="historyEmpty">
+          <div class="empty-icon"><i class="ti ti-history"></i></div>
+          <h3>No uploads yet</h3>
+          <p>Uploaded biometric files will appear here.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+</main>
+
+<!-- ══════════════════════════════════════════════════════════
+     UPLOAD MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="ti ti-file-upload"></i> Upload Biometric File</h3>
+      <button class="btn-close-modal" id="closeModal"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <i class="ti ti-cloud-upload"></i>
+      <p>Drag & drop your file here, or <strong>click to browse</strong></p>
+      <small>Any file type accepted (.xlsx, .xls, .csv, etc.) · Max 20 MB</small>
+    </div>
+
+    <div class="selected-file" id="selectedFileInfo">
+      <i class="ti ti-file-check"></i>
+      <span id="selectedFileName">No file selected</span>
+    </div>
+
+    <input type="file" id="fileInput">
+
+    <div class="form-group-modal">
+      <label class="form-label-modal">Date of Attendance</label>
+      <input type="date" id="uploadDate" class="form-input-modal">
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:4px;">
+      <button class="btn-submit-upload" id="submitUpload" style="flex:1;">
+        <i class="ti ti-upload"></i> Upload & Process
+      </button>
+      <button type="button" id="cancelUpload" style="
+        padding:13px 22px; background:#f1f5f9; border:none; border-radius:30px;
+        font-family:'Sora',sans-serif; font-size:14px; font-weight:600;
+        color:#64748b; cursor:pointer; transition:background 0.2s; white-space:nowrap;
+      ">
+        <i class="ti ti-x"></i> Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════════ -->
+<script>
+  // ── Sidebar ────────────────────────────────────────────────
+  fetch('sidebar.html')
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById('sidebar-container').innerHTML = html;
+      document.querySelectorAll('.nav-item').forEach(el => {
+        if (el.getAttribute('href') === 'attendance.html') el.classList.add('active');
+      });
+    })
+    .catch(() => {});
+
+  // ── Footer ─────────────────────────────────────────────────
+  fetch('footer.html')
+    .then(r => r.text())
+    .then(html => { document.getElementById('footer-container').innerHTML = html; })
+    .catch(() => {});
+
+  // ── Date ───────────────────────────────────────────────────
+  const today = new Date();
+  const fmt = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('currentDate').textContent =
+    today.toLocaleDateString('en-IN', fmt);
+
+  // Set default dates
+  const todayStr = today.toISOString().split('T')[0];
+  document.getElementById('dailyDate').value = todayStr;
+  document.getElementById('uploadDate').value = todayStr;
+</script>
+
+<script src="attendance.js"></script>
+<script src="topbar-utils.js"></script>
+
+</body>
+</html>

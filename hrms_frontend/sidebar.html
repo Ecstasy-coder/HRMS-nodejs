@@ -1,0 +1,303 @@
+<!-- ═══════════════════════════════════════════════════════════
+     sidebar.html  —  My Ecstasy HR Portal
+     Drop this file next to each page. All sidebar styles live
+     here so no page needs to repeat them.
+════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── SIDEBAR COMPONENT ───────────────────────────────────────── */
+ @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css');  
+
+.sidebar {
+  width: var(--sidebar-w, 240px);
+  background: var(--navy, #0f1c2e);
+  min-height: 100vh;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+}
+
+/* ── Scrollable nav area ─────────────────────────────────────── */
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 3px; }
+.sidebar-scroll::-webkit-scrollbar-track  { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.12); border-radius: 4px; }
+
+/* ── Brand ───────────────────────────────────────────────────── */
+.sidebar-brand {
+  padding: 28px 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+
+.brand-logo img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+@keyframes logo-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(79,142,247,0.4); }
+  50%     { box-shadow: 0 0 0 7px rgba(79,142,247,0); }
+}
+
+.brand-text { line-height: 1.25; }
+.brand-text strong { display: block; font-size: 14px; font-weight: 700; color: #e2eaf5; letter-spacing: -0.2px; }
+.brand-text span   { font-size: 10px; color: #7a95b4; text-transform: uppercase; letter-spacing: 1.5px; }
+
+/* ── Nav section ─────────────────────────────────────────────── */
+.nav-section { padding: 20px 12px 8px; }
+
+.nav-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(122,149,180,0.55);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.nav-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 8px 0; }
+
+/* ── Nav item ────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #7a95b4;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s, padding-left 0.2s;
+  position: relative;
+  margin-bottom: 1px;
+  animation: nav-item-in 0.35s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes nav-item-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+/* Stagger animation delays */
+.nav-item:nth-child(1)  { animation-delay: 0.04s; }
+.nav-item:nth-child(2)  { animation-delay: 0.07s; }
+.nav-item:nth-child(3)  { animation-delay: 0.10s; }
+.nav-item:nth-child(4)  { animation-delay: 0.13s; }
+.nav-item:nth-child(5)  { animation-delay: 0.16s; }
+.nav-item:nth-child(6)  { animation-delay: 0.19s; }
+.nav-item:nth-child(7)  { animation-delay: 0.22s; }
+.nav-item:nth-child(8)  { animation-delay: 0.25s; }
+.nav-item:nth-child(9)  { animation-delay: 0.28s; }
+.nav-item:nth-child(10) { animation-delay: 0.31s; }
+.nav-item:nth-child(11) { animation-delay: 0.34s; }
+.nav-item:nth-child(12) { animation-delay: 0.37s; }
+.nav-item:nth-child(13) { animation-delay: 0.40s; }
+.nav-item:nth-child(14) { animation-delay: 0.43s; }
+.nav-item:nth-child(15) { animation-delay: 0.46s; }
+.nav-item:nth-child(16) { animation-delay: 0.49s; }
+.nav-item:nth-child(17) { animation-delay: 0.52s; }
+.nav-item:nth-child(18) { animation-delay: 0.55s; }
+
+.nav-item i {
+  font-size: 15px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: transform 0.2s;
+}
+.nav-item:hover {
+  background: rgba(79,142,247,0.10);
+  color: #93c5fd;
+  padding-left: 16px;
+}
+.nav-item:hover i { opacity: 1; transform: scale(1.1); color: #60a5fa; }
+
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(139,92,246,0.32), rgba(79,142,247,0.14));
+  color: #e9d5ff;
+  padding-left: 16px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(139,92,246,0.25);
+}
+.nav-item.active i { opacity: 1; color: #c4b5fd; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 15%; bottom: 15%;
+  width: 3px;
+  background: linear-gradient(180deg, #a78bfa, #60a5fa);
+  border-radius: 0 3px 3px 0;
+  animation: bar-in 0.25s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes bar-in {
+  from { opacity: 0; transform: scaleY(0); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: rgba(239,68,68,0.18);
+  color: #fc8181;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  margin-bottom: 8px;
+}
+
+.avatar-sm {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4f8ef7, #5b4de8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.avatar-sm img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+
+.user-info { overflow: hidden; flex: 1; min-width: 0; }
+.user-info strong { display: block; font-size: 12px; color: #e2eaf5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-info span   { font-size: 11px; color: #7a95b4; }
+
+.online-dot {
+  width: 7px; height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.btn-signout {
+  width: 100%;
+  padding: 9px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 8px;
+  color: #fc8181;
+  font-family: 'Sora', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-signout:hover { background: rgba(239,68,68,0.18); transform: translateY(-1px); }
+
+/* ── Mobile: hide sidebar ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+}
+</style>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo"><img src="assets/images/logo.png.webp" alt="My Ecstasy Logo"></div>
+    <div class="brand-text">
+      <strong>My Ecstasy</strong>
+      <span>HR Portal</span>
+    </div>
+  </div>
+
+  <div class="sidebar-scroll">
+    <div class="nav-section">
+      <a class="nav-item" href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+      <a class="nav-item" href="my-attendance.html"><i class="ti ti-calendar-stats"></i> My Attendance</a>
+      <a class="nav-item" href="attendance.html"><i class="ti ti-calendar-check"></i> Attendance</a>
+      <a class="nav-item" href="my-leaves.html"><i class="ti ti-leaf"></i> My Leaves</a>
+      <a class="nav-item" href="leave-management.html"><i class="ti ti-folders"></i> Leave Management</a>
+      <a class="nav-item" href="review-rm-cards.html"><i class="ti ti-eye"></i> Review RM Cards</a>
+      <a class="nav-item" href="my-job-cards.html"><i class="ti ti-briefcase"></i> My Job Cards</a>
+      <a class="nav-item" href="help-desk.html"><i class="ti ti-message-circle"></i> Help Desk</a>
+      <a class="nav-item" href="holiday-calendar.html"><i class="ti ti-calendar-event"></i> Holiday Calendar</a>
+      <a class="nav-item" href="birthdays.html"><i class="ti ti-cake"></i> Birthdays</a>
+      <a class="nav-item" href="important-events.html"><i class="ti ti-star"></i> Important Events</a>
+      <a class="nav-item" href="my-payslips.html"><i class="ti ti-receipt"></i> My Payslips</a>
+      <a class="nav-item" href="analysis.html"><i class="ti ti-chart-bar"></i> Analysis</a>
+      <a class="nav-item" href="about-us.html"><i class="ti ti-info-circle"></i> About Us</a>
+      <a class="nav-item" href="/users"><i class="ti ti-users"></i> Manage Users</a>
+      <a class="nav-item" href="/profile"><i class="ti ti-user-circle"></i> My Profile</a>
+      <a class="nav-item" href="settings.html"><i class="ti ti-settings"></i> Settings</a>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="avatar-sm" id="sidebarAvatar">MV</div>
+      <div class="user-info">
+        <strong id="sidebarName">Loading&hellip;</strong>
+        <span id="sidebarRole">HR Admin &middot; HR</span>
+      </div>
+      <span class="online-dot"></span>
+    </div>
+    <button class="btn-signout" onclick="logout()">
+      <i class="ti ti-logout"></i> Sign Out
+    </button>
+  </div>
+</nav>
+
+<script>
+// NOTE: This script runs via topbar-utils.js MutationObserver.
+// The logout function must remain here and be globally accessible.
+
+async function logout() {
+  try {
+    await fetch("/api/logout", { method: "POST", credentials: "include" });
+  } catch(_) {}
+  window.location.href = "/";
+}
+
+// Expose globally so topbar-utils can also call it
+window.logout = logout;
+</script>

@@ -1,0 +1,1017 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/api-config.js"></script>
+<title>Manage Gallery — My Ecstasy</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="common.css">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; }
+
+/* ── Hero banner ──────────────────────────────────────────── */
+.gallery-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #17365d 100%);
+  border-radius: 22px;
+  padding: 36px 40px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.gallery-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(#ffffff 1px, transparent 1px),
+    radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 120px 120px, 180px 180px;
+  background-position: 20px 30px, 80px 90px;
+  opacity: .12;
+}
+.hero-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,.7);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+  transition: color .2s;
+}
+.hero-back:hover { color: #fff; }
+.hero-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 8px;
+}
+.hero-sub {
+  color: rgba(255,255,255,.65);
+  font-size: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Add Festival form ────────────────────────────────────── */
+.form-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(15,23,42,.06);
+  border: 1px solid #eef3fa;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.form-row-colors {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.form-group { display: flex; flex-direction: column; }
+.form-group label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.required { color: #ef4444; }
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"] {
+  border: 1.5px solid #dbe2ef;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  color: #0f172a;
+  transition: border-color .2s, box-shadow .2s;
+}
+.form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+.color-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1.5px solid #dbe2ef;
+  border-radius: 10px;
+  padding: 8px 14px;
+}
+.color-wrap input[type="color"] {
+  width: 40px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+.emoji-input {
+  font-size: 24px;
+  border: 1.5px solid #dbe2ef;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: inherit;
+  width: 100%;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+}
+.emoji-input:focus { border-color: #2563eb; }
+.add-festival-btn {
+  background: linear-gradient(135deg, #17365d, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 13px 28px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s, transform .18s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.add-festival-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+/* ── Festival list item ───────────────────────────────────── */
+.festival-item {
+  background: #fff;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(15,23,42,.06);
+  border: 1px solid #eef3fa;
+  overflow: hidden;
+}
+.festival-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.festival-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+.festival-emoji {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.festival-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.festival-meta {
+  color: #94a3b8;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.festival-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.badge-active {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #dcfce7;
+  color: #16a34a;
+  border: 1.5px solid #bbf7d0;
+}
+.badge-hidden {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1.5px solid #e2e8f0;
+}
+.btn-sm {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1.5px solid #dbe2ef;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .18s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-sm:hover { background: #f8fafc; }
+.btn-hide { color: #64748b; }
+.btn-edit { color: #334155; }
+.btn-del  { color: #dc2626; border-color: #fee2e2; }
+.btn-del:hover { background: #fee2e2; }
+
+/* ── Upload section ───────────────────────────────────────── */
+.upload-section {
+  border-top: 1px solid #eef3fa;
+  padding: 16px 24px;
+  background: #fafbfc;
+}
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.upload-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+}
+.file-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.file-input-wrap input[type="file"] {
+  font-family: inherit;
+  font-size: 13px;
+  color: #334155;
+}
+.upload-btn {
+  background: linear-gradient(135deg, #17365d, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.upload-btn:hover { opacity: .88; }
+
+/* ── Photo grid ───────────────────────────────────────────── */
+.photo-section-wrap {
+  padding: 0;
+}
+.photo-count-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 12px;
+  border-bottom: 1px solid #eef3fa;
+  margin-bottom: 16px;
+}
+.photo-count-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+.photo-count-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.photo-item {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: #f1f5f9;
+  box-shadow: 0 2px 10px rgba(15,23,42,.08);
+  transition: transform .22s, box-shadow .22s;
+  cursor: pointer;
+}
+.photo-item:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(15,23,42,.14);
+}
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Prevent alt text layout shift */
+  font-size: 0;
+  color: transparent;
+}
+.photo-item img::after {
+  /* Hide broken-image alt text completely */
+  content: '';
+  display: none;
+}
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.55), transparent 50%);
+  opacity: 0;
+  transition: opacity .22s;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+}
+.photo-item:hover .photo-overlay { opacity: 1; }
+.photo-del-btn {
+  background: rgba(220,38,38,.9);
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background .18s;
+  font-family: inherit;
+}
+.photo-del-btn:hover { background: #dc2626; }
+.no-photos {
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+  padding: 28px 20px;
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 14px;
+  border: 2px dashed #e2e8f0;
+}
+
+/* ── Edit Modal ───────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 22px;
+  padding: 32px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: modalIn .2s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes modalIn { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 22px;
+}
+.modal-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.modal-btn-row { display: flex; gap: 12px; margin-top: 24px; }
+.save-btn {
+  background: linear-gradient(135deg, #17365d, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+.save-btn:hover { opacity: .88; }
+.cancel-btn {
+  background: #fff;
+  border: 1.5px solid #dbe2ef;
+  color: #334155;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cancel-btn:hover { background: #f8fafc; }
+
+/* ── Toast ────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(0,0,0,.15);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.toast.show    { transform: translateY(0); opacity: 1; }
+.toast.success { background: #16a34a; }
+.toast.error   { background: #dc2626; }
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+  background: #fff;
+  border: 2px dashed #dbe4f0;
+  border-radius: 20px;
+  padding: 64px 20px;
+  text-align: center;
+}
+.empty-state i  { font-size: 52px; color: #94a3b8; margin-bottom: 16px; display: block; }
+.empty-state h2 { font-size: 20px; font-weight: 700; color: #1e2a47; margin-bottom: 8px; }
+.empty-state p  { color: #64748b; font-size: 14px; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+  background: #041c3b;
+  color: rgba(255,255,255,.85);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  font-size: 13.5px;
+}
+.footer-links { display: flex; gap: 30px; }
+.footer-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: 13.5px; }
+.footer-links a:hover { color: #fff; }
+
+@media (max-width: 768px) {
+  .form-row, .form-row-colors, .modal-form-row { grid-template-columns: 1fr; }
+  .festival-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+
+<div class="main">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <h1 class="topbar-title">Manage Gallery</h1>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbarDate"></span>
+      <div class="notif-btn" title="Notifications">🔔<span class="notif-badge" id="notifCount">0</span></div>
+      <div class="avatar-top" id="topbarAvatar">MV</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Hero Banner -->
+    <div class="gallery-hero">
+      <a href="dashboard.html" class="hero-back">
+        ‹ Back to Dashboard
+      </a>
+      <div class="hero-title">📷 Manage Gallery</div>
+      <div class="hero-sub">Add festivals, upload photos, and manage the company gallery for all employees.</div>
+    </div>
+
+    <!-- Add Festival Form -->
+    <div class="form-card">
+      <div class="section-title">
+        <span style="color:#2563eb;font-size:20px;">+</span>
+        Add New Festival / Event
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>FESTIVAL NAME <span class="required">*</span></label>
+          <input type="text" id="festName" placeholder="e.g. Christmas Celebration" />
+        </div>
+        <div class="form-group">
+          <label>EVENT DATE</label>
+          <input type="text" id="festDate" placeholder="e.g. December 25, 2025" />
+        </div>
+        <div class="form-group">
+          <label>EMOJI ICON</label>
+          <input type="text" id="festEmoji" class="emoji-input" value="📷" maxlength="4" />
+        </div>
+      </div>
+
+      <div class="form-row-colors">
+        <div class="form-group">
+          <label>PRIMARY COLOR</label>
+          <div class="color-wrap">
+            <input type="color" id="festPrimary" value="#2563eb" />
+            <span id="festPrimaryHex" style="font-size:13px;color:#334155;">#2563eb</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>SECONDARY COLOR</label>
+          <div class="color-wrap">
+            <input type="color" id="festSecondary" value="#7c3aed" />
+            <span id="festSecondaryHex" style="font-size:13px;color:#334155;">#7c3aed</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>BACKGROUND LIGHT</label>
+          <div class="color-wrap">
+            <input type="color" id="festBgLight" value="#f8fafc" />
+            <span id="festBgLightHex" style="font-size:13px;color:#334155;">#f8fafc</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="add-festival-btn" id="addFestBtn">
+        + Add Festival
+      </button>
+    </div>
+
+    <!-- Festival List -->
+    <div id="festivalList">
+      <div class="empty-state" id="emptyState">
+        <i class="far fa-images"></i>
+        <h2>No festivals yet</h2>
+        <p>Add your first festival above to start building the company gallery.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Edit Modal ── -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Festival</div>
+    <input type="hidden" id="editId" />
+    <div class="modal-form-row">
+      <div class="form-group">
+        <label>FESTIVAL NAME <span class="required">*</span></label>
+        <input type="text" id="editName" />
+      </div>
+      <div class="form-group">
+        <label>EVENT DATE</label>
+        <input type="text" id="editDate" placeholder="e.g. December 25, 2025" />
+      </div>
+    </div>
+    <div class="modal-form-row">
+      <div class="form-group">
+        <label>EMOJI ICON</label>
+        <input type="text" id="editEmoji" class="emoji-input" maxlength="4" />
+      </div>
+    </div>
+    <div class="modal-form-row">
+      <div class="form-group">
+        <label>PRIMARY COLOR</label>
+        <div class="color-wrap">
+          <input type="color" id="editPrimary" />
+          <span id="editPrimaryHex" style="font-size:13px;color:#334155;"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>SECONDARY COLOR</label>
+        <div class="color-wrap">
+          <input type="color" id="editSecondary" />
+          <span id="editSecondaryHex" style="font-size:13px;color:#334155;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-btn-row">
+      <button class="save-btn"   id="saveEditBtn">Save Changes</button>
+      <button class="cancel-btn" id="closeEditBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Topbar date ───────────────────────────────────────────────────────────────
+const _days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const _now    = new Date();
+document.getElementById('topbarDate').textContent =
+  `${_days[_now.getDay()]}, ${_now.getDate()} ${_months[_now.getMonth()]} ${_now.getFullYear()}`;
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+(async () => {
+  try {
+    const res  = await fetch('sidebar.html');
+    const html = await res.text();
+    document.getElementById('sidebar-container').innerHTML = html;
+  } catch {}
+})();
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => { t.className = 'toast'; }, 3500);
+}
+
+// ── Color hex preview sync ────────────────────────────────────────────────────
+function syncColor(inputId, hexId) {
+  const input = document.getElementById(inputId);
+  const hex   = document.getElementById(hexId);
+  hex.textContent = input.value;
+  input.addEventListener('input', () => { hex.textContent = input.value; });
+}
+syncColor('festPrimary',   'festPrimaryHex');
+syncColor('festSecondary', 'festSecondaryHex');
+syncColor('festBgLight',   'festBgLightHex');
+syncColor('editPrimary',   'editPrimaryHex');
+syncColor('editSecondary', 'editSecondaryHex');
+
+// ── HTML escape ───────────────────────────────────────────────────────────────
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── Load festivals ────────────────────────────────────────────────────────────
+let festivalsMap = {};
+
+async function loadFestivals() {
+  try {
+    const res  = await fetch('/api/gallery', { credentials: 'include' });
+    const data = await res.json();
+    if (!data.success) return;
+
+    festivalsMap = {};
+    data.festivals.forEach(f => { festivalsMap[f._id] = f; });
+
+    renderFestivals(data.festivals);
+  } catch (err) {
+    console.error('loadFestivals error:', err);
+  }
+}
+
+function renderFestivals(festivals) {
+  const container = document.getElementById('festivalList');
+  const empty     = document.getElementById('emptyState');
+
+  if (!festivals.length) {
+    container.innerHTML = '';
+    container.appendChild(empty);
+    empty.style.display = '';
+    return;
+  }
+
+  // Remove standalone empty state
+  if (empty.parentNode) empty.parentNode.removeChild(empty);
+
+  container.innerHTML = festivals.map(f => buildFestivalHTML(f)).join('');
+}
+
+function buildFestivalHTML(f) {
+  const statusBadge = f.isActive
+    ? `<span class="badge-active">● Active</span>`
+    : `<span class="badge-hidden">● Hidden</span>`;
+
+  const toggleLabel = f.isActive ? '● Hide' : '● Show';
+
+  const photoCount = (f.photos || []).length;
+  const metaDot = '•';
+
+  const photosHtml = photoCount === 0
+    ? `<div class="no-photos">No photos uploaded yet. Use the upload button above to add images.</div>`
+    : `<div class="photo-grid">
+         ${f.photos.map(p => `
+           <div class="photo-item">
+             <img src="${escHtml(p.path)}" alt="gallery photo" loading="lazy" />
+             <button class="photo-del-btn" onclick="deletePhoto('${f._id}','${p._id}')" title="Delete photo">✕</button>
+           </div>`).join('')}
+       </div>`;
+
+  // Emoji bg uses primary color with 20% opacity
+  const emojiBg = `${f.primaryColor}33`;
+
+  return `
+    <div class="festival-item" id="fest-${f._id}">
+      <div class="festival-header">
+        <div class="festival-left">
+          <div class="festival-emoji" style="background:${emojiBg};">${escHtml(f.emoji)}</div>
+          <div class="festival-info">
+            <h3>${escHtml(f.name)}</h3>
+            <div class="festival-meta">
+              <span>${escHtml(f.eventDate) || 'No date set'}</span>
+              ${metaDot}
+              <span>${photoCount} photo${photoCount !== 1 ? 's' : ''}</span>
+              ${metaDot}
+              <span>Slug: ${escHtml(f.slug)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="festival-actions">
+          ${statusBadge}
+          <button class="btn-sm btn-hide" onclick="toggleFestival('${f._id}')">${toggleLabel}</button>
+          <button class="btn-sm btn-edit" onclick="openEditModal('${f._id}')">✏️ Edit</button>
+          <button class="btn-sm btn-del"  onclick="deleteFestival('${f._id}')">🗑️ Delete</button>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <div class="upload-row">
+          <span class="upload-label">📤 Upload Photos:</span>
+          <div class="file-input-wrap">
+            <input type="file" id="fileInput-${f._id}" multiple accept="image/*" />
+          </div>
+          <button class="upload-btn" onclick="uploadPhotos('${f._id}')">Upload</button>
+        </div>
+        <div id="photos-${f._id}">
+          ${photosHtml}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── Add festival ──────────────────────────────────────────────────────────────
+document.getElementById('addFestBtn').addEventListener('click', async () => {
+  const name      = document.getElementById('festName').value.trim();
+  const eventDate = document.getElementById('festDate').value.trim();
+  const emoji     = document.getElementById('festEmoji').value.trim() || '📷';
+  const primary   = document.getElementById('festPrimary').value;
+  const secondary = document.getElementById('festSecondary').value;
+  const bgLight   = document.getElementById('festBgLight').value;
+
+  if (!name) { showToast('Festival name is required', 'error'); return; }
+
+  const btn = document.getElementById('addFestBtn');
+  btn.disabled   = true;
+  btn.textContent = 'Adding…';
+
+  try {
+    const res  = await fetch('/api/gallery', {
+      method:      'POST',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ name, eventDate, emoji, primaryColor: primary, secondaryColor: secondary, bgLight })
+    });
+    const data = await res.json();
+
+    if (!res.ok) { showToast(data.error || 'Failed to add', 'error'); }
+    else {
+      showToast('Festival added successfully! ✅');
+      document.getElementById('festName').value  = '';
+      document.getElementById('festDate').value  = '';
+      document.getElementById('festEmoji').value = '📷';
+      await loadFestivals();
+    }
+  } catch { showToast('Network error', 'error'); }
+  finally {
+    btn.disabled   = false;
+    btn.textContent = '+ Add Festival';
+  }
+});
+
+// ── Toggle active/hidden ──────────────────────────────────────────────────────
+async function toggleFestival(id) {
+  try {
+    const res  = await fetch(`/api/gallery/${id}/toggle`, { method: 'PATCH', credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Error', 'error'); return; }
+    showToast(data.message);
+    await loadFestivals();
+  } catch { showToast('Network error', 'error'); }
+}
+
+// ── Open edit modal ───────────────────────────────────────────────────────────
+function openEditModal(id) {
+  const f = festivalsMap[id];
+  if (!f) return;
+
+  document.getElementById('editId').value        = id;
+  document.getElementById('editName').value      = f.name;
+  document.getElementById('editDate').value      = f.eventDate || '';
+  document.getElementById('editEmoji').value     = f.emoji || '📷';
+  document.getElementById('editPrimary').value   = f.primaryColor || '#2563eb';
+  document.getElementById('editSecondary').value = f.secondaryColor || '#7c3aed';
+  document.getElementById('editPrimaryHex').textContent   = f.primaryColor || '#2563eb';
+  document.getElementById('editSecondaryHex').textContent = f.secondaryColor || '#7c3aed';
+
+  document.getElementById('editModal').classList.add('open');
+}
+
+document.getElementById('closeEditBtn').addEventListener('click', () => {
+  document.getElementById('editModal').classList.remove('open');
+});
+document.getElementById('editModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+// ── Save edit ─────────────────────────────────────────────────────────────────
+document.getElementById('saveEditBtn').addEventListener('click', async () => {
+  const id        = document.getElementById('editId').value;
+  const name      = document.getElementById('editName').value.trim();
+  const eventDate = document.getElementById('editDate').value.trim();
+  const emoji     = document.getElementById('editEmoji').value.trim() || '📷';
+  const primary   = document.getElementById('editPrimary').value;
+  const secondary = document.getElementById('editSecondary').value;
+
+  if (!name) { showToast('Name is required', 'error'); return; }
+
+  const btn = document.getElementById('saveEditBtn');
+  btn.disabled   = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const res  = await fetch(`/api/gallery/${id}`, {
+      method:      'PUT',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ name, eventDate, emoji, primaryColor: primary, secondaryColor: secondary })
+    });
+    const data = await res.json();
+
+    if (!res.ok) { showToast(data.error || 'Update failed', 'error'); }
+    else {
+      showToast('Festival updated! ✅');
+      document.getElementById('editModal').classList.remove('open');
+      await loadFestivals();
+    }
+  } catch { showToast('Network error', 'error'); }
+  finally {
+    btn.disabled   = false;
+    btn.textContent = 'Save Changes';
+  }
+});
+
+// ── Delete festival ───────────────────────────────────────────────────────────
+async function deleteFestival(id) {
+  if (!confirm('Delete this festival and ALL its photos? This cannot be undone.')) return;
+
+  try {
+    const res  = await fetch(`/api/gallery/${id}`, { method: 'DELETE', credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Delete failed', 'error'); return; }
+    showToast('Festival deleted');
+    await loadFestivals();
+  } catch { showToast('Network error', 'error'); }
+}
+
+// ── Upload photos ─────────────────────────────────────────────────────────────
+async function uploadPhotos(id) {
+  const fileInput = document.getElementById(`fileInput-${id}`);
+  if (!fileInput || !fileInput.files.length) {
+    showToast('Please choose at least one image file first', 'error');
+    return;
+  }
+
+  // Build FormData — field name MUST match upload.array('photos') in the route
+  const formData = new FormData();
+  Array.from(fileInput.files).forEach(file => formData.append('photos', file));
+
+  // Show a loading indicator on the upload button
+  // Find the button next to this file input
+  const uploadBtn = fileInput.closest('.upload-row')?.querySelector('.upload-btn');
+  const origText  = uploadBtn ? uploadBtn.textContent : '';
+  if (uploadBtn) { uploadBtn.disabled = true; uploadBtn.textContent = 'Uploading…'; }
+
+  try {
+    const res = await fetch(`/api/gallery/${id}/photos`, {
+      method:      'POST',
+      credentials: 'include',   // ← CRITICAL: sends the session cookie
+      body:        formData
+      // DO NOT set Content-Type manually — browser sets it with boundary automatically
+    });
+
+    let data;
+    try { data = await res.json(); } catch { data = {}; }
+
+    if (!res.ok) {
+      showToast(data.error || `Upload failed (${res.status})`, 'error');
+    } else {
+      showToast(data.message || `${fileInput.files.length} photo(s) uploaded! ✅`);
+      fileInput.value = '';
+      await loadFestivals();  // re-render to show new photos
+    }
+  } catch (err) {
+    console.error('uploadPhotos fetch error:', err);
+    showToast('Network error — check your connection', 'error');
+  } finally {
+    if (uploadBtn) { uploadBtn.disabled = false; uploadBtn.textContent = origText; }
+  }
+}
+
+// ── Delete single photo ───────────────────────────────────────────────────────
+async function deletePhoto(festId, photoId) {
+  if (!confirm('Delete this photo?')) return;
+
+  try {
+    const res  = await fetch(`/api/gallery/${festId}/photos/${photoId}`, { method: 'DELETE', credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Delete failed', 'error'); return; }
+    showToast('Photo deleted');
+    await loadFestivals();
+  } catch { showToast('Network error', 'error'); }
+}
+
+// ── Load profile for topbar ───────────────────────────────────────────────────
+(async () => {
+  try {
+    const res  = await fetch('/api/profile', { credentials: 'include' });
+    if (!res.ok) return;
+    const user = await res.json();
+    if (user.fullName) {
+      const parts = user.fullName.trim().split(' ');
+      document.getElementById('topbarAvatar').textContent =
+        (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+    }
+  } catch {}
+})();
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+window.onload = () => loadFestivals();
+</script>
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

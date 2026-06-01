@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Reporting Manager</title>
+</head>
+
+<body>
+
+<h2>Create Job Card</h2>
+
+<input id="rm_name" placeholder="RM Name"><br><br>
+
+<input id="department" placeholder="Department"><br><br>
+
+<input id="project_name" placeholder="Project"><br><br>
+
+<input id="hours_worked" type="number" placeholder="Hours"><br><br>
+
+<textarea
+id="work_description"
+placeholder="Work Description"
+></textarea>
+
+<br><br>
+
+<button onclick="submitCard()">
+Submit Job Card
+</button>
+
+<script>
+
+async function submitCard(){
+
+try{
+
+const data={
+
+rm_name:
+document.getElementById("rm_name").value.trim(),
+
+department:
+document.getElementById("department").value.trim(),
+
+project_name:
+document.getElementById("project_name").value.trim(),
+
+hours_worked:
+parseInt(
+document.getElementById("hours_worked").value
+),
+
+work_description:
+document.getElementById("work_description").value.trim()
+
+};
+
+if(
+!data.rm_name ||
+!data.department ||
+!data.project_name ||
+!data.hours_worked ||
+!data.work_description
+){
+
+alert("Please fill all fields");
+return;
+
+}
+
+const response=await fetch(
+'http://localhost:3000/api/jobcards',{
+
+method:'POST',
+
+credentials:'include',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify(data)
+
+});
+
+const result=await response.json();
+
+if(result.success){
+
+alert(result.message);
+
+document.getElementById("rm_name").value="";
+document.getElementById("department").value="";
+document.getElementById("project_name").value="";
+document.getElementById("hours_worked").value="";
+document.getElementById("work_description").value="";
+
+}else{
+
+alert(result.error || "Submission failed");
+
+}
+
+}
+catch(err){
+
+console.log(err);
+
+alert("Server Error");
+
+}
+
+}
+
+</script>
+
+
+<script>
+  // Footer loader
+  fetch('footer.html').then(r=>r.text()).then(h=>{
+    var fc=document.getElementById('footer-container');
+    if(fc) fc.innerHTML=h;
+  }).catch(function(){});
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>

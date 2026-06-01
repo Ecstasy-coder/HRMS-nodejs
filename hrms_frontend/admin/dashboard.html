@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — My Ecstasy Admin</title>
+  <script src="/api-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="admin-common.css"/>
+  <link rel="stylesheet" href="topbar.css"/>
+
+  <style>
+    .user-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 8px;
+    }
+    /* ── Page layout ──────────────────────────────── */
+    .page { padding: 26px; }
+    .dashboard-grid { display: grid; grid-template-columns: 340px 1fr; gap: 22px; align-items: start; }
+
+    /* ── STAT CARDS ROW ───────────────────────────── */
+    .stats-row { display: flex; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+    .stat-card {
+      background: #fff; border-radius: 16px; border: 1px solid var(--border);
+      box-shadow: var(--shadow); padding: 20px 22px; flex: 1; min-width: 130px; text-align: center;
+    }
+    .stat-value { font-size: 30px; font-weight: 800; line-height: 1; margin-bottom: 5px; }
+    .stat-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--text-muted); }
+    .stat-sub   { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+    .v-navy   { color: #0f1c2e; }
+    .v-blue   { color: #4f8ef7; }
+    .v-gold   { color: #f0b429; }
+    .v-orange { color: #f59e0b; }
+    .v-green  { color: #22c55e; }
+
+    /* ── GALLERY ──────────────────────────────────── */
+    .gallery-wrapper { display: flex; flex-direction: column; gap: 18px; }
+    .gallery-top {
+      position: relative; height:560px;border-radius:32px;
+      overflow: hidden; background: #fff; box-shadow: var(--shadow);
+    }
+    .gallery-image {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: opacity .5s ease;animation:zoomeffect 8s ease infinite alternate;
+    }
+
+    @keyframes zoomeffect {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+    .gallery-overlay {
+      position: absolute; inset: 0; padding: 28px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.1), transparent);
+      color: #fff;
+    }
+    .gallery-small { font-size: 11px; letter-spacing: 3px; font-weight: 600; opacity: .9; }
+    .gallery-title { margin-top: 8px; font-size: 26px; font-weight: 800; line-height: 1.2; }
+    .gallery-btn {
+      align-self: center; display: flex; align-items: center; justify-content: center;
+      width: 140px; height: 46px; border: none; border-radius: 50px;
+      background: rgba(255,255,255,.18); backdrop-filter: blur(14px);
+      color: #fff; text-decoration: none; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: .3s;
+    }
+    .gallery-btn:hover { background: rgba(255,255,255,.28); transform: translateY(-3px); }
+    .gallery-dots { position: absolute; bottom: 72px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 5; }
+    .gallery-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.45); cursor: pointer; transition: .3s; }
+    .gallery-dot.active { background: #fff; transform: scale(1.3); }
+    .mini-gallery { display: flex; gap: 12px; }
+    .mini-img {
+      width: 80px; height: 96px; object-fit: cover; border-radius: 16px;
+      cursor: pointer; opacity: .55; border: 3px solid transparent; transition: .4s ease;
+    }
+    .mini-img:hover  { transform: translateY(-4px); opacity: 1; }
+    .mini-img.active { opacity: 1; border-color: #f0b429; transform: scale(1.05); }
+
+    /* ── RIGHT COLUMN ─────────────────────────────── */
+    .right-col { display: flex; flex-direction: column; gap: 20px; }
+
+    /* ── HERO CARD ────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0f1c2e 0%, #162b50 50%, #0f1c2e 100%);
+      border-radius: 24px; padding: 26px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden; min-height: 130px;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(79,142,247,0.15) 0%, transparent 65%);
+    }
+    .shooting-star {
+      position: absolute; width: 80px; height: 1.5px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.8));
+      border-radius: 50px; animation: shoot 5s linear infinite;
+    }
+    .shooting-star:nth-child(1) { top: 18px; right: 120px; animation-duration: 4s; }
+    .shooting-star:nth-child(2) { top: 55px; right: 280px; animation-duration: 6s; }
+    .shooting-star:nth-child(3) { top: 12px; right: 460px; animation-duration: 5s; }
+    @keyframes shoot {
+      0%   { transform: translateX(0) rotate(-25deg); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateX(-300px) rotate(-25deg); opacity: 0; }
+    }
+    .hero-left { position: relative; z-index: 5; display: flex; align-items: center; gap: 18px; }
+    .hero-img  { width: 60px; height: 60px; border-radius: 18px; object-fit: cover; }
+    .hero-small { color: rgba(102,255,154,1); font-size: 9.5px; font-weight: 800; letter-spacing: 3px; margin-bottom: 3px; }
+    .hero-name  { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px; margin-bottom: 2px; }
+    .hero-role  { color: rgba(218,207,207,1); font-size: 10px; margin-bottom: 8px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(168,85,247,.25); border: 1px solid rgba(168,85,247,.4);
+      padding: 5px 14px; border-radius: 20px; font-size: 11.5px; font-weight: 700;
+      color: #e9d5ff; backdrop-filter: blur(8px); cursor: pointer; transition: .3s;
+    }
+    .hero-logo {
+      position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+      width: 80px; height: 80px; object-fit: contain; opacity: .35;
+    }
+
+    /* ── QUICK CARDS GRID ─────────────────────────── */
+    .quick-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .quick-card {
+      background: #fff; border-radius: 20px; padding: 18px 16px 16px;
+      text-decoration: none; color: inherit; position: relative; overflow: hidden;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      transition: transform .3s, box-shadow .3s; cursor: pointer;
+    }
+    .quick-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      transform: translateY(100%); transition: transform .4s ease; z-index: 0;
+    }
+    .quick-card:nth-child(1)::before { background: linear-gradient(135deg,#f0b429,#e0952a); }
+    .quick-card:nth-child(2)::before { background: linear-gradient(135deg,#60a5fa,#2563eb); }
+    .quick-card:nth-child(3)::before { background: linear-gradient(135deg,#c084fc,#9333ea); }
+    .quick-card:nth-child(4)::before { background: linear-gradient(135deg,#34d399,#059669); }
+    .quick-card:nth-child(5)::before { background: linear-gradient(135deg,#67e8f9,#0891b2); }
+    .quick-card:nth-child(6)::before { background: linear-gradient(135deg,#34d399,#059669); }
+    .quick-card:nth-child(1) { border-bottom: 4px solid #f0b429; }
+    .quick-card:nth-child(2) { border-bottom: 4px solid #60a5fa; }
+    .quick-card:nth-child(3) { border-bottom: 4px solid #a855f7; }
+    .quick-card:nth-child(4) { border-bottom: 4px solid #10b981; }
+    .quick-card:nth-child(5) { border-bottom: 4px solid #06b6d4; }
+    .quick-card:nth-child(6) { border-bottom: 4px solid #10b981; }
+    .quick-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,.14); }
+    .quick-card:hover::before { transform: translateY(0%); }
+    .quick-card > * { position: relative; z-index: 3; transition: .4s ease; }
+    .quick-card:hover .quick-title,
+    .quick-card:hover .quick-sub,
+    .quick-card:hover .q-pill { color: #fff !important; }
+    .quick-card:hover .quick-icon { transform: translateY(-6px) scale(1.1); }
+    .quick-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .q-pill {
+      font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      display: inline-block;
+    }
+    .pill-gold   { background: #fef9ee; color: #92400e; }
+    .pill-blue   { background: #eff6ff; color: #1d4ed8; }
+    .pill-purple { background: #fdf4ff; color: #7c3aed; }
+    .pill-green  { background: #f0fdf4; color: #15803d; }
+    .pill-cyan   { background: #f0fdfa; color: #0d9488; }
+    .quick-icon {
+      width: 44px; height: 44px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin: 0 auto 10px; transition: .4s;
+    }
+    .qi-gold   { background: #fef9ee; color: #d97706; }
+    .qi-blue   { background: #eff6ff; color: #2563eb; }
+    .qi-purple { background: #fdf4ff; color: #9333ea; }
+    .qi-green  { background: #f0fdf4; color: #16a34a; }
+    .qi-cyan   { background: #f0fdfa; color: #0891b2; }
+    .quick-title { font-size: 13px; font-weight: 700; text-align: center; color: #111827; }
+    .quick-sub   { font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 3px; }
+
+    /* ── PANEL ────────────────────────────────────── */
+    .panel {
+      background: #fff; border-radius: 20px; border: 1px solid var(--border);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .panel-header {
+      padding: 16px 20px; border-bottom: 1px solid #f3f4f6;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .panel-title { font-size: 14px; font-weight: 700; color: #111827; display: flex; align-items: center; gap: 8px; }
+    .panel-link  { font-size: 12px; color: var(--text-muted); }
+
+    /* Members */
+    .member-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 20px; border-bottom: 1px solid #f9fafb;
+    }
+    .member-item:last-child { border-bottom: none; }
+    .member-left { display: flex; align-items: center; gap: 11px; }
+    .member-avatar {
+      width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .av-blue   { background: #3b82f6; }
+    .av-cyan   { background: #06b6d4; }
+    .av-green  { background: #10b981; }
+    .av-purple { background: #8b5cf6; }
+    .av-orange { background: #f59e0b; }
+    .av-pink   { background: #ec4899; }
+    .member-name { font-size: 13.5px; font-weight: 700; color: #111827; }
+    .member-role { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+    .member-badge {
+      background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7;
+      padding: 3px 10px; border-radius: 20px; font-size: 10.5px; font-weight: 700;
+    }
+
+    /* Events */
+    .event-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px; border-bottom: 1px solid #f9fafb; border-left: 3px solid transparent;
+    }
+    .event-item:last-child { border-bottom: none; }
+    .event-item.ev-blue   { border-left-color: #60a5fa; }
+    .event-item.ev-purple { border-left-color: #a78bfa; }
+    .event-item.ev-green  { border-left-color: #34d399; }
+    .event-item.ev-orange { border-left-color: #fb923c; }
+    .event-item h4 { font-size: 13.5px; font-weight: 700; color: #111827; }
+    .event-item p  { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+    .event-badge {
+      font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 20px;
+      white-space: nowrap;
+    }
+    .event-badge.today   { background: #fef9c3; color: #713f12; }
+    .event-badge.passed  { background: #f3f4f6; color: #9ca3af; }
+    .event-badge         { background: #eff6ff; color: #1d4ed8; }
+
+    /* Birthdays */
+    .bday-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px; border-bottom: 1px solid #f9fafb;
+    }
+    .bday-item:last-child { border-bottom: none; }
+    .bday-emoji { font-size: 24px; }
+    .bday-name  { font-size: 13.5px; font-weight: 700; color: #111827; }
+    .bday-dept  { font-size: 11.5px; color: var(--text-muted); }
+    .panel-body { padding: 14px 20px; font-size: 13px; color: var(--text-muted); }
+
+    /* Footer */
+   /* .footer {
+  margin-left: 0;
+  padding: 16px 26px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: #111827; } */
+
+    @media (max-width: 1100px) {
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-top {
+    height: 420px;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .page {
+    padding: 16px;
+  }
+
+  .stats-row {
+    flex-direction: column;
+  }
+
+  .quick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .gallery-top {
+    height: 300px;
+  }
+
+  .mini-gallery {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar"></div>
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="dateDisplay"></span>
+      <div class="notif-btn" title="Notifications">
+            🔔
+            <span class="notif-badge" id="notifCount">3</span>
+          </div>
+      <div class="top-avatar" id="topAvatar" ></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value v-navy" id="s-total">—</div><div class="stat-label">Total Users</div><div class="stat-sub">All roles</div></div>
+      <div class="stat-card"><div class="stat-value v-blue"  id="s-emp">—</div><div class="stat-label">Employees</div><div class="stat-sub">Active accounts</div></div>
+      <div class="stat-card"><div class="stat-value v-gold"  id="s-cards">—</div><div class="stat-label">HR Cards</div><div class="stat-sub">Awaiting your review</div></div>
+      <div class="stat-card"><div class="stat-value v-orange" id="s-pending">—</div><div class="stat-label">Total Pending JC</div><div class="stat-sub">Across all levels</div></div>
+      <div class="stat-card"><div class="stat-value v-green"  id="s-events">—</div><div class="stat-label">Upcoming Events</div><div class="stat-sub">From today</div></div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+      <!-- LEFT: Gallery (managed from dashboard) -->
+      <!-- LEFT: GALLERY -->
+        <div class="gallery-wrapper">
+          <div class="gallery-top">
+            <img id="mainGalleryImage" src="/assets/images/2025-12-08.jpg" class="gallery-image" alt="Gallery" onerror="this.style.display='none'">
+            <div class="gallery-overlay">
+              <div>
+                <div class="gallery-small">ECSTASY SOLUTIONS</div>
+                <div class="gallery-title">Company Gallery</div>
+              </div>
+              <div class="gallery-dots" id="galleryDots"></div>
+              <a href="gallery.html" class="gallery-btn">
+                <i class="fas fa-chevron-right" style="margin-right:6px;"></i> VIEW MORE
+              </a>
+            </div>
+          </div>
+          <div class="mini-gallery" id="miniGallery"></div>
+        </div>
+
+      <!-- RIGHT -->
+      <div class="right-col">
+        <!-- HERO -->
+        <div class="hero">
+          <span class="shooting-star"></span>
+          <span class="shooting-star"></span>
+          <span class="shooting-star"></span>
+          <div class="hero-left">
+            <img src="/assets/images/download.png" alt="Avatar" class="hero-img" id="heroAvatar"
+                 onerror="this.style.display='none'">
+            <div>
+              <div class="hero-small" id="heroGreeting">GOOD MORNING</div>
+              <div class="hero-name"  id="heroName">Admin</div>
+              <div class="hero-role"  id="heroRole">Administrator · Management</div>
+              <div class="hero-badge"><i class="fa-solid fa-bolt fa-xs"></i> <span id="heroBadge">System Administrator</span></div>
+            </div>
+          </div>
+          <img src="/assets/images/logo.png.jpeg" class="hero-logo" alt="Logo" onerror="this.style.display='none'">
+        </div>
+
+        <!-- QUICK CARDS -->
+        <div class="quick-grid">
+          <a href="review-jobcards.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-gold" id="ql-cards">0 pending</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-gold"><i class="fa-solid fa-file-check"></i></div>
+            <div class="quick-title">Review HR Cards</div>
+            <div class="quick-sub">Pending</div>
+          </a>
+          <a href="holiday-calendar.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-blue">2026 available</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-blue"><i class="fa-solid fa-calendar"></i></div>
+            <div class="quick-title">Holiday Calendar</div>
+            <div class="quick-sub">View</div>
+          </a>
+          <a href="events.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-purple" id="ql-events">0 upcoming</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-purple"><i class="fa-solid fa-star"></i></div>
+            <div class="quick-title">Events</div>
+            <div class="quick-sub">Manage</div>
+          </a>
+          <a href="birthdays.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-green" id="ql-bday">None today</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-cyan"><i class="fa-solid fa-cake-candles"></i></div>
+            <div class="quick-title">Birthdays</div>
+            <div class="quick-sub">Celebrate</div>
+          </a>
+          <a href="about.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-cyan">Company info</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-cyan"><i class="fa-solid fa-circle-info"></i></div>
+            <div class="quick-title">About Us</div>
+            <div class="quick-sub">View</div>
+          </a>
+          <a href="users.html" class="quick-card">
+            <div class="quick-top"><span class="q-pill pill-green">Manage</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-green"><i class="fa-solid fa-users-gear"></i></div>
+            <div class="quick-title">Manage Users</div>
+            <div class="quick-sub">Admin</div>
+          </a>
+          <a href="gallery.html" class="quick-card" style="grid-column:1/-1;">
+            <div class="quick-top"><span class="q-pill pill-cyan">Manage &amp; Upload</span><i class="fas fa-arrow-right" style="color:var(--text-muted);font-size:11px;"></i></div>
+            <div class="quick-icon qi-cyan"><i class="fa-solid fa-images"></i></div>
+            <div class="quick-title">Company Gallery</div>
+            <div class="quick-sub">View &amp; manage photo albums</div>
+          </a>
+        </div>
+
+        <!-- TODAY'S BIRTHDAYS -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fa-solid fa-cake-candles" style="color:#f59e0b;"></i> Today's Birthdays</div>
+            <div class="panel-link" id="bdayDate"></div>
+          </div>
+          <div id="bdayBody" class="panel-body">Loading…</div>
+        </div>
+
+        <!-- UPCOMING EVENTS -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fa-solid fa-calendar-days" style="color:#4f8ef7;"></i> Upcoming Events</div>
+            <a href="events.html" class="panel-link">View all →</a>
+          </div>
+          <div id="eventsBody"><div class="panel-body">Loading…</div></div>
+        </div>
+
+        <!-- NEW TEAM MEMBERS -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fa-solid fa-hand-wave" style="color:#f0b429;"></i> New Team Members</div>
+            <div class="panel-link">Last 30 days</div>
+          </div>
+          <div id="membersBody"><div class="panel-body">Loading…</div></div>
+        </div>
+      </div><!-- /right-col -->
+    </div><!-- /dashboard-grid -->
+  </div><!-- /page -->
+
+  <div class="footer">
+    <div>© 2026 My Ecstasy . All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</div><!-- /main -->
+
+<div id="toast"></div>
+<script src="admin-utils.js"></script>
+<script>
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const COLORS = ['av-blue','av-cyan','av-green','av-purple','av-orange','av-pink'];
+const EV_COLORS = ['ev-blue','ev-purple','ev-green','ev-orange'];
+
+function initials(name) {
+  if (!name) return '?';
+  const p = name.trim().split(' ');
+  return (p[0][0] + (p[1]?.[0] || '')).toUpperCase();
+}
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'GOOD MORNING';
+  if (h < 17) return 'GOOD AFTERNOON';
+  return 'GOOD EVENING';
+}
+function liveDateStr() {
+  const now = new Date();
+  return `${DAYS[now.getDay()]}, ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+}
+function fmtEventDate(d) {
+  const dt = new Date(d);
+  return `${dt.getDate()} ${MONTHS[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+function getEvLabel(d) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev    = new Date(d); ev.setHours(0,0,0,0);
+  const diff  = Math.round((ev - today) / 86400000);
+  if (diff === 0) return { label:'Today!',  cls:'today' };
+  if (diff < 0)  return { label:'Passed',   cls:'passed' };
+  if (diff === 1) return { label:'Tomorrow', cls:'' };
+  return { label:`In ${diff}d`, cls:'' };
+}
+
+// ── Gallery ─────────────────────────────────────────────────
+const ASSETS_IMAGES = [
+  '/assets/images/2025-12-08.jpg',
+  '/assets/images/2025-12-09.jpg',
+  '/assets/images/2026-03-16.jpg'
+];
+let galleryImages = [...ASSETS_IMAGES];
+let curImg = 0;
+let galleryTimer = null;
+
+function buildGallery(images) {
+  galleryImages = images && images.length ? images : ASSETS_IMAGES;
+  curImg = 0;
+  const mainImg    = document.getElementById('mainGalleryImage');
+  const miniGallery = document.getElementById('miniGallery');
+  const dotsEl     = document.getElementById('galleryDots');
+
+  mainImg.src = galleryImages[0];
+
+  miniGallery.innerHTML = galleryImages.slice(0, 5).map((src, i) =>
+    `<img src="${src}" class="mini-img${i===0?' active':''}" data-index="${i}"
+     onerror="this.style.display='none'" alt="Gallery ${i+1}">`
+  ).join('');
+
+  dotsEl.innerHTML = galleryImages.slice(0, 5).map((_, i) =>
+    `<div class="gallery-dot${i===0?' active':''}" data-index="${i}"></div>`
+  ).join('');
+
+  miniGallery.querySelectorAll('.mini-img').forEach(img => {
+    img.addEventListener('click', () => switchGallery(+img.dataset.index));
+  });
+  dotsEl.querySelectorAll('.gallery-dot').forEach(d => {
+    d.addEventListener('click', () => switchGallery(+d.dataset.index));
+  });
+
+  if (galleryTimer) clearInterval(galleryTimer);
+  if (galleryImages.length > 1) {
+    galleryTimer = setInterval(() => switchGallery((curImg + 1) % Math.min(galleryImages.length, 5)), 4000);
+  }
+}
+
+function switchGallery(idx) {
+  const mainImg = document.getElementById('mainGalleryImage');
+  curImg = idx;
+  mainImg.style.opacity = 0;
+  setTimeout(() => { mainImg.src = galleryImages[curImg]; mainImg.style.opacity = 1; }, 300);
+  document.querySelectorAll('.mini-img').forEach((m,i) => m.classList.toggle('active', i===curImg));
+  document.querySelectorAll('.gallery-dot').forEach((d,i) => d.classList.toggle('active', i===curImg));
+}
+
+
+function checkImageUrl(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload  = () => resolve(url);
+    img.onerror = () => resolve(null);
+    img.src = url;
+  });
+}
+
+async function loadGalleryImages() {
+  try {
+    const r = await fetch('/api/gallery', { credentials: 'include' });
+
+    if (!r.ok) {
+      buildGallery(ASSETS_IMAGES);
+      return;
+    }
+
+    const d = await r.json();
+    const festivals = d.festivals || d.data || (Array.isArray(d) ? d : []);
+    const apiUrls = [];
+
+    festivals.forEach(f => {
+      if (f.imageUrl) apiUrls.push(f.imageUrl);
+
+      if (Array.isArray(f.photos)) {
+        f.photos.forEach(ph => {
+          const src =
+            ph.imageUrl ||
+            ph.url ||
+            ph.path ||
+            (ph.filename ? `/uploads/gallery/${ph.filename}` : null);
+          if (src) apiUrls.push(src);
+        });
+      }
+    });
+
+    // Deduplicate then verify each URL actually loads
+    const unique = [...new Set(apiUrls)];
+    const checked = await Promise.all(unique.map(checkImageUrl));
+    const validUrls = checked.filter(Boolean);
+
+    buildGallery(validUrls.length ? validUrls : ASSETS_IMAGES);
+
+  } catch (err) {
+    console.error('Gallery load error:', err);
+    buildGallery(ASSETS_IMAGES);
+  }
+}
+
+
+
+loadGalleryImages();
+
+// ── Main init ────────────────────────────────────────────────
+(async () => {
+  const user = await adminAuthGuard();
+  if (!user) return;
+
+  document.getElementById('sidebar').innerHTML = renderAdminSidebar('dashboard', user);
+  document.getElementById('dateDisplay').textContent = liveDateStr();
+
+  // Topbar avatar
+  const topAv = document.getElementById('topAvatar');
+  if (user.avatar) topAv.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  else topAv.textContent = initials(user.fullName);
+
+  // Hero
+  document.getElementById('heroGreeting').textContent = getGreeting();
+  document.getElementById('heroName').textContent     = user.fullName || 'Admin';
+  document.getElementById('heroRole').textContent     = `Administrator · ${user.department || 'Management'}`;
+  document.getElementById('heroBadge').textContent    = user.designation || 'System Administrator';
+  if (user.avatar) {
+    const heroAv = document.getElementById('heroAvatar');
+    heroAv.src = user.avatar;
+    heroAv.style.display = 'block';
+  }
+
+  // Date
+  const now = new Date();
+  document.getElementById('bdayDate').textContent =
+    `${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
+
+  startPolling(loadDashboard, 30000);
+})();
+
+async function loadDashboard() {
+  try {
+    const r = await fetch('/api/admin/dashboard', { credentials: 'include' });
+    const d = await r.json();
+    if (!d.success) return;
+
+    const s = d.stats;
+    document.getElementById('s-total').textContent   = s.totalUsers   ?? '—';
+    document.getElementById('s-emp').textContent     = s.employees    ?? '—';
+    document.getElementById('s-cards').textContent   = s.pendingHRCards ?? '—';
+    document.getElementById('s-pending').textContent = s.totalPendingJC ?? '—';
+    document.getElementById('s-events').textContent  = s.upcomingEvents ?? '—';
+
+    document.getElementById('ql-cards').textContent  = `${s.pendingHRCards ?? 0} pending`;
+    document.getElementById('ql-events').textContent = `${s.upcomingEvents ?? 0} upcoming`;
+
+    // Birthdays
+    renderBirthdays(d.todayBirthdays || []);
+
+    // Events
+    renderEvents(d.upcomingEventsList || []);
+
+    // Members
+    renderMembers(d.newMembers || []);
+
+  } catch(e) { console.error('Dashboard load error:', e); }
+}
+
+function renderBirthdays(people) {
+  const body = document.getElementById('bdayBody');
+  if (!people || !people.length) {
+    body.innerHTML = '<div style="padding:4px 0;text-align:center;color:var(--text-muted);font-size:13px;">No birthdays today. Next celebrations coming soon!</div>';
+    return;
+  }
+  body.outerHTML; // keep
+  document.getElementById('bdayBody').innerHTML = people.map(p => `
+    <div class="bday-item">
+      <div class="bday-emoji">🎂</div>
+      <div>
+        <div class="bday-name">${p.fullName}</div>
+        <div class="bday-dept">${p.department || 'Team Member'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderEvents(events) {
+  const body = document.getElementById('eventsBody');
+  if (!events || !events.length) {
+    body.innerHTML = '<div class="panel-body">No upcoming events in the next 7 days.</div>';
+    return;
+  }
+  body.innerHTML = events.map((ev, i) => {
+    const { label, cls } = getEvLabel(ev.eventDate || ev.date);
+    return `
+    <div class="event-item ${EV_COLORS[i % EV_COLORS.length]}">
+      <div class="event-left">
+        <h4>${ev.title || ev.eventName || 'Event'}</h4>
+        <p>${fmtEventDate(ev.eventDate || ev.date)}</p>
+      </div>
+      <div class="event-badge ${cls}">${label}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMembers(members) {
+  const body = document.getElementById('membersBody');
+  if (!members || !members.length) {
+    body.innerHTML = '<div class="panel-body">No new members in the last 30 days.</div>';
+    return;
+  }
+  body.innerHTML = members.map((m, i) => {
+    const col = COLORS[i % COLORS.length];
+    const joined = m.joinedDate
+      ? new Date(m.joinedDate).toLocaleDateString('en-GB', { day:'numeric', month:'short' })
+      : new Date(m.createdAt).toLocaleDateString('en-GB',  { day:'numeric', month:'short' });
+    return `
+    <div class="member-item">
+      <div class="member-left">
+        <div class="member-avatar ${col}">${initials(m.fullName)}</div>
+        <div>
+          <div class="member-name">${m.fullName}</div>
+          <div class="member-role">${m.department || 'Team'} · Joined ${joined}</div>
+        </div>
+      </div>
+      <div class="member-badge">NEW</div>
+    </div>`;
+  }).join('');
+}
+</script>
+<script src="topbar-utils.js"></script>
+</body>
+</html>
